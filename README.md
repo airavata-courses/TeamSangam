@@ -1,1 +1,0 @@
-Vikas Palakurthi
