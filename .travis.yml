@@ -4,7 +4,7 @@ jdk:
 sudo: false
 install: true
 
-script: cd "SGA_Data_Ingestor_Build" && mvn -e clean install
+script: cd "dataingestor" && mvn -e clean install
 
 branches:
   only:
