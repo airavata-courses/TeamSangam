@@ -1,0 +1,25 @@
+language: java
+jdk:
+  - oraclejdk8
+sudo: false
+install: true
+
+before_script:
+
+
+script: cd "SGA_Build" && mvn -e clean install
+
+before_deploy:
+ - zip -r SGA_Sangam_Application.zip dataingestor appspec.yml || true
+ -mkdir -p "dpl_cd_upload"
+ -mv SGA_Sangam_Application.zip dpl_cd_upload/SGA_Sangam_Application.zip || true
+ 
+deploy:
+ 
+after_deploy:
+  - echo "Performing after deploy procedures..."
+notifications:
+  email:
+    recipients:
+      - vikas1590@gmail.com
+      - raghava1990@gmail.com
