@@ -2,7 +2,8 @@ function validEmail(email) {
  	var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  	return regex.test(email);
 }
-
+var loginURL = "http://127.0.0.1:5000/login";
+var signupURL = "http://127.0.0.1:5000/signup";
 var login = angular .module("authModule",[])
 					.controller("loginController", function($scope, $http, $window){
 						$scope.user = {};
@@ -28,23 +29,29 @@ var login = angular .module("authModule",[])
 								}, 300);
 							}
 							if(allGood){
+								$scope.loginMessage = "Please wait while we try to log you in...";
+								// angular trims the input fields by default, so no need to trim them before sending
 								$http({
 										method : "POST",
-										url : "http://127.0.0.1:5000/login",
+										url : loginURL,
 										data : $scope.user
 								})
 								.then(function(response){
 									// This is a success callback and will be called for status 200-299
 									$scope.loginData = response.data;
 									//based on the response, we will either show an error message or redirect the user to the homepage
-									if($scope.loginData===11){
-										$scope.loginMessage = "Logging in. Please wait..";
-										$window.location.href = "home.html";
+									if ($scope.loginData) {
+										if($scope.loginData===11){
+											$scope.loginMessage = "Logging in. Please wait..";
+											$window.location.href = "home.html";
+										} else {
+											$scope.loginMessage = "Invalid credentials. Please try again.";
+											$scope.user = {};
+										}
 									} else {
-										$scope.loginMessage = "Invalid credentials. Please try again.";
+										$scope.loginMessage = "Sorry. Internal server error.";
 										$scope.user = {};
 									}
-									$scope.loginStatus = response.status;
 								},
 								function(response){
 									// This is a failure callback
@@ -115,11 +122,12 @@ var login = angular .module("authModule",[])
 							}
 							//Need to check if passswords match or not and execute as below if they match or need to take input again.
 							if(allGood){
+								$scope.signupMessage = "Please wait while we submit your data...";
 								if($scope.user.password === $scope.password2) {
 									$scope.signupMessage = "";
 									$http({
 										method 	: "POST",
-										url 	: "http://127.0.0.1:5000/signup",
+										url 	: signupURL,
 										data 	: $scope.user
 									})
 									.then(function(response){
@@ -127,12 +135,15 @@ var login = angular .module("authModule",[])
 										$scope.signupData = response.data;
 										$scope.signupStatus = response.status;
 										if ($scope.signupData===888) {
-											$scope.signupMessage = "Registered. Logging in. Please wait...";
+											$scope.signupMessage = "Registered. Redirecting to home..";
 											// redirect to home page.
 											$window.location.href = "home.html";
 										} else if ($scope.signupData===777) {
 											$scope.signupMessage = "Email already registered.";
-										} else {
+										} else if ($scope.signupData===666) {
+											$scope.signupMessage = "There was an error processing your request.";
+										}
+										else {
 											$scope.signupMessage = $scope.signupData;
 										}
 									},

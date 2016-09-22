@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask import cors
 import model
-import boto
 
 app = Flask(__name__)
 
@@ -24,14 +23,17 @@ def signup():
 	lastName = request.json["lastName"]
 	email = request.json["email"]
 	password = request.json["password"]
-	if model.findUser(email=email, password=password) == 99:
-		model.insertUser(firstName=firstName, lastName=lastName, email=email, password=password)
-		return jsonify(888)
+	result = model.findUser(email=email, password=password)
+	if result:
+		if result == 99:
+			if(model.insertUser(firstName=firstName, lastName=lastName, email=email, password=password)):
+				return jsonify(888)
+			else:
+				return jsonify(666)
+		else:
+			return jsonify(777)
 	else:
-		return jsonify(777)
-
-# error handler
-# 500 code - internal server error
+		return jsonify(666)
 
 if __name__ == "__main__":
 	app.run(debug=True)

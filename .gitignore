@@ -1,0 +1,61 @@
+# Ignore virtual environment
+services/weatherApp
+services/test.py
+services/__pycache__
+
+
+# Created by https://www.gitignore.io/api/pycharm
+
+### PyCharm ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff:
+services/.idea/workspace.xml
+services/.idea/tasks.xml
+services/.idea/dictionaries
+services/.idea/vcs.xml
+services/.idea/jsLibraryMappings.xml
+
+# Sensitive or high-churn files:
+services/.idea/dataSources.ids
+services/.idea/dataSources.xml
+services/.idea/dataSources.local.xml
+services/.idea/sqlDataSources.xml
+services/.idea/dynamic.xml
+services/.idea/uiDesigner.xml
+
+# Gradle:
+services/.idea/gradle.xml
+services/.idea/libraries
+
+# Mongo Explorer plugin:
+services/.idea/mongoSettings.xml
+
+## File-based project format:
+*.iws
+
+## Plugin-specific files:
+
+# IntelliJ
+/out/
+
+# mpeltonen/sbt-idea plugin
+services/.idea_modules/
+
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+### PyCharm Patch ###
+# Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# modules.xml
+# services/*idea/misc.xml 
+# *.ipr
