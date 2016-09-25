@@ -7,7 +7,7 @@ env:
 
 services : mongodb
 
-sudo: false
+sudo: true
 
 before_install:
   - pip install flask==$FLASK coverage
