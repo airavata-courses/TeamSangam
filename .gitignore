@@ -1,8 +1,8 @@
 # Ignore virtual environment
-SGA-REST-login/services/weatherApp
-SGA-REST-login/services/test.py
-SGA-REST-login/services/__pycache__
-SGA-REST-login/services/.idea
+SGA_REST_login/services/weatherApp
+SGA_REST_login/services/test.py
+SGA_REST_login/services/__pycache__
+SGA_REST_login/services/.idea
 
 
 # Created by https://www.gitignore.io/api/pycharm
@@ -12,26 +12,26 @@ SGA-REST-login/services/.idea
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-SGA-REST-login/services/.idea/workspace.xml
-SGA-REST-login/services/.idea/tasks.xml
-SGA-REST-login/services/.idea/dictionaries
-SGA-REST-login/services/.idea/vcs.xml
-SGA-REST-login/services/.idea/jsLibraryMappings.xml
+SGA_REST_login/services/.idea/workspace.xml
+SGA_REST_login/services/.idea/tasks.xml
+SGA_REST_login/services/.idea/dictionaries
+SGA_REST_login/services/.idea/vcs.xml
+SGA_REST_login/services/.idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
-SGA-REST-login/services/.idea/dataSources.ids
-SGA-REST-login/services/.idea/dataSources.xml
-SGA-REST-login/services/.idea/dataSources.local.xml
-SGA-REST-login/services/.idea/sqlDataSources.xml
-SGA-REST-login/services/.idea/dynamic.xml
-SGA-REST-login/services/.idea/uiDesigner.xml
+SGA_REST_login/services/.idea/dataSources.ids
+SGA_REST_login/services/.idea/dataSources.xml
+SGA_REST_login/services/.idea/dataSources.local.xml
+SGA_REST_login/services/.idea/sqlDataSources.xml
+SGA_REST_login/services/.idea/dynamic.xml
+SGA_REST_login/services/.idea/uiDesigner.xml
 
 # Gradle:
-SGA-REST-login/services/.idea/gradle.xml
-SGA-REST-login/services/.idea/libraries
+SGA_REST_login/services/.idea/gradle.xml
+SGA_REST_login/services/.idea/libraries
 
 # Mongo Explorer plugin:
-SGA-REST-login/services/.idea/mongoSettings.xml
+SGA_REST_login/services/.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -42,7 +42,7 @@ SGA-REST-login/services/.idea/mongoSettings.xml
 /out/
 
 # mpeltonen/sbt-idea plugin
-SGA-REST-login/services/.idea_modules/
+SGA_REST_login/services/.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -58,5 +58,5 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# SGA-REST-login/services/.idea/misc.xml 
+# SGA_REST_login/services/.idea/misc.xml 
 # *.ipr
