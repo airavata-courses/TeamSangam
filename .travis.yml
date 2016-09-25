@@ -1,19 +1,28 @@
 language: java
 jdk:
   - oraclejdk8
+env:
+  - python=3.4
+  - FLASK=0.11.1
+
 services : mongodb
+
 sudo: false
+
+before_install:
+  - pip install flask==$FLASK coverage
+  - pip install -e .
+
 install: true
 
-script: cd "dataingestor" && mvn -e clean install
+script: cd "SGA_REST_DataIngest" && mvn -e clean install
 
 branches:
   only:
-    - Data_ingestor
+    - Development
+
 notifications:
   email:
     - vikas1590@gmail.com
     - raghava1990@gmail.com
-
-
-
+    - rajasimha1991@gmail.com
