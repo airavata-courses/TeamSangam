@@ -1,7 +1,8 @@
 # Ignore virtual environment
-services/weatherApp
-services/test.py
-services/__pycache__
+SGA-REST-login/services/weatherApp
+SGA-REST-login/services/test.py
+SGA-REST-login/services/__pycache__
+SGA-REST-login/services/.idea
 
 
 # Created by https://www.gitignore.io/api/pycharm
@@ -11,26 +12,26 @@ services/__pycache__
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-services/.idea/workspace.xml
-services/.idea/tasks.xml
-services/.idea/dictionaries
-services/.idea/vcs.xml
-services/.idea/jsLibraryMappings.xml
+SGA-REST-login/services/.idea/workspace.xml
+SGA-REST-login/services/.idea/tasks.xml
+SGA-REST-login/services/.idea/dictionaries
+SGA-REST-login/services/.idea/vcs.xml
+SGA-REST-login/services/.idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
-services/.idea/dataSources.ids
-services/.idea/dataSources.xml
-services/.idea/dataSources.local.xml
-services/.idea/sqlDataSources.xml
-services/.idea/dynamic.xml
-services/.idea/uiDesigner.xml
+SGA-REST-login/services/.idea/dataSources.ids
+SGA-REST-login/services/.idea/dataSources.xml
+SGA-REST-login/services/.idea/dataSources.local.xml
+SGA-REST-login/services/.idea/sqlDataSources.xml
+SGA-REST-login/services/.idea/dynamic.xml
+SGA-REST-login/services/.idea/uiDesigner.xml
 
 # Gradle:
-services/.idea/gradle.xml
-services/.idea/libraries
+SGA-REST-login/services/.idea/gradle.xml
+SGA-REST-login/services/.idea/libraries
 
 # Mongo Explorer plugin:
-services/.idea/mongoSettings.xml
+SGA-REST-login/services/.idea/mongoSettings.xml
 
 ## File-based project format:
 *.iws
@@ -41,7 +42,7 @@ services/.idea/mongoSettings.xml
 /out/
 
 # mpeltonen/sbt-idea plugin
-services/.idea_modules/
+SGA-REST-login/services/.idea_modules/
 
 # JIRA plugin
 atlassian-ide-plugin.xml
@@ -57,5 +58,5 @@ fabric.properties
 
 # *.iml
 # modules.xml
-# services/*idea/misc.xml 
+# SGA-REST-login/services/.idea/misc.xml 
 # *.ipr
