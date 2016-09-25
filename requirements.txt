@@ -1,0 +1,5 @@
+flask
+passlib
+requests
+simplejson
+./SGA_REST_login/dependencies/mysqlclient-1.3.7-cp34-none-win_amd64.whl
