@@ -10,7 +10,7 @@ services : mongodb
 sudo: true
 
 before_install:
-  - sudo yum install python34
+  - sudo apt-get install python34
   - pip install flask==$FLASK coverage
   - pip install -e .
 
