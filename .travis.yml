@@ -11,7 +11,7 @@ sudo: true
 
 before_install:
   - pip install flask==$FLASK coverage
-  - pip install -e .
+
 
 install: true
 
