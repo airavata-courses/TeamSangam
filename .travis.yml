@@ -1,0 +1,19 @@
+language: java
+jdk:
+  - oraclejdk8
+services : mongodb
+sudo: false
+install: true
+
+script: cd "dataingestor" && mvn -e clean install
+
+branches:
+  only:
+    - Data_ingestor
+notifications:
+  email:
+    - vikas1590@gmail.com
+    - raghava1990@gmail.com
+
+
+
