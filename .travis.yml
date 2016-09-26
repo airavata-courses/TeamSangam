@@ -24,10 +24,10 @@ before_deploy:
   - cd ..
   - pwd
   - ls
-  - zip -r SGA_Sangam_WeatherApp.zip SGA_REST_DataIngest SGA_REST_login appspec.yml || true
+  - tar -cf SGA_Sangam_WeatherApp.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
-  - mv SGA_Sangam_WeatherApp.zip dpl_cd_upload/SGA_Sangam_WeatherApp.zip || true
+  - mv SGA_Sangam_WeatherApp.tar dpl_cd_upload/SGA_Sangam_WeatherApp.tar || true
 
 deploy:
   - provider: s3
@@ -46,10 +46,10 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     bucket: teamsangam
-    key: SGA_Sangam_WeatherApp.zip
-    bundle_type: zip
-    application: SGA-TeamSangam
-    deployment_group: TeamSangam
+    key: SGA_Sangam_WeatherApp.tar
+    bundle_type: tar
+    application: SGA_TeamSangam
+    deployment_group: SGA_TeamSangam
     region: us-west-2
     on:
       repo: airavata-courses/TeamSangam
