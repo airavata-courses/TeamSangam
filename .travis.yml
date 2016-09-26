@@ -35,12 +35,14 @@ deploy:
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
     bucket: teamsangam
+    region: us-east-1
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      all_branches: true
+      branch: Development
+
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
@@ -52,7 +54,7 @@ deploy:
     region: us-west-2
     on:
       repo: airavata-courses/TeamSangam
-      all_branches: true
+      branch: Development
 
 after_deploy:
   - echo "Deploy steps completed successfully."
