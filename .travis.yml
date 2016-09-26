@@ -21,7 +21,7 @@ install: true
 script: cd "SGA_REST_DataIngest" && mvn -e clean install
 
 before_deploy:
-  - cd ..
+  - pwd
   - zip -r SGA_Sangam_WeatherApp.zip SGA_REST_DataIngest SGA_Rest_login appspec.yml || true
   - mkdir -p "dpl_cd_upload"
   - mv SGA_Sangam_WeatherApp.zip dpl_cd_upload/SGA_Sangam_WatherApp.zip || true
