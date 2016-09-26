@@ -3,4 +3,4 @@ passlib
 requests
 simplejson
 boto
-mysql-python
+mysqlclient
