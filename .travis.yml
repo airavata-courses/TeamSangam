@@ -26,7 +26,8 @@ before_deploy:
   - ls
   - zip -r SGA_Sangam_WeatherApp.zip SGA_REST_DataIngest SGA_REST_login appspec.yml || true
   - mkdir -p "dpl_cd_upload"
-  - mv SGA_Sangam_WeatherApp.zip dpl_cd_upload/SGA_Sangam_WatherApp.zip || true
+  - ls
+  - mv SGA_Sangam_WeatherApp.zip dpl_cd_upload/SGA_Sangam_WeatherApp.zip || true
 
 deploy:
   - provider: s3
