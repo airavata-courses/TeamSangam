@@ -1,15 +1,15 @@
 ps -ef | grep tomcat | awk '{print $2}' | xargs kill -9
 
 echo 'Installing python 3.4...'
-sudo yum install python34
+sudo yum install python34 || true
 
 echo 'Installing some dependencies for setting up python 3.4 environment...'
-sudo yum install python34-pip
-sudo yum install python-devel mysql-devel
-sudo yum install python34-devel
-sudo yum install gcc
-sudo alternatives --set python /usr/bin/python3.4
-sudo pip install virtualenv
+sudo yum install python34-pip || true
+sudo yum install python-devel mysql-devel || true
+sudo yum install python34-devel || true
+sudo yum install gcc || true
+sudo alternatives --set python /usr/bin/python3.4 || true
+sudo pip install virtualenv || true
 
 
 echo 'Creating python 3.4 virtual environment'
