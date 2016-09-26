@@ -50,7 +50,7 @@ deploy:
     bundle_type: tar
     application: SGA_TeamSangam
     deployment_group: SGA_TeamSangam
-    region: us-west-2b
+    region: us-west-2
     on:
       repo: airavata-courses/TeamSangam
       all_branches: true
