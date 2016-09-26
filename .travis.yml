@@ -5,13 +5,16 @@ python:
 env:
   - FLASK=0.11.1
 
-services : mongodb
+services:
+  - mongodb
+  - mysql
+  - rabbitmq
 
 sudo: true
 
 before_install:
   - pip install flask==$FLASK coverage
-  - pip install requirements.txt
+  - pip install -r requirements.txt
 
 install: true
 
