@@ -32,7 +32,7 @@ deploy:
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
     bucket: teamsangam
-    region: us-west-2
+    region: US Standard
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
