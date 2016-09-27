@@ -43,7 +43,7 @@ var login = angular .module("authModule",[])
 									if ($scope.loginData) {
 										if($scope.loginData===11){
 											$scope.loginMessage = "Logging in. Please wait..";
-											$window.location.href = "home.html";
+											$window.location.href = "index.html";
 										} else {
 											$scope.loginMessage = "Invalid credentials. Please try again.";
 											$scope.user = {};
