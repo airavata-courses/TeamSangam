@@ -12,6 +12,10 @@ sudo alternatives --set python /usr/bin/python3.4
 sudo pip install virtualenv
 sudo alternatives --set python /usr/bin/python2.7
 
+echo 'Installing MySQL...'
+sudo yum –y install mysql55-server
+
+
 echo 'check if maven is installed'
 mvn --version
 if [ "$?" -ne 0 ]; then
