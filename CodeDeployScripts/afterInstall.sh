@@ -8,6 +8,8 @@ sudo /home/ec2-user/SGA_REST_login/services/weatherApp/bin/pip3.4 install -r /ho
 cp /home/ec2-user/SGA_REST_login/dependencies/cors.py /home/ec2-user/weatherApp/lib/python3.4/site-packages/flask/cors.py
 mv /home/ec2-user/SGA_REST_login/dependencies/cors.py /home/ec2-user/weatherApp/lib64/python3.4/site-packages/flask/cors.py
 
+echo 'Starting Tomcat Server'
+sh /opt/apache-tomcat-8.0.37/bin/startup.sh
 echo 'Starting login service..'
 sudo service mysqld start
 /home/ec2-user/weatherApp/bin/python3.4 login.py
