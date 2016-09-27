@@ -1,7 +1,7 @@
 import MySQLdb as mysql
 from passlib.handlers.sha2_crypt import sha256_crypt
 
-filename = "env.properties"
+filename = "mysql.properties"
 user, password = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
 print(user, password, type(user), type(password))
 host = "localhost"

@@ -18,6 +18,11 @@ before_install:
 
 install: true
 
+before_script:
+  - cd env_scripts
+  - source props.sh
+  - cd ..
+
 script: cd "SGA_REST_DataIngest" && mvn -e clean install
 
 before_deploy:
