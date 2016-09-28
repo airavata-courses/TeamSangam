@@ -20,8 +20,9 @@ public class DataIngestorService {
 	{
 		DataIngestorBean dataIngestorBean = new DataIngestorBean(year, month,day,nexrad);
 		String fileName = String.valueOf(dataIngestorBean.getYear())+String.valueOf(dataIngestorBean.getMonth())+String.valueOf(dataIngestorBean.getDay())+dataIngestorBean.getNexrad()+".gz";
-		String urllink = "https://aws.amazon.com/noaa-big-data/"+ dataIngestorBean.getNexrad() +"/"+dataIngestorBean.getYear()+"/"+dataIngestorBean.getMonth()+"/"+dataIngestorBean.getDay()+"/"+fileName;
-		//String urllink ="http://noaa-nexrad-level2.s3.amazonaws.com/2015/03/03/KABX/KABX20150303_001050_V06.gz"	;
+		//String urllink = "https://aws.amazon.com/noaa-big-data/"+ dataIngestorBean.getNexrad() +"/"+dataIngestorBean.getYear()+"/"+dataIngestorBean.getMonth()+"/"+dataIngestorBean.getDay()+"/"+fileName;
+		//String urllink = "https://noaa-nexrad-level2.s3.amazonaws.com/"+dataIngestorBean.getYear()+"/"+dataIngestorBean.getMonth()+"/"+dataIngestorBean.getDay()+ "/" + dataIngestorBean.getNexrad() + "/" + fileName;
+		String urllink ="http://noaa-nexrad-level2.s3.amazonaws.com/2015/03/03/KABX/KABX20150303_001050_V06.gz"	;
 		try
 		{
 			String fileName1 = FilenameUtils.getBaseName(urllink);

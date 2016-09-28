@@ -10,10 +10,10 @@ hooks:
     - location: CodeDeployScripts/beforeInstall.sh
       runas: root
   ApplicationStart:
-    - location: CodeDeployScripts/install.sh
-      timeout: 3600
+    - location: CodeDeployScripts/afterInstall.sh
+      timeout: 180
       runas: root
   AfterInstall:
-    - location: CodeDeployScripts/afterInstall.sh
-      timeout: 3600
+    - location: CodeDeployScripts/install.sh
+      timeout: 180
       runas: root
