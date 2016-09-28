@@ -23,7 +23,9 @@ before_script:
   - source props.sh
   - cd ..
 
-script: cd "SGA_REST_DataIngest" && mvn -e clean install
+script: 
+  - cd "SGA_REST_DataIngest" && mvn -e clean install
+  - cd "SGA_Rest_StormClustering" && mvn -e clean install
 
 before_deploy:
   - cd ..
