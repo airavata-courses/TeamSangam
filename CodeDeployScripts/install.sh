@@ -19,7 +19,4 @@ sudo cp ./services/cors.py /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
 sudo cp ./services/homepage.py /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
 sudo cp ./services/aws_key.properties /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
 sudo cp ./stylesheets/bootstrap.min.css /opt/apache-tomcat-8.0.37/webapps/ROOT/stylesheets/
-<<<<<<< HEAD
-=======
 
->>>>>>> da94d792df1695df21ced5ce74ef42fddf923918
