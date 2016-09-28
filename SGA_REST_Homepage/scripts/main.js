@@ -96,7 +96,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		$scope.message = "Please wait as we process your request";
 		$http({
 				method : 'GET',
-				url : 'http://54.71.90.155:5001/res',
+				url : 'http://54.71.90.155:8080/sga/dataingest',
 				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time}
 			})
 			.then(function(response){
