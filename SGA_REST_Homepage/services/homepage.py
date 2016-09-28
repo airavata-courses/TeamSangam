@@ -4,12 +4,13 @@ import boto
 
 app = Flask(__name__)
 
-
+filename = "aws_key.properties"
+accessKey, secretKey = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
 @app.route("/getyears", methods=["GET", "OPTIONS"])
 @cors.crossdomain(origin='*')
 def getyears():
     # get years from AWS
-    s3conn = boto.connect_s3()
+    s3conn = boto.connect_s3(accessKey, secretKey)
     bucket = s3conn.get_bucket('noaa-nexrad-level2')
     years = list(bucket.list("", '/'))
     return jsonify([year.name.strip("/") for year in years if year.name != "index.html"])
@@ -19,7 +20,7 @@ def getyears():
 @cors.crossdomain(origin='*')
 def getmonths():
     # get months from AWS
-    s3conn = boto.connect_s3()
+    s3conn = boto.connect_s3(accessKey, secretKey)
     bucket = s3conn.get_bucket('noaa-nexrad-level2')
     year = str(request.json["year"])
     print("year", year)
@@ -32,7 +33,7 @@ def getmonths():
 @cors.crossdomain(origin='*')
 def getdays():
     # get days from AWS
-    s3conn = boto.connect_s3()
+    s3conn = boto.connect_s3(accessKey, secretKey)
     bucket = s3conn.get_bucket('noaa-nexrad-level2')
     year = str(request.json["year"])
     month = str(request.json["month"])
@@ -45,7 +46,7 @@ def getdays():
 @cors.crossdomain(origin='*')
 def getlocations():
     # get locations from AWS
-    s3conn = boto.connect_s3()
+    s3conn = boto.connect_s3(accessKey, secretKey)
     bucket = s3conn.get_bucket('noaa-nexrad-level2')
     year = str(request.json["year"])
     print("year", year)
@@ -66,7 +67,7 @@ def getlocations():
 @cors.crossdomain(origin='*')
 def gettimestamp():
     # get time stamped file names from AWS
-    s3conn = boto.connect_s3()
+    s3conn = boto.connect_s3(accessKey, secretKey)
     bucket = s3conn.get_bucket('noaa-nexrad-level2')
     year = str(request.json["year"])
     month = str(request.json["month"])
