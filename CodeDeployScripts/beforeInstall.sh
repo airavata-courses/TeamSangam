@@ -1,5 +1,6 @@
-ps -ef | grep tomcat | awk '{print $2}' | xargs kill -9
-
+ps -ef | grep tomcat | awk '{print $2}' | xargs sudo kill -9
+ps -ef | grep login.py | awk '{print $2}' | xargs sudo kill -9
+ps -ef | grep homepage.py | awk '{print $2}' | xargs sudo kill -9
 echo 'Installing python 3.4...'
 sudo yum -y install python34
 
