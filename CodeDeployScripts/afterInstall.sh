@@ -11,6 +11,6 @@ sh /opt/apache-tomcat-8.0.37/bin/startup.sh
 echo 'Starting login service..'
 sudo service mysqld start
 #/opt/apache-tomcat-8.0.37/webapps/ROOT/services/weatherApp/bin/python3.4 login.py 
-nohup /opt/apache-tomcat-8.0.37/webapps/ROOT/services/weatherApp/bin/python3.4 login.py > login.log &
-nohup /opt/apache-tomcat-8.0.37/webapps/ROOT/services/weatherApp/bin/python3.4 homepage.py > homepage.log &
+nohup /opt/apache-tomcat-8.0.37/webapps/ROOT/services/weatherApp/bin/python3.4 login.py &
+nohup /opt/apache-tomcat-8.0.37/webapps/ROOT/services/weatherApp/bin/python3.4 homepage.py &
 cd /home/ec2-user/
