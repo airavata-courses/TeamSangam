@@ -21,19 +21,19 @@ public class DataIngestor {
 	DataIngestorService urlservice = new DataIngestorService();
 	
 	@GET
-	public Response getURL(@QueryParam("year") int year,@QueryParam("month") int mm,
-			@QueryParam("day") int day,@QueryParam("nexrad") String nexrad)
+	public Response getURL(@QueryParam("year") String year,@QueryParam("month") String mm,
+			@QueryParam("day") String day,@QueryParam("nexrad") String nexrad,@QueryParam("filename") String fileName)
 	{
 		try
 		{
 			//System.out.println("inside data ingestor");
 			log.info("year:" +year +"month:"+mm+"day:"+day+"nexrad:"+nexrad);
 
-			return Response.status(200).entity(urlservice.generateURL(year, mm, day, nexrad)).build();
+			return Response.status(200).entity(urlservice.generateURL(year, mm, day, nexrad,fileName)).build();
 		}catch(Exception e)
 		{
-		
-			return Response.status(400).entity("There is no weather forecast file available for the date you requested").build();
+			//System.out.println("inside exception"+e.getMessage());
+			return Response.status(400).entity(e.getMessage()).build();
 		}
 	}
 
