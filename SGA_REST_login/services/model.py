@@ -3,11 +3,8 @@ from passlib.handlers.sha2_crypt import sha256_crypt
 
 filename = "mysql.properties"
 user, password = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
-print(user, password, type(user), type(password))
 host = "localhost"
 port = 3306
-# user = sys.argv[1]#$MYSQL_USER
-# password = sys.argv[2]#$MYSQL_PWD
 database = "weatherApp"
 
 db = mysql.connect(host=host, port=port, user=user, passwd=password, db=database)
@@ -15,7 +12,7 @@ cursor = db.cursor()
 def insertUser(firstName, lastName, email, password, role="guest"):
 # Adds new user details to the table. By default, users are guests.
 	insertQuery = """
-	INSERT INTO users (FirstName, LastName, Email, Password, Role)
+	INSERT INTO """+database+""".users (FirstName, LastName, Email, Password, Role)
 	VALUES
 	({firstName}, {lastName}, {email}, {password}, {role})
 	;
