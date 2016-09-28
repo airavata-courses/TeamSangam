@@ -1,35 +1,35 @@
 package edu.sga.sangam.bean;
 
 public class DataIngestorBean {
-	private int year;
-	private int month;
-	private int day;
+	private String year;
+	private String month;
+	private String day;
 	private String nexrad;
 	
 	
-	public DataIngestorBean(int year, int month, int day, String nexrad) {
+	public DataIngestorBean(String year, String month, String day, String nexrad) {
 		
 		this.year = year;
 		this.month = month;
 		this.day = day;
 		this.nexrad = nexrad;
 	}
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
-	public int getMonth() {
+	public String getMonth() {
 		return month;
 	}
-	public void setMonth(int month) {
+	public void setMonth(String month) {
 		this.month = month;
 	}
-	public int getDay() {
+	public String getDay() {
 		return day;
 	}
-	public void setDay(int day) {
+	public void setDay(String day) {
 		this.day = day;
 	}
 	public String getNexrad() {

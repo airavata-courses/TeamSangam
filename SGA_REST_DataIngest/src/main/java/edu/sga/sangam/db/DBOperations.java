@@ -50,17 +50,16 @@ public class DBOperations {
 				return false;
 			}
 			else{
-				throw new Exception(me.getMessage());
+				throw new Exception("Issues while inserting the file in mongodb");
 			}
 		}
 		finally
 		{
-			if(mongo!=null)
-				mongo.close();
+			
 		}
 	}
 	
-	public boolean checkFile(String fileName)
+	public boolean checkFile(String fileName) throws Exception
 	{
 		MongoClient mongo = null;
 		try
@@ -71,19 +70,20 @@ public class DBOperations {
 			BasicDBObject query = new BasicDBObject();
 			query.put("filename", fileName);
 			int count = collection.find(query).count();
+			//System.out.println(count);
 			if(count >0)
 				return true;
 			else
 				return false;
 		}catch(MongoException me)
 		{
-			throw me;
+			
+			throw new Exception("Issue with database connections");
 		}
 		
 		finally
 		{
-			if(mongo!=null)
-				mongo.close();
+			
 		}
 	}
 	
