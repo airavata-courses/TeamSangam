@@ -4,17 +4,17 @@ cd '/home/ec2-user/SGA_REST_DataIngest'
 mvn -e clean install
 
 echo 'Deploying the war file in Tomcat'
-#sudo cp ./target/SGA_REST_DataIngest.war /opt/apache-tomcat-8.0.37/webapps/
+sudo cp ./target/SGA_REST_DataIngest.war /opt/apache-tomcat-8.0.37/webapps/
 
 echo 'Deploying StormClustering WebService'
 cd '/home/ec2-user/SGA_Rest_StormClustering'
 mvn install
-#sudo cp ./target/SGA_REST_StormClustering.war /opt/apache-tomcat-8.0.37/webapps/
+sudo cp ./target/SGA_Rest_StormClustering.war /opt/apache-tomcat-8.0.37/webapps/
 
 echo 'Deploying StormForecast WebService'
 cd '/home/ec2-user/SGA_REST_ForecastDecision'
 mvn install
-#sudo cp ./target/SGA_REST_StormClustering.war /opt/apache-tomcat-8.0.37/webapps/
+sudo cp ./target/SGA_REST_ForecastDecision.war /opt/apache-tomcat-8.0.37/webapps/
 
 cd '/home/ec2-user/SGA_REST_login'
 cp -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
