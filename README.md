@@ -70,16 +70,13 @@ Click Edit
 
 Add the below rule, now the application will be accessible through internet.
 
+| Type        | Protocol        | Port Range  | Source  | 
+| :-----------:|:---------------:| :-----------:|:--------:|
+| Custom TCP Rule | TCP | 8080 | 0.0.0.0/0 |
+| Custom TCP Rule | TCP | 5000 | 0.0.0.0/0 |
+| Custom TCP Rule | TCP | 5001 | 0.0.0.0/0 |
 
 
-Type
-Protocol
-Port Range
-Source
-Custom TCP Rule
-TCP
-8080
-0.0.0.0/0
   
   
 ######Adding Manager Role to Tomcat server:
