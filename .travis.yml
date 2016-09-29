@@ -24,7 +24,7 @@ before_script:
   - cd ..
 
 script: 
-  - cd SGA_REST_DataIngest && mvn -e clean install && cd ../SGA_Rest_StormClustering && mvn -e clean install && cd ../SGA_REST_ForecastDecision && mvn -e clean install && cd ../SGA_Rest_RUNFORECAST && mvn -e clean install && cd ../SGA_Rest_StormDetection && mvn -e clean install
+  - cd SGA_REST_DataIngest && mvn -e clean install && cd ../SGA_Rest_StormClustering && mvn -e clean install && cd ../SGA_REST_ForecastDecision && mvn -e clean install && cd ../SGA_Rest_RUNFORECAST && mvn -e clean install && cd ../SGA_Rest_StormDetection && mvn -e clean install && cd ../SGA_REST_WeatherForecastClient && mvn -e clean install
 
 before_deploy:
   - cd ..

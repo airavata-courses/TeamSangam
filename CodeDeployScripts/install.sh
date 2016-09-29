@@ -26,6 +26,11 @@ cd '/home/ec2-user/SGA_Rest_StormDetection'
 mvn install
 sudo cp ./target/SGA_Rest_StormDetection.war /opt/apache-tomcat-8.0.37/webapps/
 
+echo 'Deploying WeatherForecast client webservice'
+cd '/home/ec2-user/SGA_REST_WeatherForecastClient'
+mvn install
+sudo cp ./target/SGA_REST_WeatherForecastClient.war /opt/apache-tomcat-8.0.37/webapps/
+
 cd '/home/ec2-user/SGA_REST_login'
 cp -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
 cd '/home/ec2-user/SGA_REST_Homepage'
