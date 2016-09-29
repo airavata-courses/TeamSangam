@@ -1,0 +1,76 @@
+language: python
+python:
+  - "3.4"
+
+env:
+  - FLASK=0.11.1
+
+services:
+  - mongodb
+  - mysql
+  - rabbitmq
+
+sudo: true
+
+before_install:
+  - pip install flask==$FLASK coverage
+  - pip install -r requirements.txt
+
+install: true
+
+before_script:
+  - cd env_scripts
+  - source props.sh
+  - cd ..
+
+script: 
+  - cd SGA_REST_DataIngest && mvn -e clean install && cd ../SGA_Rest_StormClustering && mvn -e clean install && cd ../SGA_REST_ForecastDecision && mvn -e clean install && cd ../SGA_Rest_RUNFORECAST && mvn -e clean install && cd ../SGA_Rest_StormDetection && mvn -e clean install && cd ../SGA_REST_WeatherForecastClient && mvn -e clean install
+
+before_deploy:
+  - cd ..
+  - pwd
+  - ls
+  - tar -cf SGA_Sangam_WeatherApp.tar . || true
+  - mkdir -p "dpl_cd_upload"
+  - ls
+  - mv SGA_Sangam_WeatherApp.tar dpl_cd_upload/SGA_Sangam_WeatherApp.tar || true
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    local_dir: dpl_cd_upload
+    bucket: sga-team-sangam
+    region: us-west-2
+    skip_cleanup: true
+    acl: public_read
+    detect_encoding: true
+    on:
+      repo: airavata-courses/TeamSangam
+      branch: Development
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-team-sangam
+    key: SGA_Sangam_WeatherApp.tar
+    bundle_type: tar
+    application: SGA_TeamSangam
+    deployment_group: SGA_TeamSangam
+    region: us-west-2
+    on:
+      repo: airavata-courses/TeamSangam
+      branch: Development
+
+after_deploy:
+  - echo "Deploy steps completed successfully."
+
+branches:
+  only:
+    - Development
+
+notifications:
+  email:
+    - vikas1590@gmail.com
+    - raghava1990@gmail.com
+    - rajasimha1991@gmail.com
