@@ -16,6 +16,11 @@ cd '/home/ec2-user/SGA_REST_ForecastDecision'
 mvn install
 sudo cp ./target/SGA_REST_ForecastDecision.war /opt/apache-tomcat-8.0.37/webapps/
 
+echo 'Deploying RunForecast WebService'
+cd '/home/ec2-user/SGA_Rest_RUNFORECAST'
+mvn install
+sudo cp ./target/SGA_Rest_RUNFORECAST.war /opt/apache-tomcat-8.0.37/webapps/
+
 cd '/home/ec2-user/SGA_REST_login'
 cp -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
 cd '/home/ec2-user/SGA_REST_Homepage'
