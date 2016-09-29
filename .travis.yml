@@ -67,7 +67,7 @@ after_deploy:
 
 branches:
   only:
-    - Development
+    - Milestone1
 
 notifications:
   email:
