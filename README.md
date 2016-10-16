@@ -19,10 +19,13 @@ Despite that, some of the steps need to be manually executed while setting up th
 
 ######Set a password for root account:
 
-`sudo mysql –u root -p`
+`sudo mysqladmin –u root password <password>`
 
 The username ‘root’ and its corresponding password must be set as Travis environment variables with names MYSQL_USER and MYSQL_PWD respectively. They will be passed to the EC2 instance by an automated script.
 
+######Login to mysql shell
+`sudo mysql –u root -p`
+Enter the password.
 ######Create a database with the name ‘weatherApp’:
 
 `create database weatherApp;`
