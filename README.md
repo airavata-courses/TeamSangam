@@ -25,6 +25,7 @@ The username ‘root’ and its corresponding password must be set as Travis env
 
 ######Login to mysql shell
 `sudo mysql –u root -p`
+
 Enter the password.
 ######Create a database with the name ‘weatherApp’:
 
