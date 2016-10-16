@@ -5,14 +5,21 @@ public class DataIngestorBean {
 	private String month;
 	private String day;
 	private String nexrad;
+	private String userid;
+	private String sessionid;
+	private String requestid;
 	
 	
-	public DataIngestorBean(String year, String month, String day, String nexrad) {
-		
+	public DataIngestorBean(String year, String month, String day, String nexrad, String userid, String sessionid,
+			String requestid) {
+		super();
 		this.year = year;
 		this.month = month;
 		this.day = day;
 		this.nexrad = nexrad;
+		this.userid = userid;
+		this.sessionid = sessionid;
+		this.requestid = requestid;
 	}
 	public String getYear() {
 		return year;
@@ -38,6 +45,27 @@ public class DataIngestorBean {
 	public void setNexrad(String nexrad) {
 		this.nexrad = nexrad;
 	}
+	public String getUserid() {
+		return userid;
+	}
+	public void setUserid(String userid) {
+		this.userid = userid;
+	}
+	public String getSessionid() {
+		return sessionid;
+	}
+	public void setSessionid(String sessionid) {
+		this.sessionid = sessionid;
+	}
+	public String getRequestid() {
+		return requestid;
+	}
+	public void setRequestid(String requestid) {
+		this.requestid = requestid;
+	}
+	
+	
+	
 	
 
 }

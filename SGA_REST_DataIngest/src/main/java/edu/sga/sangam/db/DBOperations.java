@@ -70,14 +70,14 @@ public class DBOperations {
 			BasicDBObject query = new BasicDBObject();
 			query.put("filename", fileName);
 			int count = collection.find(query).count();
-			//System.out.println(count);
+			System.out.println(count);
 			if(count >0)
 				return true;
 			else
 				return false;
 		}catch(MongoException me)
 		{
-			
+			System.out.println(me);
 			throw new Exception("Issue with database connections");
 		}
 		

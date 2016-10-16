@@ -13,9 +13,13 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.io.FilenameUtils;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,24 +35,56 @@ public class StormDetection {
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response detectStormKML(@FormDataParam("file") InputStream input,@FormDataParam("file") FormDataContentDisposition fileDetail,
-			@FormDataParam("station") String station)
+			@FormDataParam("station") String station,@FormDataParam("userid") String userid,
+			@FormDataParam("sessionid") String sessionid,@FormDataParam("requestid") String requestid ) throws Exception
 	{
-		
+		JSONObject stormdetection = new JSONObject();
+		stormdetection.put("userid", userid);
+		stormdetection.put("sessionid",sessionid);
+		stormdetection.put("requestid",requestid);
+		stormdetection.put("requestData", "Requested to generate KML file for the given input file");
 		if (input == null || fileDetail == null )
+		{
+			stormdetection.put("responseData", "Response is File is empty");
+			registry(stormdetection);
 			return Response.status(400).entity("File is empty").build();
+		}
 		StormDetectionService stormDetectionService = new StormDetectionService();
 		try
 		{
 			String fileName = fileDetail.getFileName();
 			File kmlfile = stormDetectionService.generateKMLFile(fileName,station);
+			stormdetection.put("responseData", "Response is a file with filename "+fileName);
+			registry(stormdetection);
 			return Response.ok(kmlfile).header("Content-Disposition", "attachment; filename=\"" +fileName+"_cluster.kml"+ "\"").
 					build();
 			
 		}
 		catch(Exception e)
 		{
+			stormdetection.put("responseData","Error in generating Storm clustering file ");
+			registry(stormdetection);
 			return Response.status(500).entity("Error in generating Storm clustering file").build();
 		}
+		
+	}
+	
+	public void registry(JSONObject stormdetection) throws Exception
+	{
+		HttpClient client = new HttpClient();
+		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/resgitry/sdlogdata");
+		StringRequestEntity entity = new StringRequestEntity(stormdetection.toJSONString(),"application/json","UTF-8");
+		post.setRequestEntity(entity);
+		post.addRequestHeader("Content-Type", "application/json");
+		try
+		{
+		int statusCode = client.executeMethod(post);
+		}
+		catch(Exception e)
+		{
+			throw new Exception("issue  with storm detection registry");
+		}
+		
 		
 	}
 }

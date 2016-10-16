@@ -4,12 +4,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.NameValuePair;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.util.URIUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
@@ -20,6 +23,7 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -33,18 +37,20 @@ import edu.sga.sangam.bean.StormClusterBean;
 import edu.sga.sangam.bean.StormDetectionBean;
 
 public class WeatherClientOrchestrator {
-	
 	ClientOrchestratorBean cob = null;
 	DataIngestorBean dib = null;
 	StormClusterBean scb=null;
 	StormDetectionBean sdb = null;
 	
 	
-	public String clientOrchestrator(String year,String mm,String day,String nexrad,String fileName) throws Exception
+	public String clientOrchestrator(String year,String mm,String day,String nexrad,String fileName,String userid,String sessionid,
+			String requestid) throws Exception
 	{
-		cob = new ClientOrchestratorBean(year,mm,day,nexrad,fileName);
+		
+		cob = new ClientOrchestratorBean(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
 		try
 		{
+
 			callDataIngestor(year,mm,day,nexrad,fileName);
 			callStormCluster(dib.getUrl());
 			callStormDetection(scb.getFile(),cob.getNexrad());
@@ -58,6 +64,7 @@ public class WeatherClientOrchestrator {
 			{
 				throw new Exception( "Forecast Decision is NO. So we didn't run the Run Forecast Algorithm");
 			}
+			
 		}
 		catch(Exception e)
 		{
@@ -68,7 +75,6 @@ public class WeatherClientOrchestrator {
 
 	public void callDataIngestor(String year,String mm,String day,String nexrad,String fileName) throws Exception
 	{
-		System.out.println("calling dataIngestor service");
 		HttpClient client = new HttpClient();
 		String dataIngestorURL = "http://localhost:8080/SGA_REST_DataIngest/sga/dataingestor";
 		GetMethod getMethod = new GetMethod(dataIngestorURL);
@@ -79,7 +85,10 @@ public class WeatherClientOrchestrator {
 			NameValuePair dayParam = new NameValuePair("day",URIUtil.encodeQuery(day));
 			NameValuePair stationParam = new NameValuePair("nexrad",URIUtil.encodeQuery(nexrad));
 			NameValuePair filenameParam = new NameValuePair("filename",URIUtil.encodeQuery(fileName));
-			NameValuePair[] params = new NameValuePair[] {yearParam, monthParam,dayParam,stationParam,filenameParam};
+			NameValuePair useridParam = new NameValuePair("userid",URIUtil.encodeQuery(cob.getUserid()));
+			NameValuePair sessionidParam = new NameValuePair("sessionid",URIUtil.encodeQuery(cob.getSessionid()));
+			NameValuePair requestidParam = new NameValuePair("requestid",URIUtil.encodeQuery(cob.getRequestid()));
+			NameValuePair[] params = new NameValuePair[] {yearParam, monthParam,dayParam,stationParam,filenameParam,useridParam,sessionidParam,requestidParam};
 			getMethod.setQueryString(params);
 			int response = client.executeMethod(getMethod);
 			System.out.println("service response is "+response);
@@ -116,10 +125,15 @@ public class WeatherClientOrchestrator {
 
 	public void callStormCluster(String url) throws Exception
 	{
-		String stormclusteringURL ="http://localhost:8080/SGA_Rest_StormClustering/sga/stormclustering";
+		String stormclusteringURL ="http://localhost:8080/SGA_REST_StormClustering/sga/stormclustering";
 		HttpClient client = new HttpClient();
 		PostMethod post = new PostMethod(stormclusteringURL);
 		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		NameValuePair useridParam = new NameValuePair("userid",URIUtil.encodeQuery(cob.getUserid()));
+		NameValuePair sessionidParam = new NameValuePair("sessionid",URIUtil.encodeQuery(cob.getSessionid()));
+		NameValuePair requestidParam = new NameValuePair("requestid",URIUtil.encodeQuery(cob.getRequestid()));
+		NameValuePair[] params = new NameValuePair[] {useridParam,sessionidParam,requestidParam};
+		post.setQueryString(params);
 		post.setParameter("url",url );
 		try{
 			int response = client.executeMethod(post);
@@ -149,12 +163,20 @@ public class WeatherClientOrchestrator {
 
 	public void callStormDetection(File file,String station) throws Exception
 	{
-		String stormDetectionURL ="http://localhost:8080/SGA_Rest_StormDetection/sga/stormdetection";
+		String stormDetectionURL ="http://localhost:8080/SGA_REST_StormDetection/sga/stormdetection";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpEntity entity = MultipartEntityBuilder.create().addTextBody("station", station)
-				.addBinaryBody("file",file,ContentType.create("application/octet-stream"),cob.getFileName()).build();
+				.addBinaryBody("file",file,ContentType.create("application/octet-stream"),cob.getFileName())
+				.addTextBody("userid", cob.getUserid())
+				.addTextBody("sessionid", cob.getSessionid())
+				.addTextBody("requestid",cob.getRequestid())
+				.build();
+		
+		List<NameValuePair> postParameters= new ArrayList<NameValuePair>();
+		
 		HttpPost httpPost = new HttpPost(stormDetectionURL);
 		httpPost.setEntity(entity);
+		
 		try
 		{
 			HttpResponse response = httpclient.execute(httpPost);
@@ -190,6 +212,11 @@ public class WeatherClientOrchestrator {
 		HttpClient client = new HttpClient();
 		String dataIngestorURL = "http://localhost:8080/SGA_REST_ForecastDecision/sga/forecastdecision";
 		GetMethod getMethod = new GetMethod(dataIngestorURL);
+		NameValuePair useridParam = new NameValuePair("userid",URIUtil.encodeQuery(cob.getUserid()));
+		NameValuePair sessionidParam = new NameValuePair("sessionid",URIUtil.encodeQuery(cob.getSessionid()));
+		NameValuePair requestidParam = new NameValuePair("requestid",URIUtil.encodeQuery(cob.getRequestid()));
+		NameValuePair[] params = new NameValuePair[] {useridParam,sessionidParam,requestidParam};
+		getMethod.setQueryString(params);
 		try{
 			int response = client.executeMethod(getMethod);
 			if(response ==200)
@@ -205,17 +232,21 @@ public class WeatherClientOrchestrator {
 			}
 		}catch(Exception e)
 		{
-			throw new Exception("Something went wrong with Stormcluster Service");
+			throw new Exception("Something went wrong with ForecastDecision  Service");
 		}
 
 	}
 
 	public String callrunForecast() throws Exception
 	{
-		String runForecasturl ="http://localhost:8080/SGA_Rest_RUNFORECAST/sga/runforecast";
+		String runForecasturl ="http://localhost:8080/SGA_REST_Forecast/sga/runforecast";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpEntity entity = MultipartEntityBuilder.create()
-				.addBinaryBody("file",sdb.getFile(),ContentType.create("application/octet-stream"),cob.getFileName()).build();
+				.addBinaryBody("file",sdb.getFile(),ContentType.create("application/octet-stream"),cob.getFileName())
+				.addTextBody("userid", cob.getUserid())
+				.addTextBody("sessionid", cob.getSessionid())
+				.addTextBody("requestid",cob.getRequestid())
+				.build();
 		HttpPost httpPost = new HttpPost(runForecasturl);
 		httpPost.setEntity(entity);
 		try
