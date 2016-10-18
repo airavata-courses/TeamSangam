@@ -4,7 +4,7 @@ import model
 
 app = Flask(__name__)
 
-# defining view for login page.
+# defining view for login page. 
 @app.route("/login", methods=["POST", "OPTIONS"])
 # Need to replace * with a single domain from which the requests are expected.
 @cors.crossdomain(origin='*')
