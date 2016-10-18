@@ -7,7 +7,7 @@ var home = angular.module("sga_home",[]);
 home.controller("sga_controller", function ($scope, $http) {
 	$http({
 			method : "GET",
-			url : "http://54.71.90.155:5001/getyears"
+			url : "http://54.71.95.40:5001/getyears"
 	})
 	.then(function(response){
 		// This is a success callback and will be called for status 200-299
@@ -22,7 +22,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.year !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getmonths",
+				url : "http://54.71.95.40:5001/getmonths",
 				data: {"year":$scope.year}
 			})
 			.then(function(response){
@@ -43,7 +43,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.month !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getdays",
+				url : "http://54.71.95.40:5001/getdays",
 				data: {"year":$scope.year, "month":$scope.month}
 			})
 			.then(function(response){
@@ -61,7 +61,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.day !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getlocations",
+				url : "http://54.71.95.40:5001/getlocations",
 				data: {"year":$scope.year, "month":$scope.month, "day":$scope.day}
 			})
 			.then(function(response){
@@ -78,7 +78,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.location !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getfiles",
+				url : "http://54.71.95.40:5001/getfiles",
 				data: {"year":$scope.year, "month":$scope.month, "day":$scope.day, "location":$scope.location}
 			})
 			.then(function(response){
@@ -96,7 +96,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		$scope.message = "Please wait as we process your request";
 		$http({
 				method : 'GET',
-				url : 'http://54.71.90.155:8080/SGA_REST_WeatherForecastClient/sga/weatherclient',
+				url : 'http://54.71.95.40:8080/SGA_REST_WeatherForecastClient/sga/weatherclient',
 				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time}
 			})
 			.then(function(response){
