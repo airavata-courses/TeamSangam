@@ -2,8 +2,8 @@ function validEmail(email) {
  	var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  	return regex.test(email);
 }
-var loginURL = "http://54.71.90.155:5000/login";
-var signupURL = "http://54.71.90.155:5000/signup";
+var loginURL = "http://54.71.95.40:5000/login";
+var signupURL = "http://54.71.95.40:5000/signup";
 var login = angular .module("authModule",[])
 					.controller("loginController", function($scope, $http, $window){
 						$scope.user = {};
@@ -137,7 +137,7 @@ var login = angular .module("authModule",[])
 										if ($scope.signupData===888) {
 											$scope.signupMessage = "Registered. Redirecting to home..";
 											// redirect to home page.
-											$window.location.href = "home.html";
+											$window.location.href = "index.html";
 										} else if ($scope.signupData===777) {
 											$scope.signupMessage = "Email already registered.";
 										} else if ($scope.signupData===666) {
