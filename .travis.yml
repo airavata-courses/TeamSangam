@@ -68,7 +68,7 @@ after_deploy:
 branches:
   only:
     - Development
-
+    - OAuth
 notifications:
   email:
     - vikas1590@gmail.com
