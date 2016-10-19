@@ -2,12 +2,33 @@
 
 // create the module
 var home = angular.module("sga_home",[]);
-
+var myurl = "http://54.71.90.155:5001/";
 //create the controller and register it with the module
-home.controller("sga_controller", function ($scope, $http) {
+home.controller("sga_controller", function ($scope, $http, $window) {
+	
 	$http({
 			method : "GET",
-			url : "http://54.71.90.155:5001/getyears"
+			url : myurl+"isActive"
+	})
+	.then(function(response){
+		// This is a success callback and will be called for status 200-299
+		if(response.data === "-1"){
+			alert("You are being redirected to login page");
+			$window.location.href = "login.html";
+		}
+		else{
+			$scope.sessionId = response.data[0];
+			$scope.emailId = response.data[1];
+		}
+	},
+		//based on the response, we will either show an error message or redirect the user to the login page
+		function(response){
+			$scope.errorMessage = response.data;
+		});
+
+	$http({
+			method : "GET",
+			url : myurl + "getyears"
 	})
 	.then(function(response){
 		// This is a success callback and will be called for status 200-299
@@ -22,7 +43,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.year !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getmonths",
+				url : myurl + "getmonths",
 				data: {"year":$scope.year}
 			})
 			.then(function(response){
@@ -43,7 +64,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.month !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getdays",
+				url : myurl + "getdays",
 				data: {"year":$scope.year, "month":$scope.month}
 			})
 			.then(function(response){
@@ -61,7 +82,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.day !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getlocations",
+				url : myurl + "getlocations",
 				data: {"year":$scope.year, "month":$scope.month, "day":$scope.day}
 			})
 			.then(function(response){
@@ -78,7 +99,7 @@ home.controller("sga_controller", function ($scope, $http) {
 		if($scope.location !== "None"){
 			$http({
 				method : "POST",
-				url : "http://54.71.90.155:5001/getfiles",
+				url : myurl + "getfiles",
 				data: {"year":$scope.year, "month":$scope.month, "day":$scope.day, "location":$scope.location}
 			})
 			.then(function(response){
@@ -94,10 +115,11 @@ home.controller("sga_controller", function ($scope, $http) {
 	
 	$scope.submit = function(){
 		$scope.message = "Please wait as we process your request";
+		$scope.requestId += 1; 
 		$http({
 				method : 'GET',
-				url : 'http://54.71.90.155:8080/SGA_REST_WeatherForecastClient/sga/weatherclient',
-				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time}
+				url : 'http://54.71.90.155:8080/SGA_REST_DataIngest/sga/dataingestor',
+				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time, requestid: $scope.requestId}
 			})
 			.then(function(response){
 				// This is a success callback and will be called for status 200-299
@@ -125,7 +147,8 @@ home.controller("sga_controller", function ($scope, $http) {
 				
 			},
 			function(response){	
-				$scope.message = response.data;
+				$scope.errorMessage = response.data;
+				$scope.message = "error in processing request";
 			});	
 	   };	 
 });

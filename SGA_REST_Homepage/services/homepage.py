@@ -1,10 +1,16 @@
 from flask import Flask, request, jsonify
 import cors
 import boto
+from flask import session
+import datetime
+import base64, json
+
 
 app = Flask(__name__)
 
 filename = "aws_key.properties"
+timestampDict = {}
+emailDict = {}
 accessKey, secretKey = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
 @app.route("/getyears", methods=["GET", "OPTIONS"])
 @cors.crossdomain(origin='*')
@@ -77,68 +83,55 @@ def gettimestamp():
     files = list(bucket.list(year + "/" + month + "/" + day + "/" + location + "/", '/'))
     return jsonify([file.name.strip("/").split("/")[4].strip(".gz") for file in files if file.name.endswith('.gz')])
 
-@app.route("/res", methods=["GET", "OPTIONS"])
+@app.route("/isActive", methods=["GET", "OPTIONS"])
+@cors.crossdomain(origin="*")
+def isActive():
+    global timestampDict, emailDict
+    weatherSess = request.cookies.get("weatherSess", None)
+    #print("weatherSess: ", weatherSess)
+    if weatherSess:
+        # decrypt it
+        weatherSess = base64.urlsafe_b64decode(weatherSess + "===")[:49].decode("utf-8")
+        SGAsid = eval(weatherSess).get("SGAsid", None)
+        print("SGAsid: ", SGAsid)
+        if SGAsid:
+            if SGAsid in timestampDict.keys():
+                # if the timestamp is less than 30 mins old, go ahead.
+                if ((datetime.datetime.now()- timestampDict[SGAsid]).seconds <= 1800):
+                    if(SGAsid in emailDict.keys()):
+                        timestampDict[SGAsid] = datetime.datetime.now()
+                        return jsonify([SGAsid,emailDict[SGAsid]])
+                    else:
+                        return jsonify("-1")
+                else:
+                    del timestampDict[SGAsid]
+                    del emailDict[SGAsid]
+                    return jsonify("-1")
+            else:
+                return jsonify("-1")
+
+        else:
+            return jsonify("-1")
+    else:
+        return jsonify("-1")
+
+@app.route("/putSession", methods=["POST", "OPTIONS"])
+@cors.crossdomain(origin="*")
+def putSession():
+    global timestampDict, emailDict
+    # storing sid:timestamp every time a new user logs im
+    timestampDict[request.json("sid")] = datetime.datetime.now()
+    # storing sid:email of every user who logs in
+    emailDict[request.json("sid")] = request.json("email")
+    return jsonify("OK")
+
+@app.route("/res", methods=["POST", "OPTIONS"])
 @cors.crossdomain(origin="*")
 def res():
-    message = {"kml": {
-   "Document": {"Placemark": [
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "36.48186157447076,-90.60346116707984"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "36.518427376289324,-75.73092432002373"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "44.44810845373752,-85.63620104851064"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "37.24269712782977,-103.17095591688364"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "34.584760871874515,-84.40361656077127"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "30.244600900033777,-95.29411699759761"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "30.39844419457594,-90.22835014297976"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "46.34654961131859,-77.94429299634923"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "47.98634371865219,-95.3499010218505"}
-       },
-       {
-           "open": 1,
-           "name": "KTLX",
-           "Point": {"coordinates": "42.83619740565784,-109.53316616549208"}
-       }
-   ]},
-   "xmlns:xal": "urn:oasis:names:tc:ciq:xsdschema:xAL:2.0",
-   "xmlns:gx": "http://www.google.com/kml/ext/2.2",
-   "xmlns": "http://www.opengis.net/kml/2.2",
-   "xmlns:atom": "http://www.w3.org/2005/Atom"
-}}
-    return jsonify(message)
+    return jsonify([1,'abc@gmail.com'])
+
+
+
 
 if __name__ == "__main__":
     app.run(host= "0.0.0.0",port=5001,debug=True)
