@@ -5,6 +5,7 @@ filename = "mysql.properties"
 user, password = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
 host = "localhost"
 port = 3306
+# Keep in mind that database names in windows are case insensitive whereas database names in most linux systems are case sensitive.
 database = "weatherApp"
 
 db = mysql.connect(host=host, port=port, user=user, passwd=password, db=database)
