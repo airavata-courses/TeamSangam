@@ -55,8 +55,8 @@ deploy:
     bucket: sga-team-sangam
     key: SGA_Sangam_WeatherApp.tar
     bundle_type: tar
-    application: SGA_TeamSangam-test
-    deployment_group: SGA_TeamSangam-test
+    application: SGA-TeamSangam-test
+    deployment_group: SGA-TeamSangam-test
     region: us-west-2
     on:
       repo: airavata-courses/TeamSangam
@@ -69,6 +69,7 @@ branches:
   only:
     - Development
     - OAuth
+
 notifications:
   email:
     - vikas1590@gmail.com
