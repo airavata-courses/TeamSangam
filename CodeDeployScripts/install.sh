@@ -32,16 +32,12 @@ mvn install
 sudo mv ./target/SGA_REST_WeatherForecastClient.war /opt/apache-tomcat-8.0.37/webapps/
 
 cd '/home/ec2-user/SGA_REST_login'
-mv -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
+mv ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
 cd '/home/ec2-user/SGA_REST_Homepage'
 #cp -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
 
-
 sudo mv index.html /opt/apache-tomcat-8.0.37/webapps/ROOT/
-sudo mv ./scripts/angular.min.js /opt/apache-tomcat-8.0.37/webapps/ROOT/scripts/
-sudo mv ./scripts/main.js /opt/apache-tomcat-8.0.37/webapps/ROOT/scripts/
-sudo mv ./services/cors.py /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
-sudo mv ./services/homepage.py /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
-sudo mv ./services/aws_key.properties /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
-sudo mv ./stylesheets/bootstrap.min.css /opt/apache-tomcat-8.0.37/webapps/ROOT/stylesheets/
 
+sudo mv ./scripts/* /opt/apache-tomcat-8.0.37/webapps/ROOT/scripts/
+sudo mv ./services/* /opt/apache-tomcat-8.0.37/webapps/ROOT/services/
+sudo mv ./stylesheets/* /opt/apache-tomcat-8.0.37/webapps/ROOT/stylesheets/
