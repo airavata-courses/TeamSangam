@@ -55,8 +55,8 @@ deploy:
     bucket: sga-sangam-dataingestor
     key: SGA_Sangam_WeatherApp.tar
     bundle_type: tar
-    application: SGA_TeamSangam
-    deployment_group: SGA_TeamSangam
+    application: SGA-Sangam-stormClustering
+    deployment_group: SGA-Sangam-stormClustering
     region: us-east-1
     on:
       repo: airavata-courses/TeamSangam
