@@ -1,3 +1,4 @@
+echo 'Before Install for OAuth'
 ps -ef | grep tomcat | awk '{print $2}' | xargs sudo kill -9
 ps -ef | grep login.py | awk '{print $2}' | xargs sudo kill -9
 ps -ef | grep homepage.py | awk '{print $2}' | xargs sudo kill -9
