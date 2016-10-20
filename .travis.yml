@@ -23,6 +23,7 @@ before_script:
 
 script: 
   - cd SGA_REST_DataIngest
+  - cat ../CodeDeployScripts/beforeInstall.sh
 
 before_deploy:
   - cd ..
