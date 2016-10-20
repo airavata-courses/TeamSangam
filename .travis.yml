@@ -22,7 +22,7 @@ before_script:
   - cd ..
 
 script: 
-  - cd SGA_REST_DataIngest && mvn -e clean install
+  - cd SGA_REST_DataIngest
 
 before_deploy:
   - cd ..
