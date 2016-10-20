@@ -38,8 +38,8 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
-    bucket: sga-team-sangam
-    region: us-west-2
+    bucket: sga-sangam-sd
+    region: us-east-1
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
@@ -55,7 +55,7 @@ deploy:
     bundle_type: tar
     application: SGA-TeamSangam-SD
     deployment_group: SGA-TeamSangam-SD
-    region: us-east-1a
+    region: us-east-1
     on:
       repo: airavata-courses/TeamSangam
       branch: OAuth
