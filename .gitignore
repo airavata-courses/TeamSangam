@@ -10,6 +10,9 @@ SGA_REST_login/services/homepage.py
 SGA_REST_login/services/mysql.properties
 SGA_REST_login/services/googleOAuth.py
 SGA_REST_login/services/googleOAuth.properties
+SGA_REST_login/services/aws_key.properties
+SGA_REST_login/scripts/main.js
+SGA_REST_login/index.html
 
 
 # Created by https://www.gitignore.io/api/pycharm

@@ -1,5 +1,5 @@
 import os, uuid, requests, hashlib, base64, json, urllib.request
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, redirect
 from flask import session
 import cors
 import model
@@ -10,8 +10,9 @@ discoveryDocument = json.loads(urllib.request.urlopen("https://accounts.google.c
 
 filename = "googleOAuth.properties"
 CLIENT_ID, CLIENT_SECRET, APPLICATION_NAME = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
-REDIRECT_URI = "http://54.71.95.40:5000/requestToken"
-HOMEPAGE_PUT_SESSION = "http://54.71.95.40:5001/putSession"
+PUBLIC_IP = "http://54.227.31.33"
+REDIRECT_URI = PUBLIC_IP + ":5000/requestToken"
+HOMEPAGE_PUT_SESSION = PUBLIC_IP + ":5001/putSession"
 
 def setupSession(email):
 	# Generating a unique session ID
@@ -30,7 +31,7 @@ def setupSession(email):
 def createState():
 	state = hashlib.sha256(os.urandom(1024)).hexdigest()
 	session["state"] = state
-	# return jsonify("created state token")
+	# created state token
 	return jsonify(1)
 
 # defining service for login page.
@@ -52,21 +53,20 @@ def login():
 # Need to replace * with a single domain from which the requests are expected.
 @cors.crossdomain(origin='*')
 def gAuth():
+	print("in gAuth")
 	authorization_endpoint = discoveryDocument["authorization_endpoint"]
 	client_id = CLIENT_ID
 	response_type = "code"
 	scope = "openid email"
 	redirect_uri = REDIRECT_URI
 	state = session["state"]
-	# Without this, the user will be prompted for consent every time he/she logs in.
+	# Without the below, the user will be prompted for consent every time he/she logs in.
 	approval_prompt = "auto"
 	params = {"approval_prompt": approval_prompt, "client_id": client_id, "response_type": response_type, "scope": scope, "redirect_uri": redirect_uri, "state": state}
 	r = requests.get(authorization_endpoint, params=params)
 	if r.status_code == 200:
 		# Need to render this using angular, coz this response will be sent to Angular.(popup).
-		print("making response")
 		s = make_response(r.text)
-		print("response made")
 		return s
 	else:
 		# There was some error in authentication. Need to display an error message(try normal signup).
@@ -79,7 +79,7 @@ def gAuth():
 def requestToken():
 	if request.args.get("state", None) != session["state"]:
 		# Invalid state parameter
-		return jsonify("Invalid state parameter.")
+		return redirect(PUBLIC_IP + ':8080/loginError.html')
 	code = request.args.get("code", None)
 	if code:
 		# print("Auth code received.")
@@ -103,14 +103,14 @@ def requestToken():
 			email = json.loads(data)["email"]
 			# Google authentication successful
 			setupSession(email)
-			return jsonify(1)
+			return redirect(PUBLIC_IP + ':8080/index.html')
 		else:
 			# Authentication failed
-			return jsonify(-1)
+			return redirect(PUBLIC_IP + ':8080/loginError.html')
 	else:
 		# authentication failed. The user should see a message.
 		# return make_response("Authentication failed.")
-		return jsonify(-1)
+		return redirect(PUBLIC_IP + ':8080/loginError.html')
 
 # defining service for the signup of new users.
 @app.route("/signup", methods=["POST", "OPTIONS"])
@@ -138,14 +138,7 @@ def signup():
 if __name__ == "__main__":
 	app.config['SESSION_COOKIE_NAME'] = 'weatherSess'
 	app.config['SECRET_KEY'] = os.urandom(24)
-	# app.config['SERVER_NAME'] = 'dev.localhost.com:5000'
-	# app.config['SESSION_COOKIE_DOMAIN'] = '.dev.localhost.com'
-	# app.config['SESSION_COOKIE_PATH'] =
-	# app.config['SESSION_COOKIE_HTTPONLY'] = False
 	# Sessions will timeout(on server) after 30 mins of inactivity on server. DOes not affect the cookies.
 	app.config['PERMANENT_SESSION_LIFETIME'] = 1800
-	# maintain a session dictionary mapping session ID to user email address
-	# activeSessions = {}
-	# ------------- Any code above this line ---------------#
-	# app.run(host="127.0.0.2", debug=True)
-	app.run(host="0.0.0.0",debug=True)
+	# ------------- Any code other than run goes above this line ---------------#
+	app.run(host="0.0.0.0", port=5000, debug=True)

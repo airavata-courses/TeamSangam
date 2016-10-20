@@ -2,12 +2,32 @@ function validEmail(email) {
  	var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  	return regex.test(email);
 }
-var loginURL = "http://54.71.95.40:5000/login";
-var signupURL = "http://54.71.95.40:5000/signup";
+var instanceURL = "http://54.227.31.33:5000/";
 var login = angular .module("authModule",[])
-					.controller("loginController", function($scope, $http, $window){
+					.controller("loginController", function($scope, $http, $window, $sce){
+						$scope.page = "templates/normalLogin.html"
+						$scope.content = ""
 						$scope.user = {};
 						$scope.loginMessage = "";
+						$http({
+								method : "GET",
+								url : instanceURL + "createState",
+						})
+						.then(function(response){
+							// This is a success callback and will be called for status 200-299
+							if (response.data) {
+								if(response.data!==1){
+									$scope.loginMessage = "Sorry. Internal server error."
+								}
+							} else {
+								$scope.loginMessage = "Sorry. Internal server error.";
+								$scope.user = {};
+							}
+						},
+						function(response){
+							// This is a failure callback
+							$scope.loginMessage = "Oops something went wrong. Please try after sometime.";
+						});
 						$scope.login = function(){
 							var allGood = true;
 							var email = document.getElementsByName("email")[0];
@@ -33,7 +53,7 @@ var login = angular .module("authModule",[])
 								// angular trims the input fields by default, so no need to trim them before sending
 								$http({
 										method : "POST",
-										url : loginURL,
+										url : instanceURL + "login",
 										data : $scope.user
 								})
 								.then(function(response){
@@ -58,6 +78,40 @@ var login = angular .module("authModule",[])
 									$scope.loginMessage = "Oops something went wrong. Please try after sometime.";
 								});
 							}
+						};
+						$scope.googleLogin = function(){
+							$scope.loginMessage = "Please wait while we try to log you in...";
+							$http({
+								method : "GET",
+								url : instanceURL + "gAuth",
+							})
+							.then(function(response){
+								// This is a success callback and will be called for status 200-299
+								$scope.loginData = response.data;
+								//based on the response, we will either show an error message or redirect the user to the homepage
+								if ($scope.loginData) {
+									if($scope.loginData!==-1){
+										// console.log($scope.loginData)
+										// render the html code
+										$scope.content = $scope.loginData;
+										$scope.page = "templates/googleLogin.html";
+									/*	$window.location.href = "index.html";
+									} else {
+										$scope.loginMessage = "Invalid credentials. Please try again.";
+										$scope.user = {}; */
+									}
+								} else {
+									$scope.loginMessage = "Sorry. Internal server error.";
+									$scope.user = {};
+								}
+							},
+							function(response){
+								// This is a failure callback
+								$scope.loginMessage = "Oops something went wrong. Please try after sometime or another login method.";
+							});
+						};
+						$scope.renderGAuth = function(html){
+							return $sce.trustAsHtml(html);
 						};
 					})
 					.controller("signupController", function($scope, $http, $window){
@@ -127,7 +181,7 @@ var login = angular .module("authModule",[])
 									$scope.signupMessage = "";
 									$http({
 										method 	: "POST",
-										url 	: signupURL,
+										url 	: instanceURL + "signup",
 										data 	: $scope.user
 									})
 									.then(function(response){
