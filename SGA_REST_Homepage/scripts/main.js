@@ -119,7 +119,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		$http({
 				method : 'GET',
 				url : 'http://54.71.90.155:8080/SGA_REST_DataIngest/sga/dataingestor',
-				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time, requestid: $scope.requestId}
+				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time, userid: $scope.emailId, sessionid: $scope.sessionId, requestid: $scope.requestId}
 			})
 			.then(function(response){
 				// This is a success callback and will be called for status 200-299
