@@ -51,7 +51,7 @@ deploy:
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-team-sangam
+    bucket: sga-sangam-sd
     key: SGA_Sangam_WeatherApp.tar
     bundle_type: tar
     application: SGA-TeamSangam-SD
