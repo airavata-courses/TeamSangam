@@ -120,17 +120,10 @@ def isActive():
 def putSession():
     global timestampDict, emailDict
     # storing sid:timestamp every time a new user logs im
-    timestampDict[request.json("sid")] = datetime.datetime.now()
+    timestampDict[request.json["sid"]] = datetime.datetime.now()
     # storing sid:email of every user who logs in
-    emailDict[request.json("sid")] = request.json("email")
+    emailDict[request.json["sid"]] = request.json("email")
     return jsonify("OK")
-
-@app.route("/res", methods=["POST", "OPTIONS"])
-@cors.crossdomain(origin="*")
-def res():
-    return jsonify([1,'abc@gmail.com'])
-
-
 
 
 if __name__ == "__main__":
