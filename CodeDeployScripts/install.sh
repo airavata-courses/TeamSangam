@@ -32,9 +32,11 @@ echo 'Installing Sangam Weather App to Maven'
 #sudo mv ./target/SGA_REST_WeatherForecastClient.war /opt/apache-tomcat-8.0.37/webapps/
 
 cd '/home/ec2-user/SGA_REST_login'
-mv ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
+#mv ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
+
 #cd '/home/ec2-user/SGA_REST_Homepage'
-#cp -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
+cp -r ./* /opt/apache-tomcat-8.0.37/webapps/ROOT/
+rm -rf ../SGA_REST_login
 
 #sudo mv index.html /opt/apache-tomcat-8.0.37/webapps/ROOT/
 
