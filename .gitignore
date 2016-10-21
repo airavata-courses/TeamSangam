@@ -6,7 +6,7 @@ SGA_REST_Homepage/services/.idea
 SGA_REST_login/services/__pycache__
 SGA_REST_login/services/.idea
 SGA_REST_login/services/weatherApp
-# SGA_REST_login/services/homepage.py
+SGA_REST_login/services/homepage.py
 SGA_REST_login/services/mysql.properties
 SGA_REST_login/services/googleOAuth.py
 SGA_REST_login/services/googleOAuth.properties
