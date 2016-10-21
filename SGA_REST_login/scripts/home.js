@@ -2,32 +2,13 @@ function validEmail(email) {
  	var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  	return regex.test(email);
 }
-var instanceURL = "http://54.227.31.33:5000/";
+var instanceURL = "http://ec2-54-227-31-33.compute-1.amazonaws.com:5000/";
 var login = angular .module("authModule",[])
 					.controller("loginController", function($scope, $http, $window, $sce){
 						$scope.page = "templates/normalLogin.html"
 						$scope.content = ""
 						$scope.user = {};
 						$scope.loginMessage = "";
-						$http({
-								method : "GET",
-								url : instanceURL + "createState",
-						})
-						.then(function(response){
-							// This is a success callback and will be called for status 200-299
-							if (response.data) {
-								if(response.data!==1){
-									$scope.loginMessage = "Sorry. Internal server error."
-								}
-							} else {
-								$scope.loginMessage = "Sorry. Internal server error.";
-								$scope.user = {};
-							}
-						},
-						function(response){
-							// This is a failure callback
-							$scope.loginMessage = "Oops something went wrong. Please try after sometime.";
-						});
 						$scope.login = function(){
 							var allGood = true;
 							var email = document.getElementsByName("email")[0];
@@ -91,14 +72,11 @@ var login = angular .module("authModule",[])
 								//based on the response, we will either show an error message or redirect the user to the homepage
 								if ($scope.loginData) {
 									if($scope.loginData!==-1){
-										// console.log($scope.loginData)
 										// render the html code
 										$scope.content = $scope.loginData;
 										$scope.page = "templates/googleLogin.html";
-									/*	$window.location.href = "index.html";
 									} else {
-										$scope.loginMessage = "Invalid credentials. Please try again.";
-										$scope.user = {}; */
+										$scope.loginMessage = "Sorry. There was an error. Please try normal login.";
 									}
 								} else {
 									$scope.loginMessage = "Sorry. Internal server error.";
@@ -209,4 +187,7 @@ var login = angular .module("authModule",[])
 								}
 							}
 						};
+					})
+					.config(function ($httpProvider) {
+						$httpProvider.defaults.withCredentials = true;
 					});
