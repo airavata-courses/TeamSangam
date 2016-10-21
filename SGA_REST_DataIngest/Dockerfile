@@ -1,6 +1,4 @@
-From tomcat
-
-#Create and build maven package
+FROM tomcat
 
 COPY target/SGA_REST_DataIngest.war  /usr/local/tomcat/webapps/SGA_REST_DataIngest.war
 
