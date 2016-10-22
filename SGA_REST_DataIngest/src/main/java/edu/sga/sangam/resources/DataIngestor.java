@@ -75,7 +75,7 @@ public class DataIngestor {
 	public void registry(JSONObject requestDataIngestor) throws IOException 
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/resgitry/dilogdata");
+		PostMethod post = new PostMethod("http://sgaregistry:8085/SGA_REST_Registry/sga/resgitry/dilogdata");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(),"application/json","UTF-8");
