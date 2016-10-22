@@ -38,11 +38,13 @@ cd /home/ec2-user/SGA_REST_WeatherForecastClient
 echo "Copying the webpages into Gateway"
 sudo cp /home/ec2-user/SGA_REST_login/*.html .
 sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
-sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts/
-sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets/
-sudo cp /home/ec2-user/SGA_REST_Homepage/index.html .
-sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts/
-sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets/
+sudo mkdir scripts
+sudo mkdir stylesheets
+sudo mv /home/ec2-user/SGA_REST_login/scripts/* ./scripts/*
+sudo mv /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets/*
+sudo mv /home/ec2-user/SGA_REST_Homepage/index.html .
+sudo mv /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts/*
+sudo mv /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets/*
 
 mvn package
 echo "Building gateway docker image"
@@ -73,7 +75,7 @@ mvn package
 echo "Building maven package for ForecastDecision"
 cd /home/ec2-user/SGA_REST_ForecastDecision/
 mvn package
-mv ./target/SGA_REST_ForecastDecision.war /home/ec2-user/SGA_REST_ForecastDecision/SGA_REST_ForecastDecision.war
+mv ./target/SGA_REST_ForecastDecision.war /home/ec2-user/SGA_REST_Forecast/target/SGA_REST_ForecastDecision.war
 
 echo "Building docker image for Forecast Decision & Run Forecast"
 cd /home/ec2-user/SGA_REST_Forecast/
