@@ -132,7 +132,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 					
 					$scope.showmap = true;
 					$scope.output = response.data;
-					$scope.message = "Storm has been forcasted and the impacted areas are shown in the below map";
+					$scope.message = "Storm has been forecasted and the impacted areas are shown in the below map";
 					
 					var btown = {lat: 39.167107,lng: -86.534359};
 					$scope.map = new google.maps.Map(document.getElementById('map'), {
@@ -154,7 +154,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 					}
 				}
 				else{
-					$scope.messgae = "No storm has been forcasted for the selsected location";
+					$scope.messgae = "No storm has been forecasted for the selsected location";
 				}
 					
 			},
