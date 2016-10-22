@@ -23,6 +23,7 @@ before_script:
 
 script: 
   - cd SGA_REST_DataIngest
+  - ../SGA_REST_login/services/ls -l
   - nosetests ../SGA_REST_login/services/testLogin.py
 
 before_deploy:
