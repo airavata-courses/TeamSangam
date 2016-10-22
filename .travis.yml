@@ -25,6 +25,7 @@ before_script:
 
 script: 
   - cd SGA_REST_DataIngest && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_Rest_StormClustering && mvn -e clean install  -Dmaven.test.skip=true && cd ../SGA_REST_ForecastDecision && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_REST_Forecast && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_Rest_StormDetection && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_REST_WeatherForecastClient && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_REST_Registry && mvn -e clean install -Dmaven.test.skip=true
+  - cd ../SGA_REST_login/services && nosetests testLogin.py && cd ..
 
 before_deploy:
   - cd ..
