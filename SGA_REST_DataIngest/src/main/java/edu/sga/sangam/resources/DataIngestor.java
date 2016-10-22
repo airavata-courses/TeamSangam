@@ -2,6 +2,10 @@ package edu.sga.sangam.resources;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -32,20 +36,28 @@ public class DataIngestor {
 	@GET
 	public Response getURL(@QueryParam("year") String year,@QueryParam("month") String mm,
 			@QueryParam("day") String day,@QueryParam("nexrad") String nexrad,@QueryParam("filename") String fileName,
-			@QueryParam("userid") String userid,@QueryParam("sessionid") String sessionid,@QueryParam("requestid") String requestid) throws HttpException, IOException
+			@QueryParam("userid") String userid,@QueryParam("sessionid") String sessionid,@QueryParam("requestid") String requestid) throws Exception
 	{
+		Date date = new Date();
+		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		JSONObject requestDataIngestor = new JSONObject();
 		requestDataIngestor.put("userid", userid);
 		requestDataIngestor.put("sessionid",sessionid);
 		requestDataIngestor.put("requestid",requestid);
 		requestDataIngestor.put("requestData", "Requested Data for year"+year+ "month "+mm+" day "+day+ " Station "+nexrad+
 				"filename "+fileName);
+		requestDataIngestor.put("requestTime", df2.format(date));
+		
+		
 		try
 		{
 			//System.out.println("inside data ingestor");
 			log.info("year:" +year +"month:"+mm+"day:"+day+"nexrad:"+nexrad);
 			DataIngestorStatusBean disb = urlservice.generateURL(year, mm, day, nexrad,fileName,userid,sessionid,requestid);
+			
 			requestDataIngestor.put("responseData", "Response returned is "+disb.getUrl());
+			
+			requestDataIngestor.put("responseTime", df2.format(date));
 			registry(requestDataIngestor);
 			
 			return Response.status(200).entity(disb).build();
@@ -53,20 +65,40 @@ public class DataIngestor {
 		{
 			//System.out.println("inside exception"+e.getMessage());
 			requestDataIngestor.put("responseData", "Response returned is "+e.getMessage());
+			
+			requestDataIngestor.put("responseTime", df2.format(date));
 			registry(requestDataIngestor);
 			return Response.status(400).entity(e.getMessage()).build();
 		}
 	}
 	
-	public void registry(JSONObject requestDataIngestor) throws HttpException, IOException
+	public void registry(JSONObject requestDataIngestor) throws IOException 
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/resgitry/dilogdata");
-		StringRequestEntity entity = new StringRequestEntity(requestDataIngestor.toJSONString(),"application/json","UTF-8");
+		PostMethod post = new PostMethod("http://sgaregistry:8085/SGA_REST_Registry/sga/resgitry/dilogdata");
+		StringRequestEntity entity;
+		try {
+			entity = new StringRequestEntity(requestDataIngestor.toJSONString(),"application/json","UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			throw new UnsupportedEncodingException("Issue with Encoding");
+		}
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");
-		int statusCode = client.executeMethod(post);
-		log.info("Data Ingestor Resigstry status code is "+statusCode);
+		
+		
+		int statusCode;
+		try {
+			statusCode = client.executeMethod(post);
+			log.info("Data Ingestor Resigstry status code is "+statusCode);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			throw  new IOException("Registry not started");
+		}
+		
+		
+		
+		
 		
 	}
 

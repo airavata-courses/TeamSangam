@@ -25,7 +25,7 @@ public class Registry {
 		}
 		catch(Exception e)
 		{
-			return Response.status(500).entity(e.getMessage()).build();
+			return Response.status(500).entity("issue with database").build();
 		}
 		
 	}

@@ -1,5 +1,7 @@
 package edu.sga.sangam.resources;
 
+import java.sql.Timestamp;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -8,9 +10,24 @@ public class DataIngestRequest {
 	String sessionid;
 	String requestid;
 	String requestData;
+	String requestTime;
 	String responseData;
+
+	String responseTime;
 	
 	
+	public String getRequestTime() {
+		return requestTime;
+	}
+	public void setRequestTime(String requestTime) {
+		this.requestTime = requestTime;
+	}
+	public String getResponseTime() {
+		return responseTime;
+	}
+	public void setResponseTime(String responseTime) {
+		this.responseTime = responseTime;
+	}
 	public String getUserid() {
 		return userid;
 	}

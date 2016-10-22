@@ -6,14 +6,18 @@ files:
     destination: /home/ec2-user
 
 hooks:
+  ApplicationStop:
+    - location: CodeDeployScripts/kill_container.sh
+      timeout: 180
+      runas: ec2-user
   BeforeInstall:
     - location: CodeDeployScripts/beforeInstall.sh
       runas: root
-  ApplicationStart:
-    - location: CodeDeployScripts/afterInstall.sh
-      timeout: 180
-      runas: root
   AfterInstall:
+    - location: CodeDeployScripts/afterInstall.sh
+      timeout: 600
+      runas: root
+  ApplicationStart:
     - location: CodeDeployScripts/install.sh
-      timeout: 180
+      timeout: 600
       runas: root
