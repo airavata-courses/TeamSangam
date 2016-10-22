@@ -14,8 +14,8 @@ login.app.config['SECRET_KEY'] = os.urandom(24)
 login.app.config['TESTING'] = True
 
 def setUp():
-	model.user = "root"
-	model.password = ""
+	model.SQLuser = "root"
+	model.SQLpassword = ""
 	model.host = "localhost"
 	model.database = testDB
 	model.table = testTable
