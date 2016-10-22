@@ -77,7 +77,7 @@ public class ForecastTest {
 	
 	private HttpResponse request(HttpEntity entity)
 	{
-		String runForecasturl ="http://localhost:8080/SGA_REST_Forecast/sga/runforecast";
+		String runForecasturl ="http://sgaforecast:8084/SGA_REST_Forecast/sga/runforecast";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(runForecasturl);
 		httpPost.setEntity(entity);

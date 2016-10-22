@@ -55,7 +55,7 @@ public class ForecastDecision {
 	public void registry(JSONObject forecastdecision) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/resgitry/decisionlogdata");
+		PostMethod post = new PostMethod("http://sgaregistry:8085/SGA_REST_Registry/sga/resgitry/decisionlogdata");
 		StringRequestEntity entity = new StringRequestEntity(forecastdecision.toJSONString(),"application/json","UTF-8");
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");
