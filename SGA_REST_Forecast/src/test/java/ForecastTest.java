@@ -86,7 +86,7 @@ public class ForecastTest {
 			HttpResponse response = httpclient.execute(httpPost);
 			return response;
 				
-		}catch (IOException e) {
+		}catch (Exception e) {
 			return null;
 		}
 	}
