@@ -58,7 +58,7 @@ public class StormDetectionTest {
 	}
 	private HttpResponse request(HttpEntity entity)
 	{
-		String stormDetectionUrl ="http://localhost:8089/SGA_Rest_StormDetection/sga/runforecast";
+		String stormDetectionUrl ="http://localhost:8080/SGA_Rest_StormDetection/sga/runforecast";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(stormDetectionUrl);
 		httpPost.setEntity(entity);
