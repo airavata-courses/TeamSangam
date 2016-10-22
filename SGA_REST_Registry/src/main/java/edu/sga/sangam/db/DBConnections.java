@@ -15,7 +15,7 @@ public class DBConnections {
 		try{
 		    Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
 			mongoLogger.setLevel(Level.SEVERE); 
-			mongo = new MongoClient("localhost",27017);
+			mongo = new MongoClient("mongo",27017);
 			
 		}
 		catch(Exception e)
