@@ -49,16 +49,14 @@ public class RegistryTest {
 	{
 		try
 		{
-		Date d = new Date();
-			DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
 		StormClusterBean di = new StormClusterBean();
 		di.setUserid("userid");
 		di.setSessionid("sessionid");
 		di.setRequestid("requestid");
 		di.setRequestData("requestData");
 		di.setResponseData("responseData");
-		di.setResponseTime(df2.format(d));
-		di.setRequestTime(df2.format(d));
+		
 		Registry register = new Registry();
 		Response rs = register.StormCluster(di);
 		if(200 ==rs.getStatus()){
