@@ -40,17 +40,17 @@ sudo cp /home/ec2-user/SGA_REST_login/*.html .
 sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
 sudo mkdir scripts
 sudo mkdir stylesheets
-sudo mv /home/ec2-user/SGA_REST_login/scripts/* ./scripts/*
-sudo mv /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets/*
+sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
+sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
 sudo mv /home/ec2-user/SGA_REST_Homepage/index.html .
-sudo mv /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts/*
-sudo mv /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets/*
+sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
+sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
 
 mvn package
 echo "Building gateway docker image"
 docker build -t isgagateway .
 
-echo "Build maven package for WeatherForecastClient"
+echo "Build maven package for Data Ingest"
 cd /home/ec2-user/SGA_REST_DataIngest/
 mvn package
 echo "Building dataingest docker image"
