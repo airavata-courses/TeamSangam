@@ -2,14 +2,13 @@
 
 // create the module
 var home = angular.module("sga_home",[]);
-var myurl = "http://54.71.95.40:5001/";
-var mainurl = "http://54.71.95.40:8080/"
+var myurl = "http://54.209.48.186:";
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
 	
 	$http({
 			method : "GET",
-			url : myurl+"isActive"
+			url : myurl+"5001/isActive"
 	})
 	.then(function(response){
 		// This is a success callback and will be called for status 200-299
@@ -32,7 +31,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 
 	$http({
 			method : "GET",
-			url : myurl + "getyears"
+			url : myurl + "5001/getyears"
 	})
 	.then(function(response){
 		// This is a success callback and will be called for status 200-299
@@ -47,7 +46,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		if($scope.year !== "None"){
 			$http({
 				method : "POST",
-				url : myurl + "getmonths",
+				url : myurl + "5001/getmonths",
 				data: {"year":$scope.year}
 			})
 			.then(function(response){
@@ -68,7 +67,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		if($scope.month !== "None"){
 			$http({
 				method : "POST",
-				url : myurl + "getdays",
+				url : myurl + "5001/getdays",
 				data: {"year":$scope.year, "month":$scope.month}
 			})
 			.then(function(response){
@@ -86,7 +85,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		if($scope.day !== "None"){
 			$http({
 				method : "POST",
-				url : myurl + "getlocations",
+				url : myurl + "5001/getlocations",
 				data: {"year":$scope.year, "month":$scope.month, "day":$scope.day}
 			})
 			.then(function(response){
@@ -103,7 +102,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		if($scope.location !== "None"){
 			$http({
 				method : "POST",
-				url : myurl + "getfiles",
+				url : myurl + "5001/getfiles",
 				data: {"year":$scope.year, "month":$scope.month, "day":$scope.day, "location":$scope.location}
 			})
 			.then(function(response){
@@ -123,7 +122,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		$scope.showmap = false;
 		$http({
 				method : 'GET',
-				url : "SGA_REST_WeatherForecastClient/sga/weatherclient",
+				url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient",
 				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time, userid: $scope.emailId, sessionid: $scope.sessionId, requestid: $scope.requestId}
 			})
 			.then(function(response){
