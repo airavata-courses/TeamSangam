@@ -1,0 +1,60 @@
+<!doctype html>
+<html ng-app = "sga_admin">
+<head>
+		
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
+
+<title>Science Gateway</title>
+</head>
+
+<body ng-controller="sga_controller">
+    <header class="jumbotron text-center"> 
+    	<h2> Welcome to the Science Gateway Weather Forecasting Portal</h2>
+    </header>
+    
+    <nav class="navbar navbar-inverse">
+  		<div class="container-fluid">
+    		<div class="navbar-header">
+      			<a class="navbar-brand" href="#">SGA Sangam</a>
+    		</div>
+    		<ul class="nav navbar-nav">
+      			<li class="active"><a href="#">Home</a></li>
+          		<li><a href="team.html">Our Team</a></li>
+        	</ul>
+    		<ul class="nav navbar-nav navbar-right">
+      			<li><a href="login.html"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+    		</ul>
+  		</div>
+	</nav>
+    
+    <div class="container">
+    	<div class="row">
+        	<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+                    	<p class="text-center"> <h3> Welcome Admin </h3></p>
+                    </div>
+                        <p> Diaply data here</p>
+                    <div class="panel-body">
+                           
+    			</div>
+            </div>
+          </div>
+       </div>
+     </div>
+     <br/>
+
+     <div id="map" class="container"></div>
+     
+     
+     <footer class="page-footer">
+			<p class="text-center">copyright 2016. Team Sangam.</p>
+	 </footer>
+
+</body>
+</html>
+<script src="scripts/angular.min.js"></script>
+<script src="scripts/admin.js "></script>
+
+
