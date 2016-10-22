@@ -6,9 +6,7 @@ env:
   - FLASK=0.11.1
 
 services:
-  - mongodb
   - mysql
-  - rabbitmq
 
 sudo: true
 
@@ -73,5 +71,3 @@ branches:
 notifications:
   email:
     - vikas1590@gmail.com
-    - raghava1990@gmail.com
-    - rajasimha1991@gmail.com
