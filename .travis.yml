@@ -69,7 +69,7 @@ after_deploy:
 
 branches:
   only:
-    - OAuth
+    - Development
 
 notifications:
   email:

@@ -2,7 +2,7 @@ function validEmail(email) {
  	var regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
  	return regex.test(email);
 }
-var instanceURL = "http://ec2-54-227-31-33.compute-1.amazonaws.com:5000/";
+var instanceURL = "http://ec2-54-209-48-186.compute-1.amazonaws.com:5000/";
 var login = angular .module("authModule",[])
 					.controller("loginController", function($scope, $http, $window, $sce){
 						$scope.page = "templates/normalLogin.html"

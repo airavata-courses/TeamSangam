@@ -10,10 +10,10 @@ discoveryDocument = json.loads(urllib.request.urlopen("https://accounts.google.c
 
 filename = "googleOAuth.properties"
 CLIENT_ID, CLIENT_SECRET, APPLICATION_NAME = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
-PUBLIC_IP = "http://ec2-54-227-31-33.compute-1.amazonaws.com"
+PUBLIC_IP = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
 REDIRECT_URI = PUBLIC_IP + ":5000/requestToken"
 HOMEPAGE_PUT_SESSION = PUBLIC_IP + ":5001/putSession"
-CROSS_DOMAIN = "http://ec2-54-227-31-33.compute-1.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
 
 def setupSession(email):
 	# Generating a unique session ID
