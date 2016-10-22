@@ -7,6 +7,8 @@ env:
 
 services:
   - mysql
+  - mongodb
+  - rabbitmq
 
 sudo: true
 
@@ -46,7 +48,7 @@ deploy:
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: Docker
+      branch: Development
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
@@ -59,15 +61,17 @@ deploy:
     region: us-east-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: Docker
+      branch: Development
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - Docker
+    - Development
 
 notifications:
   email:
     - vikas1590@gmail.com
+    - rajasimha1991@gmail.com
+    - raghava1990@gmail.com

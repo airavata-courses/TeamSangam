@@ -40,9 +40,11 @@ sudo cp /home/ec2-user/SGA_REST_login/*.html .
 sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
 sudo mkdir scripts
 sudo mkdir stylesheets
+sudo mkdir templates
 sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
 sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
-sudo mv /home/ec2-user/SGA_REST_Homepage/index.html .
+sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
+sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
 sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
 sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
 

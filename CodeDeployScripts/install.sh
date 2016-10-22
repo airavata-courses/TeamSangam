@@ -14,7 +14,7 @@ docker run -d --name sgastormdetection -p 8082:8082 isgastormdetection
 
 docker run -d --name sgastormclustering -p 8083:8083 isgastormclustering
 
-docker run -d  --name sgaforecast -p 8084:8084 isgaforecast
+docker run -d --name sgaforecast -p 8084:8084 isgaforecast
 
 docker run -d --link mongo:mongo --name sgaregistry -p 8085:8085 isgaregistry
 
