@@ -54,12 +54,12 @@ docker run -d --name sgahome -p 5001:5001 isgahome
 
 docker run -d --link mongo:mongo --name sgagateway -p 8080:8080 isgagateway
 
-docker run -d --link mongo:mongo --name sgadataingest -p 8080:8080 isgadataingest
+docker run -d --link mongo:mongo --name sgadataingest -p 8081:8081 isgadataingest
 
-docker run -d --link mongo:mongo --name sgastormdetection -p 8080:8080 isgastormdetection
+docker run -d --link mongo:mongo --name sgastormdetection -p 8082:8082 isgastormdetection
 
-docker run -d --link mongo:mongo --name sgastormclustering -p 8080:8080 isgastormclustering
+docker run -d --link mongo:mongo --name sgastormclustering -p 8083:8083 isgastormclustering
 
-docker run -d --link mongo:mongo --name sgaforecast -p 8080:8080 isgaforecast
+docker run -d --link mongo:mongo --name sgaforecast -p 8084:8084 isgaforecast
 
-docker run -d --link mongo:mongo --name sgaregistry -p 8080:8080 isgaregistry
+docker run -d --link mongo:mongo --name sgaregistry -p 8085:8085 isgaregistry
