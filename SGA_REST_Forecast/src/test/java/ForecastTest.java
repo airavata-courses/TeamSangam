@@ -40,7 +40,7 @@ public class ForecastTest {
 	}
 
 	
-	@Test
+	/*@Test
 	public void checkValidfile() throws Exception {
 		URL path = ClassLoader.getSystemResource("testKml.kml");
 		System.out.println(path);
@@ -59,7 +59,8 @@ public class ForecastTest {
 		else
 		{
 		assertEquals(200,res.getStatusLine().getStatusCode());}
-	}
+	}*/
+
 	@Test
 	public void checkInvalidfile() throws Exception {
 		try {
