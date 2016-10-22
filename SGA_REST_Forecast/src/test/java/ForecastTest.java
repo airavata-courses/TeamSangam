@@ -62,16 +62,22 @@ public class ForecastTest {
 	}
 	@Test
 	public void checkInvalidfile() throws Exception {
-		InputStream data = null;
-		FormDataContentDisposition  fdcp = null;
-		RunForecast rf = new RunForecast();
-		Response status =rf.getForecast(data, fdcp, "userid", "sessionid", "requestid");
-		assertEquals(400,status.getStatus());
+		try {
+			InputStream data = null;
+			FormDataContentDisposition fdcp = null;
+			RunForecast rf = new RunForecast();
+			Response status = rf.getForecast(data, fdcp, "userid", "sessionid", "requestid");
+			assertEquals(400, status.getStatus());
+		}catch (Exception e)
+		{
+			assertEquals("issue  with forecast registry",e.getMessage());
+		}
+
 	}
 	
 	private HttpResponse request(HttpEntity entity)
 	{
-		String runForecasturl ="http://localhost:8089/SGA_REST_Forecast/sga/runforecast";
+		String runForecasturl ="http://localhost:8080/SGA_REST_Forecast/sga/runforecast";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpPost httpPost = new HttpPost(runForecasturl);
 		httpPost.setEntity(entity);
