@@ -7,6 +7,9 @@ import login, model
 
 testDB = "testDB"
 testTable = "testUsers"
+model.host = "localhost"
+model.user = "root"
+model.password = ""
 model.database = testDB
 model.table = testTable
 client = login.app.test_client()
