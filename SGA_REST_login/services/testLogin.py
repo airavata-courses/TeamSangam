@@ -1,5 +1,6 @@
 import os
 import json
+import base64
 from nose.tools import assert_equal, with_setup
 from mock import patch, MagicMock
 from requests.models import Response
@@ -7,17 +8,17 @@ import login, model
 
 testDB = "testDB"
 testTable = "testUsers"
-model.host = "localhost"
-model.user = "root"
-model.password = ""
-model.database = testDB
-model.table = testTable
 client = login.app.test_client()
 # Need this for validating the session
 login.app.config['SECRET_KEY'] = os.urandom(24)
 login.app.config['TESTING'] = True
 
 def setUp():
+	model.user = "root"
+	model.password = ""
+	model.host = "localhost"
+	model.database = testDB
+	model.table = testTable
 	user = {
 		"first":"John",
 		"last":"Doe",
@@ -52,7 +53,7 @@ def test_invalidLogin(mock_api_call):
 		resp = client.post('/login', data=json.dumps({"email":"johnbutnotdoe@example.com", "password":"johndoepass"}), content_type='application/json')
 		assert_equal(resp.status_code, 200)
 		assert_equal(resp.data, bytes('99\n', encoding='UTF-8'))
-
+#
 @patch('requests.get')
 def test_gauthSuccess(mock_api_call):
 	with login.app.test_request_context():
@@ -82,8 +83,8 @@ def test_validSignup(mock_api_call):
 	with login.app.test_request_context():
 		mock_api_call.return_value = MagicMock(status_code=200, response=json.dumps(1))
 		resp = client.post('/signup', data=json.dumps({"firstName":"John", "lastName":"Anotherdoe", "email":"johnanotherdoe@example.com", "password":"johndoepass"}), content_type='application/json')
-		model.cursor.execute("SELECT * FROM "+testDB+"."+testTable+" WHERE Email='johnanotherdoe@example.com';")
-		assert_equal(model.cursor.rowcount, 1)
+		result = model.findUser('johnanotherdoe@example.com', 'johndoepass')
+		assert_equal(result, 11)
 		assert_equal(resp.status_code, 200)
 		assert_equal(resp.data, bytes('888\n', encoding='UTF-8'))
 
