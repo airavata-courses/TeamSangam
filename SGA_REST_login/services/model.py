@@ -3,7 +3,7 @@ from passlib.handlers.sha2_crypt import sha256_crypt
 
 filename = "mysql.properties"
 user, password = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
-host = "localhost"
+host = "usermysqldb"
 port = 3306
 database = "weatherApp"
 

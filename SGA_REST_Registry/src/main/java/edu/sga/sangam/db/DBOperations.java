@@ -46,7 +46,9 @@ public class DBOperations {
 			document.put("sessionid", input.getSessionid());
 			document.put("requestid", input.getRequestid());
 			document.put("request data", input.getRequestData());
+			document.put("request time",input.getRequestTime());
 			document.put("response data", input.getResponseData());
+			document.put("response time", input.getResponseTime());
 			collection.insert(document);
 		}
 		catch(MongoException me)
@@ -72,7 +74,9 @@ public class DBOperations {
 			document.put("sessionid", input.getSessionid());
 			document.put("requestid", input.getRequestid());
 			document.put("request data", input.getRequestData());
+			document.put("request time",input.getRequestTime());
 			document.put("response data", input.getResponseData());
+			document.put("response time", input.getResponseTime());
 			collection.insert(document);
 		}
 		catch(MongoException me)
@@ -100,7 +104,10 @@ public class DBOperations {
 			document.put("sessionid", input.getSessionid());
 			document.put("requestid", input.getRequestid());
 			document.put("request data", input.getRequestData());
+			document.put("request time",input.getRequestTime());
 			document.put("response data", input.getResponseData());
+			document.put("response time", input.getResponseTime());
+			
 			collection.insert(document);
 		}
 		catch(MongoException me)
@@ -127,7 +134,9 @@ public class DBOperations {
 			document.put("sessionid", input.getSessionid());
 			document.put("requestid", input.getRequestid());
 			document.put("request data", input.getRequestData());
+			document.put("request time",input.getRequestTime());
 			document.put("response data", input.getResponseData());
+			document.put("response time", input.getResponseTime());
 			collection.insert(document);
 		}
 		catch(MongoException me)
@@ -154,7 +163,9 @@ public class DBOperations {
 			document.put("sessionid", input.getSessionid());
 			document.put("requestid", input.getRequestid());
 			document.put("request data", input.getRequestData());
+			document.put("request time",input.getRequestTime());
 			document.put("response data", input.getResponseData());
+			document.put("response time", input.getResponseTime());
 			collection.insert(document);
 		}
 		catch(MongoException me)
