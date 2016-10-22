@@ -8,12 +8,15 @@ import base64, json
 
 app = Flask(__name__)
 
+PUBLIC_IP = "http://ec2-54-227-31-33.compute-1.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-227-31-33.compute-1.amazonaws.com"
+
 filename = "aws_key.properties"
 timestampDict = {}
 emailDict = {}
 accessKey, secretKey = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
 @app.route("/getyears", methods=["GET", "OPTIONS"])
-@cors.crossdomain(origin='*')
+@cors.crossdomain(origin= CROSS_DOMAIN)
 def getyears():
     # get years from AWS
     s3conn = boto.connect_s3(accessKey, secretKey)
@@ -23,7 +26,7 @@ def getyears():
 
 
 @app.route("/getmonths", methods=["POST", "OPTIONS"])
-@cors.crossdomain(origin='*')
+@cors.crossdomain(origin= CROSS_DOMAIN)
 def getmonths():
     # get months from AWS
     s3conn = boto.connect_s3(accessKey, secretKey)
@@ -36,7 +39,7 @@ def getmonths():
 
 
 @app.route("/getdays", methods=["POST", "OPTIONS"])
-@cors.crossdomain(origin='*')
+@cors.crossdomain(origin= CROSS_DOMAIN)
 def getdays():
     # get days from AWS
     s3conn = boto.connect_s3(accessKey, secretKey)
@@ -49,7 +52,7 @@ def getdays():
 
 
 @app.route("/getlocations", methods=["POST", "OPTIONS"])
-@cors.crossdomain(origin='*')
+@cors.crossdomain(origin= CROSS_DOMAIN)
 def getlocations():
     # get locations from AWS
     s3conn = boto.connect_s3(accessKey, secretKey)
@@ -70,7 +73,7 @@ def getlocations():
 
 
 @app.route("/getfiles", methods=["POST", "OPTIONS"])
-@cors.crossdomain(origin='*')
+@cors.crossdomain(origin= CROSS_DOMAIN)
 def gettimestamp():
     # get time stamped file names from AWS
     s3conn = boto.connect_s3(accessKey, secretKey)
@@ -84,7 +87,7 @@ def gettimestamp():
     return jsonify([file.name.strip("/").split("/")[4].strip(".gz") for file in files if file.name.endswith('.gz')])
 
 @app.route("/isActive", methods=["GET", "OPTIONS"])
-@cors.crossdomain(origin="*")
+@cors.crossdomain(origin= CROSS_DOMAIN)
 def isActive():
     global timestampDict, emailDict
     weatherSess = request.cookies.get("weatherSess", None)
@@ -127,4 +130,4 @@ def putSession():
 
 
 if __name__ == "__main__":
-    app.run(host= "0.0.0.0",port=5001,debug=True)
+    app.run(host=PUBLIC_IP[7:],port=5001,debug=True)

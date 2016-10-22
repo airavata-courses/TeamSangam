@@ -2,7 +2,8 @@
 
 // create the module
 var home = angular.module("sga_home",[]);
-var myurl = "http://54.71.90.155:5001/";
+var myurl = "http://54.71.95.40:5001/";
+var mainurl = "http://54.71.95.40:8080/"
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
 	
@@ -20,11 +21,14 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 			$scope.sessionId = response.data[0];
 			$scope.emailId = response.data[1];
 		}
-	},
+		},
 		//based on the response, we will either show an error message or redirect the user to the login page
 		function(response){
 			$scope.errorMessage = response.data;
 		});
+		
+		$scope.requestId = 0;
+		
 
 	$http({
 			method : "GET",
@@ -116,39 +120,51 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 	$scope.submit = function(){
 		$scope.message = "Please wait as we process your request";
 		$scope.requestId += 1; 
+		$scope.showmap = false;
 		$http({
 				method : 'GET',
-				url : 'http://54.71.90.155:8080/SGA_REST_DataIngest/sga/dataingestor',
+				url : "SGA_REST_WeatherForecastClient/sga/weatherclient",
 				params: {year: $scope.year, month: $scope.month, day: $scope.day, nexrad: $scope.location, filename: $scope.time, userid: $scope.emailId, sessionid: $scope.sessionId, requestid: $scope.requestId}
 			})
 			.then(function(response){
 				// This is a success callback and will be called for status 200-299
-				$scope.output = response.data;
-				$scope.message = "Storm has been forcasted and the impacted areas are shown in the below map";
-				
-				var btown = {lat: 39.167107,lng: -86.534359};
-				$scope.map = new google.maps.Map(document.getElementById('map'), {
-					zoom: 4,
-					center: btown,
-					mapTypeId: 'terrain'
-				});
-				
-				var places = $scope.output.kml.Document.Placemark;
-				for(var i=0; i<places.length; i++){
-					var latlong = places[i].Point.coordinates;
-					var l = latlong.split(",");
-					$scope.mark = new google.maps.LatLng(l[0],l[1]);
+				if(response.data !== "-1"){
 					
-					var marker = new google.maps.Marker({
-					position: $scope.mark,
-					map: $scope.map
-			  		});
+					$scope.showmap = true;
+					$scope.output = response.data;
+					$scope.message = "Storm has been forcasted and the impacted areas are shown in the below map";
+					
+					var btown = {lat: 39.167107,lng: -86.534359};
+					$scope.map = new google.maps.Map(document.getElementById('map'), {
+						zoom: 4,
+						center: btown,
+						mapTypeId: 'terrain'
+					});
+					
+					var places = $scope.output.kml.Document.Placemark;
+					for(var i=0; i<places.length; i++){
+						var latlong = places[i].Point.coordinates;
+						var l = latlong.split(",");
+						$scope.mark = new google.maps.LatLng(l[0],l[1]);
+						
+						var marker = new google.maps.Marker({
+						position: $scope.mark,
+						map: $scope.map
+						});
+					}
 				}
-				
+				else{
+					$scope.messgae = "No storm has been forcasted for the selsected location";
+				}
+					
 			},
 			function(response){	
+				// this is a failure check
 				$scope.errorMessage = response.data;
 				$scope.message = "error in processing request";
 			});	
 	   };	 
-});
+})
+.config(function ($httpProvider) {
+						$httpProvider.defaults.withCredentials = true;
+					});
