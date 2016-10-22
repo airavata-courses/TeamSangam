@@ -1,5 +1,7 @@
 package edu.sga.sangam.resources;
 
+import java.sql.Timestamp;
+
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
@@ -8,7 +10,24 @@ public class StormDetectionBean {
 	String sessionid;
 	String requestid;
 	String requestData;
+	Timestamp requestTime;
 	String responseData;
+	Timestamp responseTime;
+	public Timestamp getResponseTime() {
+		return responseTime;
+	}
+	public void setResponseTime(Timestamp responseTime) {
+		this.responseTime = responseTime;
+	}
+	
+	
+	
+	public Timestamp getRequestTime() {
+		return requestTime;
+	}
+	public void setRequestTime(Timestamp requestTime) {
+		this.requestTime = requestTime;
+	}
 	
 	
 	public String getUserid() {

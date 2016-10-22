@@ -29,7 +29,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.amazonaws.services.simpleworkflow.flow.worker.SynchronousActivityTaskPoller;
 
 import edu.sga.sangam.bean.ClientOrchestratorBean;
 import edu.sga.sangam.bean.DataIngestorBean;
@@ -62,7 +61,7 @@ public class WeatherClientOrchestrator {
 			}
 			else
 			{
-				throw new Exception( "Forecast Decision is NO. So we didn't run the Run Forecast Algorithm");
+				return "no";
 			}
 			
 		}

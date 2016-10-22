@@ -1,5 +1,9 @@
 package edu.sga.sangam.resources;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import javax.ws.rs.GET;
@@ -20,11 +24,15 @@ public class ForecastDecision {
 	public String getDecision(@QueryParam("userid") String userid,
 			@QueryParam("sessionid") String sessionid,@QueryParam("requestid") String requestid) throws Exception
 	{
+		Date date = new Date();
+		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		JSONObject forecastdecision = new JSONObject();
 		forecastdecision.put("userid", userid);
 		forecastdecision.put("sessionid",sessionid);
 		forecastdecision.put("requestid",requestid);
 		forecastdecision.put("requestData", "Requested for decision to run forecast algorithm or not");
+		Timestamp requestTime = new Timestamp(date.getTime());
+		forecastdecision.put("requestTime", df2.format(date));
 		Random r = new Random();
 		String decision =null;
 		int random = r.nextInt();
@@ -37,7 +45,10 @@ public class ForecastDecision {
 		{
 			decision= "yes";
 		}
+		Timestamp responseTime = new Timestamp(date.getTime());
+		
 		forecastdecision.put("responseData", "Decision is "+decision);
+		forecastdecision.put("responseTime", df2.format(date));
 		registry(forecastdecision);
 		return decision;
 	}

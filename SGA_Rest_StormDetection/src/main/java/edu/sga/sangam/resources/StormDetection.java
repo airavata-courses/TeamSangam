@@ -2,6 +2,10 @@ package edu.sga.sangam.resources;
 
 import java.io.File;
 import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -38,14 +42,20 @@ public class StormDetection {
 			@FormDataParam("station") String station,@FormDataParam("userid") String userid,
 			@FormDataParam("sessionid") String sessionid,@FormDataParam("requestid") String requestid ) throws Exception
 	{
+		Date date = new Date();
+		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		JSONObject stormdetection = new JSONObject();
 		stormdetection.put("userid", userid);
 		stormdetection.put("sessionid",sessionid);
 		stormdetection.put("requestid",requestid);
 		stormdetection.put("requestData", "Requested to generate KML file for the given input file");
+		
+		stormdetection.put("requestTime", df2.format(date));
+		//System.out.println("input si"+input);
 		if (input == null || fileDetail == null )
 		{
 			stormdetection.put("responseData", "Response is File is empty");
+			stormdetection.put("responseTime", df2.format(date));
 			registry(stormdetection);
 			return Response.status(400).entity("File is empty").build();
 		}
@@ -55,6 +65,8 @@ public class StormDetection {
 			String fileName = fileDetail.getFileName();
 			File kmlfile = stormDetectionService.generateKMLFile(fileName,station);
 			stormdetection.put("responseData", "Response is a file with filename "+fileName);
+			Timestamp responseTime = new Timestamp(date.getTime());
+			stormdetection.put("responseTime", responseTime);
 			registry(stormdetection);
 			return Response.ok(kmlfile).header("Content-Disposition", "attachment; filename=\"" +fileName+"_cluster.kml"+ "\"").
 					build();
@@ -63,6 +75,8 @@ public class StormDetection {
 		catch(Exception e)
 		{
 			stormdetection.put("responseData","Error in generating Storm clustering file ");
+			
+			stormdetection.put("responseTime", df2.format(date));
 			registry(stormdetection);
 			return Response.status(500).entity("Error in generating Storm clustering file").build();
 		}
@@ -82,7 +96,7 @@ public class StormDetection {
 		}
 		catch(Exception e)
 		{
-			throw new Exception("issue  with storm detection registry");
+			throw new Exception("issue with storm detection registry");
 		}
 		
 		
