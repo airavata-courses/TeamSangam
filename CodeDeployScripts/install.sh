@@ -48,18 +48,18 @@ docker run -d --name mongo -p 27017:27017 imongo
 
 docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
 
-docker run -d --link iusermysqldb:usermysqldb --name sgalogin -p 5000:5000 isgalogin
+docker run -d --link usermysqldb:usermysqldb --name sgalogin -p 5000:5000 isgalogin
 
 docker run -d --name sgahome -p 5001:5001 isgahome
 
-docker run -d --link imongo:mongo --name sgagateway -p 8080:8080 isgagateway
+docker run -d --link mongo:mongo --name sgagateway -p 8080:8080 isgagateway
 
-docker run -d --link imongo:mongo --name sgadataingest -p 8080:8080 isgadataingest
+docker run -d --link mongo:mongo --name sgadataingest -p 8080:8080 isgadataingest
 
-docker run -d --link imongo:mongo --name sgastormdetection -p 8080:8080 isgastormdetection
+docker run -d --link mongo:mongo --name sgastormdetection -p 8080:8080 isgastormdetection
 
-docker run -d --link imongo:mongo --name sgastormclustering -p 8080:8080 isgastormclustering
+docker run -d --link mongo:mongo --name sgastormclustering -p 8080:8080 isgastormclustering
 
-docker run -d --link imongo:mongo --name sgaforecast -p 8080:8080 isgaforecast
+docker run -d --link mongo:mongo --name sgaforecast -p 8080:8080 isgaforecast
 
-docker run -d --link imongo:mongo --name sgaregistry -p 8080:8080 isgaregistry
+docker run -d --link mongo:mongo --name sgaregistry -p 8080:8080 isgaregistry

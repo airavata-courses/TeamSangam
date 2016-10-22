@@ -36,10 +36,13 @@ docker build -t isgahome . || true
 echo "Build maven package for WeatherForecastClient"
 cd /home/ec2-user/SGA_REST_WeatherForecastClient
 echo "Copying the webpages into Gateway"
-sudo cp -r /home/ec2-user/SGA_REST_login/* .
+sudo cp /home/ec2-user/SGA_REST_login/*.html .
+sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
+sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts/
+sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets/
 sudo cp /home/ec2-user/SGA_REST_Homepage/index.html .
-sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* .
-sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* .
+sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts/
+sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets/
 
 mvn package
 echo "Building gateway docker image"
