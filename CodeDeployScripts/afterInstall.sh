@@ -18,7 +18,7 @@
 #cd /home/ec2-user/
 
 echo "Building MongoDB docker image"
-cd /home/ec2-user/DB_Dockers/registry_MongodDB/
+cd /home/ec2-user/DB_Dockers/registry_MongoDB/
 docker build -t imongo .
 
 echo "Building mysqlDB docker image"
