@@ -69,7 +69,7 @@ public class RunForecast {
 	public void registry(JSONObject runforecast) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://sgaresgitry:8085/SGA_REST_Registry/sga/resgitry/runforecastlogdata");
+		PostMethod post = new PostMethod("http://54.209.48.186:8085/SGA_REST_Registry/sga/resgitry/runforecastlogdata");
 		StringRequestEntity entity = new StringRequestEntity(runforecast.toJSONString(),"application/json","UTF-8");
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");
