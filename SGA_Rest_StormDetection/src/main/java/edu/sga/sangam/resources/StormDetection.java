@@ -86,7 +86,7 @@ public class StormDetection {
 	public void registry(JSONObject stormdetection) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://sgaregistry:8085/SGA_REST_Registry/sga/resgitry/sdlogdata");
+		PostMethod post = new PostMethod("http://54.209.48.186:8085/SGA_REST_Registry/sga/resgitry/sdlogdata");
 		StringRequestEntity entity = new StringRequestEntity(stormdetection.toJSONString(),"application/json","UTF-8");
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");

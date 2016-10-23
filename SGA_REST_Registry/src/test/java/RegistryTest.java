@@ -56,7 +56,7 @@ public class RegistryTest {
 		di.setRequestid("requestid");
 		di.setRequestData("requestData");
 		di.setResponseData("responseData");
-		
+
 		Registry register = new Registry();
 		Response rs = register.StormCluster(di);
 		if(200 ==rs.getStatus()){
