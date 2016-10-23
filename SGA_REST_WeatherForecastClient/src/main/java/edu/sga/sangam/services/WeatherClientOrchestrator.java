@@ -124,7 +124,7 @@ public class WeatherClientOrchestrator {
 
 	public void callStormCluster(String url) throws Exception
 	{
-		String stormclusteringURL ="http://54.209.48.186:8083/SGA_REST_StormClustering/sga/stormclustering";
+		String stormclusteringURL ="http://54.209.48.186:8083/SGA_Rest_StormClustering/sga/stormclustering";
 		HttpClient client = new HttpClient();
 		PostMethod post = new PostMethod(stormclusteringURL);
 		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -162,7 +162,7 @@ public class WeatherClientOrchestrator {
 
 	public void callStormDetection(File file,String station) throws Exception
 	{
-		String stormDetectionURL ="http://54.209.48.186:8082/SGA_REST_StormDetection/sga/stormdetection";
+		String stormDetectionURL ="http://54.209.48.186:8082/SGA_Rest_StormDetection/sga/stormdetection";
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		HttpEntity entity = MultipartEntityBuilder.create().addTextBody("station", station)
 				.addBinaryBody("file",file,ContentType.create("application/octet-stream"),cob.getFileName())
