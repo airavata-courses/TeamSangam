@@ -13,7 +13,7 @@ CLIENT_ID, CLIENT_SECRET, APPLICATION_NAME = tuple([line.strip().split("=")[1] f
 PUBLIC_IP = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
 REDIRECT_URI = PUBLIC_IP + ":5000/requestToken"
 HOMEPAGE_PUT_SESSION = PUBLIC_IP + ":5001/putSession"
-CROSS_DOMAIN = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-209-48-186.compute-1.amazonaws.com:8080"
 
 def setupSession(email):
 	# Generating a unique session ID
@@ -137,4 +137,4 @@ if __name__ == "__main__":
 	# Sessions will timeout(on server) after 30 mins of inactivity on server. DOes not affect the cookies.
 	app.config['PERMANENT_SESSION_LIFETIME'] = 1800
 	# ------------- Any code other than run goes above this line ---------------#
-	app.run(host=PUBLIC_IP[7:], port=5000, debug=True)
+	app.run(host='0.0.0.0', port=5000, debug=True)

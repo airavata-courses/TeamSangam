@@ -9,7 +9,7 @@ import base64, json
 app = Flask(__name__)
 
 PUBLIC_IP = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
-CROSS_DOMAIN = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-209-48-186.compute-1.amazonaws.com:8080"
 
 filename = "aws_key.properties"
 timestampDict = {}
@@ -125,9 +125,9 @@ def putSession():
     # storing sid:timestamp every time a new user logs im
     timestampDict[request.json["sid"]] = datetime.datetime.now()
     # storing sid:email of every user who logs in
-    emailDict[request.json["sid"]] = request.json("email")
+    emailDict[request.json["sid"]] = request.json["email"]
     return jsonify("OK")
 
 
 if __name__ == "__main__":
-    app.run(host=PUBLIC_IP[7:],port=5001,debug=True)
+    app.run(host='0.0.0.0',port=5001,debug=True)

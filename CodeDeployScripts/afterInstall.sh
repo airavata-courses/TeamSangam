@@ -38,9 +38,9 @@ cd /home/ec2-user/SGA_REST_WeatherForecastClient
 echo "Copying the webpages into Gateway"
 sudo cp /home/ec2-user/SGA_REST_login/*.html .
 sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
-sudo mkdir scripts
-sudo mkdir stylesheets
-sudo mkdir templates
+sudo mkdir -p scripts
+sudo mkdir -p stylesheets
+sudo mkdir -p templates
 sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
 sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
 sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
