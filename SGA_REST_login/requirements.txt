@@ -1,6 +1,0 @@
-flask
-passlib
-requests
-simplejson
-boto
-mysqlclient
