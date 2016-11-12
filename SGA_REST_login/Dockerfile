@@ -6,4 +6,4 @@ RUN apt-get install -y gcc
 
 ADD ./services /app
 WORKDIR /app
-CMD ["python","login.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--backlog", "2048", "--timeout", "30", "--daemon", "--log-file", "loginLogs", "--access-logfile", "loginAccessLogs", "login:app"]

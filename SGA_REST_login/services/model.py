@@ -3,6 +3,7 @@ from passlib.handlers.sha2_crypt import sha256_crypt
 
 filename = "mysql.properties"
 SQLuser, SQLpassword = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
+
 host = "usermysqldb"
 port = 3306
 # Keep in mind that database names in windows are case insensitive whereas database names in most linux systems are case sensitive.

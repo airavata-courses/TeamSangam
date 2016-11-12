@@ -1,6 +1,8 @@
-flask
-passlib
-requests
-simplejson
-boto
-mysqlclient
+boto==2.43.0
+Flask==0.11.1
+gunicorn==19.6.0
+mock==2.0.0
+mysqlclient==1.3.9
+nose==1.3.7
+passlib==1.6.5
+requests==2.11.1
