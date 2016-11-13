@@ -1,12 +1,17 @@
 package edu.sga.sangam.resources;
 
 import java.io.IOException;
+import org.apache.curator.framework.CuratorFramework;
+
+
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -26,9 +31,28 @@ import edu.sga.sangam.bean.DataIngestorStatusBean;
 import edu.sga.sangam.services.DataIngestorService;
 
 
+
 @Path("/dataingestor")
 @Produces(MediaType.APPLICATION_JSON)
 public class DataIngestor {
+    static private int portNumber;
+	private static final String endpointURI = "SGA_REST_DataIngest/sga/dataingestor";
+	private static String serviceName =null;
+	public static void main(String[] args) throws Exception {
+		if (args.length != 2) {
+            throw new IllegalArgumentException("Invalid arguments");
+        }
+			
+		serviceName = args[0];
+		portNumber = Integer.parseInt(args[1]);
+		String url =String.format( "http://%s:%d/%s",
+				"localhost",
+				portNumber,
+				endpointURI);
+		ZooKeeperService services = new ZooKeeperService();
+		services.registerService(serviceName,url);
+		
+	}
 	
 	private final Logger log = LoggerFactory.getLogger(DataIngestor.class);
 	DataIngestorService urlservice = new DataIngestorService();
