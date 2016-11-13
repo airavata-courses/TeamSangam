@@ -35,23 +35,23 @@ docker build -t isgalogin .
 
 #echo "Build maven package for WeatherForecastClient"
 #cd /home/ec2-user/SGA_REST_WeatherForecastClient
-echo "Copying the webpages into Gateway"
-sudo cp /home/ec2-user/SGA_REST_login/*.html .
-sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
-sudo mkdir -p scripts
-echo "Created scripts directory"
-sudo mkdir -p stylesheets
-echo "Created stylesheets directory"
-sudo mkdir -p templates
-echo "Created templates directory"
+#echo "Copying the webpages into Gateway"
+#sudo cp /home/ec2-user/SGA_REST_login/*.html .
+#sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
+#sudo mkdir -p scripts
+#echo "Created scripts directory"
+#sudo mkdir -p stylesheets
+#echo "Created stylesheets directory"
+#sudo mkdir -p templates
+#echo "Created templates directory"
 
-sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
-sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
-sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
+#sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
+#sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
+#sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
 #sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
 #sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
 #sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
-echo "Copied the html and javascript files to TOMCAT"
+#echo "Copied the html and javascript files to TOMCAT"
 
 #mvn package
 #echo "Building gateway docker image"
