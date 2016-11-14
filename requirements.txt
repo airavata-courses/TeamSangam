@@ -5,4 +5,4 @@ simplejson
 boto
 mysqlclient
 nose
-mock
+mock 
