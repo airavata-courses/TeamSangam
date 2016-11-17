@@ -1,6 +1,8 @@
 package edu.sga.sangam.db;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -9,12 +11,23 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoClient;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoException;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSInputFile;
 
+import org.bson.Document;
+import com.mongodb.Block;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.AggregateIterable;
+
+import static com.mongodb.client.model.Filters.*;
+import static com.mongodb.client.model.Sorts.ascending;
+import static java.util.Arrays.asList;
+
 import edu.sga.sangam.resources.DataIngestRequest;
 import edu.sga.sangam.resources.ForecastDecisionBean;
+import edu.sga.sangam.resources.GetStatsBean;
 import edu.sga.sangam.resources.RunForecastBean;
 import edu.sga.sangam.resources.StormClusterBean;
 import edu.sga.sangam.resources.StormDetectionBean;
@@ -178,5 +191,49 @@ public class DBOperations {
 			
 		}
 	}
+	
+	public String getStats() throws Exception
+    {
+	    
+	    MongoClient mongoClient = new MongoClient();
+	    MongoDatabase db = mongoClient.getDatabase("db_SGA");
+	    System.out.println("Connected to database successfully");
+	    
+	    //FindIterable<Document> iterable = db.getCollection("collection_dataingestregistry").find(new Document("userid", input.getUserid()));
+	    
+	    StringBuffer queryResult = new StringBuffer();
+	    List<String> result = new ArrayList<>();
+	    
+	    AggregateIterable<Document> iterable1 = db.getCollection("collection_dataingestregistry").aggregate(asList(
+	            new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
+	    
+	    System.out.println("User statistics from dataingestregistry:");
+	    for(Document row: iterable1){
+	        queryResult.append(row.toJson());
+	    }
+	    
+	    AggregateIterable<Document> iterable2 = db.getCollection("collection_stormclusterregistry").aggregate(asList(
+                new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
+	    System.out.println("User statistics from stormclusterregistry:");
+	    for(Document row: iterable2){
+            queryResult.append(row.toJson());
+        }
+	    
+	    AggregateIterable<Document> iterable3 = db.getCollection("collection_decisionregistry").aggregate(asList(
+                new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
+	    System.out.println("User statistics from decisionregistry:");
+	    for(Document row: iterable3){
+            queryResult.append(row.toJson());
+        }
+        
+        AggregateIterable<Document> iterable4 = db.getCollection("collection_runforecastregistry").aggregate(asList(
+                new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
+        System.out.println("User statistics from runforecastregistry:");
+        for(Document row: iterable4){
+            queryResult.append(row.toJson());
+        }
+        
+        return queryResult.toString();
+    }
 	
 }
