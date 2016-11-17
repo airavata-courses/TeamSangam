@@ -30,6 +30,28 @@ import edu.sga.sangam.services.StormClusteringService;;
 
 @Path("stormclustering")
 public class StormClustering {
+	 static private int portNumber;
+	    static private String ipaddress;
+		private static final String endpointURI = "SGA_Rest_StromClustering/sga/stormclustering";
+		private static String serviceName =null;
+		public static void main(String[] args) throws Exception {
+			if (args.length != 3) {
+	            throw new IllegalArgumentException("Invalid arguments");
+	        }
+				
+			serviceName = args[0];
+			ipaddress = args[1];
+			portNumber = Integer.parseInt(args[2]);
+			String url =String.format( "http://%s:%d/%s",
+					ipaddress,
+					portNumber,
+					endpointURI);
+			ZooKeeperService services = new ZooKeeperService();
+			services.registerService(serviceName,url);
+			
+		}
+	
+	
 	@POST
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
