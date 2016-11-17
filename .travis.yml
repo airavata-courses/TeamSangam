@@ -24,17 +24,16 @@ before_script:
   - cd ..
 
 script: 
-  - cd SGA_REST_DataIngest && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_Rest_StormClustering && mvn -e clean install  -Dmaven.test.skip=true && cd ../SGA_REST_ForecastDecision && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_REST_Forecast && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_Rest_StormDetection && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_REST_WeatherForecastClient && mvn -e clean install -Dmaven.test.skip=true && cd ../SGA_REST_Registry && mvn -e clean install -Dmaven.test.skip=true
-  - cd ../SGA_REST_login/services && nosetests testLogin.py && cd ..
+  - cd ../SGA_REST_Registry && mvn -e clean install -Dmaven.test.skip=true
 
 before_deploy:
   - cd ..
   - pwd
   - ls
-  - tar -cf SGA_Sangam_WeatherApp.tar . || true
+  - tar -cf SGA_Sangam_Registry.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
-  - mv SGA_Sangam_WeatherApp.tar dpl_cd_upload/SGA_Sangam_WeatherApp.tar || true
+  - mv SGA_Sangam_Registry.tar dpl_cd_upload/SGA_Sangam_Registry.tar || true
 
 deploy:
   - provider: s3
@@ -48,27 +47,27 @@ deploy:
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: Development
+      branch: registry
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     bucket: sga-sangam-dataingestor
-    key: SGA_Sangam_WeatherApp.tar
+    key: SGA_Sangam_Registry.tar
     bundle_type: tar
     application: SGA-Sangam-stormClustering
     deployment_group: SGA-Sangam-stormClustering
     region: us-east-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: Development
+      branch: registry
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - Development
+    - registry
 
 notifications:
   email:
