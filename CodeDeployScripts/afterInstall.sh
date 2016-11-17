@@ -28,8 +28,10 @@
 #echo "Building login docker image"
 #cd /home/ec2-user/SGA_REST_login/
 #docker build -t isgalogin .
+ls /home/ec2-user
+ls /home/ec2-user/homepage
 echo "Building Homepage docker image."
-cd /home/ec2-user/SGA_REST_Homepage
+cd /home/ec2-user/homepage/SGA_REST_Homepage
 docker build -t isgahome .
 #if [[ $(docker images isgahome) ]]; then
 #	echo "Deleting the old isgahome image."

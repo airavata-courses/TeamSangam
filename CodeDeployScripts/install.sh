@@ -1,3 +1,5 @@
+ls /home/ec2-user
+ls /home/ec2-user/homepage
 set -e
 
 #docker run -d --name mongo -p 27017:27017 imongo
