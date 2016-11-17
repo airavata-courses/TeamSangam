@@ -8,4 +8,4 @@ RUN apt-get install -y gcc
 
 ADD ./services /app
 WORKDIR /app
-CMD ["python","homepage.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "--backlog", "2048", "--timeout", "30", "--log-file", "homeLogs", "--access-logfile", "homeAccessLogs", "homepage:app"]

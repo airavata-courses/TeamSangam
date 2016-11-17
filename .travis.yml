@@ -9,7 +9,7 @@ sudo: true
 
 before_install:
   - pip install flask==$FLASK coverage
-  - pip install -r requirements.txt
+  - pip install -r SGA_REST_Homepage/requirements.txt
 
 install: true
 

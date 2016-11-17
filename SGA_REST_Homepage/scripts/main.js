@@ -2,7 +2,7 @@
 
 // create the module
 var home = angular.module("sga_home",[]);
-var myurl = "http://ec2-54-209-48-186.compute-1.amazonaws.com:";
+var myurl = "http://ec2-54-153-82-22.us-west-1.compute.amazonaws.com:";
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
 	

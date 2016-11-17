@@ -8,8 +8,8 @@ import base64, json
 
 app = Flask(__name__)
 
-PUBLIC_IP = "http://ec2-54-209-48-186.compute-1.amazonaws.com"
-CROSS_DOMAIN = "http://ec2-54-209-48-186.compute-1.amazonaws.com:8080"
+PUBLIC_IP = "http://ec2-54-153-82-22.us-west-1.compute.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-153-82-22.us-west-1.compute.amazonaws.com:8080"
 
 filename = "aws_key.properties"
 timestampDict = {}
@@ -129,5 +129,5 @@ def putSession():
     return jsonify("OK")
 
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0',port=5001,debug=True)
+#if __name__ == "__main__":
+#app.run(host='0.0.0.0',port=5001,debug=True)
