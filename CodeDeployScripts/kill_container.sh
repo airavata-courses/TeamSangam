@@ -5,9 +5,9 @@ set -e
 #docker rm -f usermysqldb || true
 
 #docker rm -f sgalogin || true
-
-#docker rm -f sgahome || true
-
+docker stop sgahome || true
+docker rm -f sgahome || true
+docker rmi -f isgahome || true
 #docker rm -f sgagateway || true
 
 #docker rm -f sgadataingest || true
@@ -24,8 +24,8 @@ set -e
 
 #docker rmi iusermysqldb || true
 
-docker stop $(docker ps -a -q) || true
+#docker stop $(docker ps -a -q) || true
 
-docker rm $(docker ps -a -q) || true
+#docker rm $(docker ps -a -q) || true
 
-docker rmi $(docker images -q) 
+#docker rmi $(docker images -q) 
