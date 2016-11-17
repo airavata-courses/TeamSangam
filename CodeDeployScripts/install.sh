@@ -18,5 +18,13 @@ do
    fi
 done < /home/ec2-user/SGA_REST_DataIngest/server.properties
 
+echo "Changing the directory to SGA_REST_DataIngest"
 cd /home/ec2-user/SGA_REST_DataIngest
+
+echo "The current systemIP is"
+echo $systemip
+
+echo "The current systemID is"
+echo $serverID
+
 mvn -X exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip $serverID 8080"
