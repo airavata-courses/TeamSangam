@@ -1,6 +1,10 @@
 set -e
 
-docker run -d --name mongo -p 27017:27017 imongo
+if [[ $(docker ps -a -f name=mongo -q) ]]; then
+	echo "MongoDB Docker already running"
+else	
+	docker run -d --name mongo -p 27017:27017 imongo
+fi
 
 docker run -d --link mongo:mongo --name sgadataingest -p 8081:8080 isgadataingest
 
