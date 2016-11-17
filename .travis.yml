@@ -39,7 +39,7 @@ deploy:
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
     bucket: sga-sangam-dataingestor
-    region: us-east-1
+    region: us-west-1
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
@@ -53,9 +53,9 @@ deploy:
     bucket: sga-sangam-dataingestor
     key: SGA_Sangam_WeatherApp.tar
     bundle_type: tar
-    application: SGA-TeamSangam-loginpageTest
-    deployment_group: SGA-TeamSangam-loginpageTest
-    region: us-east-1
+    application: SGA-TeamSangam-testing
+    deployment_group: SGA-TeamSangam-deptest
+    region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
       branch: loginpage
