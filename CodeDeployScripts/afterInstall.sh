@@ -21,77 +21,77 @@ echo "Building MongoDB docker image"
 cd /home/ec2-user/DB_Dockers/registry_MongoDB/
 docker build -t imongo .
 
-echo "Building mysqlDB docker image"
-cd /home/ec2-user/DB_Dockers/userMySQLDB/
-docker build -t iusermysqldb .
+#echo "Building mysqlDB docker image"
+#cd /home/ec2-user/DB_Dockers/userMySQLDB/
+#docker build -t iusermysqldb .
 
-echo "Building login docker image"
-cd /home/ec2-user/SGA_REST_login/
-docker build -t isgalogin .
+#echo "Building login docker image"
+#cd /home/ec2-user/SGA_REST_login/
+#docker build -t isgalogin .
 
-echo "Building Homepage docker image"
-cd /home/ec2-user/SGA_REST_Homepage/
-docker build -t isgahome .
+#echo "Building Homepage docker image"
+#cd /home/ec2-user/SGA_REST_Homepage/
+#docker build -t isgahome .
 
-echo "Build maven package for WeatherForecastClient"
-cd /home/ec2-user/SGA_REST_WeatherForecastClient
-echo "Copying the webpages into Gateway"
-sudo cp /home/ec2-user/SGA_REST_login/*.html .
-sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
-sudo mkdir -p scripts
-echo "Created scripts directory"
-sudo mkdir -p stylesheets
-echo "Created stylesheets directory"
-sudo mkdir -p templates
-echo "Created templates directory"
+#echo "Build maven package for WeatherForecastClient"
+#cd /home/ec2-user/SGA_REST_WeatherForecastClient
+#echo "Copying the webpages into Gateway"
+#sudo cp /home/ec2-user/SGA_REST_login/*.html .
+#sudo cp /home/ec2-user/SGA_REST_login/requirements.txt .
+#sudo mkdir -p scripts
+#echo "Created scripts directory"
+#sudo mkdir -p stylesheets
+#echo "Created stylesheets directory"
+#sudo mkdir -p templates
+#echo "Created templates directory"
 
-sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
-sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
-sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
-sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
-sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
-sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
-echo "Copied the html and javascript files to TOMCAT"
+#sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
+#sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
+#sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
+#sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
+#sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
+#sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
+#echo "Copied the html and javascript files to TOMCAT"
 
-mvn package
-echo "Building gateway docker image"
-docker build -t isgagateway .
+#mvn package
+#echo "Building gateway docker image"
+#docker build -t isgagateway .
 
-echo "Build maven package for Data Ingest"
-cd /home/ec2-user/SGA_REST_DataIngest/
-mvn package
-echo "Building dataingest docker image"
-docker build -t isgadataingest .
+#echo "Build maven package for Data Ingest"
+#cd /home/ec2-user/SGA_REST_DataIngest/
+#mvn package
+#echo "Building dataingest docker image"
+#docker build -t isgadataingest .
 
-echo "Build maven package for StormDetection"
-cd /home/ec2-user/SGA_Rest_StormDetection/
-mvn package
-echo "Building stormdetection docker image"
-docker build -t isgastormdetection .
+#echo "Build maven package for StormDetection"
+#cd /home/ec2-user/SGA_Rest_StormDetection/
+#mvn package
+#echo "Building stormdetection docker image"
+#docker build -t isgastormdetection .
 
-echo "Building maven package for StormClustering"
-cd /home/ec2-user/SGA_Rest_StormClustering/
-mvn package
-echo "Building stormclustering docker image"
-docker build -t isgastormclustering .
+#echo "Building maven package for StormClustering"
+#cd /home/ec2-user/SGA_Rest_StormClustering/
+#mvn package
+#echo "Building stormclustering docker image"
+#docker build -t isgastormclustering .
 
-echo "Building maven package for Forecast"
-cd /home/ec2-user/SGA_REST_Forecast/
-mvn package
+#echo "Building maven package for Forecast"
+#cd /home/ec2-user/SGA_REST_Forecast/
+#mvn package
 
-echo "Building maven package for ForecastDecision"
-cd /home/ec2-user/SGA_REST_ForecastDecision/
-mvn package
-mv ./target/SGA_REST_ForecastDecision.war /home/ec2-user/SGA_REST_Forecast/target/SGA_REST_ForecastDecision.war
+#echo "Building maven package for ForecastDecision"
+#cd /home/ec2-user/SGA_REST_ForecastDecision/
+#mvn package
+#mv ./target/SGA_REST_ForecastDecision.war /home/ec2-user/SGA_REST_Forecast/target/SGA_REST_ForecastDecision.war
 
-echo "Building docker image for Forecast Decision & Run Forecast"
-cd /home/ec2-user/SGA_REST_Forecast/
-docker build -t isgaforecast .
+#echo "Building docker image for Forecast Decision & Run Forecast"
+#cd /home/ec2-user/SGA_REST_Forecast/
+#docker build -t isgaforecast .
 
 
-echo "Building maven package for Registry"
-cd /home/ec2-user/SGA_REST_Registry/
-mvn package
+#echo "Building maven package for Registry"
+#cd /home/ec2-user/SGA_REST_Registry/
+#mvn package
 
-echo "Building docker image for Registry"
-docker build -t isgaregistry .
+#echo "Building docker image for Registry"
+#docker build -t isgaregistry .
