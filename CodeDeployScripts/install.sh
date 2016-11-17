@@ -31,3 +31,6 @@ if [[ $(docker ps -a -f name=sgalogin -q) ]]; then
 fi	
 echo "Starting new docker container sgalogin."
 docker run -d --link usermysqldb:usermysqldb --name sgalogin -p 5000:5000 isgalogin
+
+echo "Removing dangling nodes, if any"
+docker rmi $(docker images -f "dangling=true" -q)
