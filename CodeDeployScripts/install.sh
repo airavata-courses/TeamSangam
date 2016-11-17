@@ -1,5 +1,3 @@
-ls /home/ec2-user
-ls /home/ec2-user/homepage
 set -e
 
 #docker run -d --name mongo -p 27017:27017 imongo
@@ -9,10 +7,9 @@ if [[ $(docker ps -a -f name=sgahome -q) ]]; then
 	echo "Removing the existing sgahome docker container."
 	docker stop sgahome || true
 	docker rm -f sgahome || true
-else	
-	echo "Starting new docker container sgahome."
-	docker run -d --name sgahome -p 5001:5001 isgahome
 fi
+echo "Starting new docker container sgahome."
+docker run -d --name sgahome -p 5001:5001 isgahome
 
 #docker run -d --name sgagateway -p 8080:8080 isgagateway
 
