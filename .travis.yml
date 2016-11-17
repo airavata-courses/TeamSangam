@@ -7,8 +7,6 @@ env:
 
 services:
   - mysql
-  - mongodb
-  - rabbitmq
 
 sudo: true
 
