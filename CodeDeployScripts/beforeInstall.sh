@@ -19,5 +19,4 @@ fi
 
 echo "Moving contents to appropriate directory"
 ls /home/ec2-user
-ls /home/ec2-user/homepage
 #mv /home/ec2-user/homepage/SGA_REST_Homepage /home/ec2-user/SGA_REST_Homepage
