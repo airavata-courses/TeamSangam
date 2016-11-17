@@ -1,8 +1,14 @@
 set -e
 
 #docker run -d --name mongo -p 27017:27017 imongo
+if [[ $(docker ps -f name=usermysqldb -q) ]]; then
+	echo "MySQL docker container is already running."
+else	
+	echo "Starting new docker container usermysqldb."
+	docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
+fi
 
-docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
+#docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
 
 #docker run -d --name sgahome -p 5001:5001 isgahome
 
@@ -18,4 +24,10 @@ docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
 
 #docker run -d --link mongo:mongo --name sgaregistry -p 8085:8080 isgaregistry
 
+if [[ $(docker ps -a -f name=sgalogin -q) ]]; then
+	echo "Removing the existing sgalogin docker container."
+	docker stop sgalogin || true
+	docker rm -f sgalogin || true
+fi	
+echo "Starting new docker container sgalogin."
 docker run -d --link usermysqldb:usermysqldb --name sgalogin -p 5000:5000 isgalogin

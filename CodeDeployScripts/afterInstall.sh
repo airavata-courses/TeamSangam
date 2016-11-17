@@ -21,6 +21,9 @@
 #cd /home/ec2-user/DB_Dockers/registry_MongoDB/
 #docker build -t imongo .
 
+mv /home/ec2-user/loginpage/SGA_REST_login /home/ec2-user/SGA_REST_login
+mv /home/ec2-user/loginpage/DB_Dockers /home/ec2-user/DB_Dockers
+
 echo "Building mysqlDB docker image"
 cd /home/ec2-user/DB_Dockers/userMySQLDB/
 docker build -t iusermysqldb .
