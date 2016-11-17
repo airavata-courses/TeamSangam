@@ -19,4 +19,4 @@ done < ../SGA_REST_DataIngest/server.properties
 
 javac /home/ec2-user/SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java
 
-java /home/ec2-user/SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java $systemip dataingestor 8080  
+mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip dataingestor 8080"
