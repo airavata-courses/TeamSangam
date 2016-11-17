@@ -31,8 +31,8 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
-    bucket: sga-team-sangam
-    region: us-west-2
+    bucket: sga-sangam-testing
+    region: us-west-1
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
@@ -43,7 +43,7 @@ deploy:
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-team-sangam
+    bucket: sga-sangam-testing
     key: SGA_Sangam_WeatherApp_dataingest.tar
     bundle_type: tar
     application: SGA-TeamSangam-testing
