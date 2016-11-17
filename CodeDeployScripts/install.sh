@@ -15,8 +15,6 @@ do
    if [ "$privateip" == "$localip" ]; then
       systemip=$publicip
    fi
-done < ../SGA_REST_DataIngest/server.properties
-
-javac /home/ec2-user/SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java
+done < /home/ec2-user/SGA_REST_DataIngest/server.properties
 
 mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip dataingestor 8080"
