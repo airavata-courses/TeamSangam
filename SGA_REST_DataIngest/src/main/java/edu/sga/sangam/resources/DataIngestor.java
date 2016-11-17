@@ -37,7 +37,8 @@ import edu.sga.sangam.services.DataIngestorService;
 public class DataIngestor {
     static private int portNumber;
 	private static final String endpointURI = "SGA_REST_DataIngest/sga/dataingestor";
-	private static String serviceName =null, String hostIP=null;
+	private static String serviceName =null;
+	private static String hostIP =null;
 	public static void main(String[] args) throws Exception {
 		if (args.length != 3) {
             throw new IllegalArgumentException("Invalid arguments");
