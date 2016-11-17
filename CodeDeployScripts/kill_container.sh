@@ -3,9 +3,9 @@ set -e
 #docker rm -f mongo || true
 
 #docker rm -f usermysqldb || true
-
-#docker rm -f sgalogin || true
-
+docker stop sgalogin || true
+docker rm -f sgalogin || true
+docker rmi -f isgalogin || true
 #docker rm -f sgahome || true
 
 #docker rm -f sgagateway || true
@@ -24,8 +24,8 @@ set -e
 
 #docker rmi iusermysqldb || true
 
-docker stop $(docker ps -a -q) || true
+#docker stop $(docker ps -a -q) || true
 
-docker rm $(docker ps -a -q) || true
+#docker rm $(docker ps -a -q) || true
 
-docker rmi $(docker images -q) 
+#docker rmi $(docker images -q) 
