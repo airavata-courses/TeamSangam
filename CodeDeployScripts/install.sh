@@ -12,7 +12,7 @@ echo "Starting new docker container sgahome."
 docker run -d --name sgahome -p 5001:5001 isgahome
 
 echo "Removing dangling docker images, if any."
-docker rmi $(docker images -f "dangling=true" -q)
+docker rmi $(docker images -f "dangling=true" -q) || true
 
 #docker run -d --name sgagateway -p 8080:8080 isgagateway
 
