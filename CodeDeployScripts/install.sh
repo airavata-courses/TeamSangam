@@ -27,4 +27,4 @@ echo $systemip
 echo "The current systemID is"
 echo $serverID
 
-mvn -X exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip $serverID 8080"
+mvn -X exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip $serverID 8081"
