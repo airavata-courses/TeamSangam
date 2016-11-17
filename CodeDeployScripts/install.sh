@@ -11,6 +11,9 @@ fi
 echo "Starting new docker container sgahome."
 docker run -d --name sgahome -p 5001:5001 isgahome
 
+echo "Removing dangling docker images, if any."
+docker rmi $(docker images -f "dangling=true" -q)
+
 #docker run -d --name sgagateway -p 8080:8080 isgagateway
 
 #docker run -d --link mongo:mongo --name sgadataingest -p 8081:8080 isgadataingest
