@@ -16,7 +16,7 @@ do
 	systemip=$publicip
 	serverID=$server 
    fi
-done < /home/ec2-user/SGA_REST_DataIngest/server.properties
+done < /home/ec2-user/SGA_REST_DataIngest/system.properties
 
 echo "Changing the directory to SGA_REST_DataIngest"
 cd /home/ec2-user/SGA_REST_DataIngest
