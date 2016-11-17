@@ -16,3 +16,6 @@ if [ "$?" -ne 0 ]; then
     sudo service docker start
     sudo usermod -a -G docker ec2-user
 fi
+
+echo "Moving contents to appropriate directory"
+mv /home/ec2-user/homepage/SGA_REST_Homepage /home/ec2-user/SGA_REST_Homepage
