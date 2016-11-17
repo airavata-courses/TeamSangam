@@ -6,12 +6,12 @@ docker run -d --link mongo:mongo --name sgadataingest -p 8081:8080 isgadatainges
 
 localip=$(ip addr show eth0 | awk '/inet /{split($2,a,"/");print a[1]}')
 
-while IFS=':' read -r serverid privateip publicip
+while IFS=':' read -r privateip publicip
 do
    if [ "$privateip" == "$localip" ]; then
       systemip=$publicip
    fi
-done < server.properties
+done < ../SGA_REST_DataIngest/server.properties
 
 javac ../SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java
 

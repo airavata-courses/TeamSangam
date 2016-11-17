@@ -7,3 +7,6 @@
 #echo 'GOAUTH_CLIENT_ID='$GOAUTH_CLIENT_ID > ../SGA_REST_login/services/googleOAuth.properties
 #echo 'GOAUTH_CLIENT_SECRET='$GOAUTH_CLIENT_SECRET >> ../SGA_REST_login/services/googleOAuth.properties
 #echo 'GOAUTH_APP_NAME='$GOAUTH_APP_NAME >> ../SGA_REST_login/services/googleOAuth.properties
+echo $PRIVATE_IP1:$PUBLIC_IP1 > ../SGA_REST_DataIngest/system.properties
+echo $PRIVATE_IP2:$PUBLIC_IP2 >> ../SGA_REST_DataIngest/system.properties
+echo $PRIVATE_IP3:$PUBLIC_IP3 >> ../SGA_REST_DataIngest/system.properties
