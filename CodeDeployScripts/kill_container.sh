@@ -1,16 +1,17 @@
 set -e
 
+echo "There is no need to stop anything as of now."
 #docker rm -f mongo || true
 
 #docker rm -f usermysqldb || true
 
 #docker rm -f sgalogin || true
-echo "Stopping container sgahome"
-docker stop sgahome || true
-echo "Removing container sgahome"
-docker rm -f sgahome || true
-echo "Removing image isgahome"
-docker rmi -f isgahome || true
+#echo "Stopping container sgahome"
+#docker stop sgahome || true
+#echo "Removing container sgahome"
+#docker rm -f sgahome || true
+#echo "Removing image isgahome"
+#docker rmi -f isgahome || true
 #docker rm -f sgagateway || true
 
 #docker rm -f sgadataingest || true

@@ -29,9 +29,14 @@
 #cd /home/ec2-user/SGA_REST_login/
 #docker build -t isgalogin .
 
-echo "Building Homepage docker image"
-cd /home/ec2-user/SGA_REST_Homepage/
-docker build -t isgahome .
+cd /home/ec2-user/SGA_REST_Homepage
+if [[ $(docker images isgahome -q) ]]; then
+	echo "Deleting the old isgahome image."
+	docker rmi -f isgahome || true
+else	
+	echo "Building new Homepage docker image"
+	docker build -t isgahome .
+fi
 
 #echo "Build maven package for WeatherForecastClient"
 #cd /home/ec2-user/SGA_REST_WeatherForecastClient

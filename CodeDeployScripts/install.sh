@@ -3,8 +3,14 @@ set -e
 #docker run -d --name mongo -p 27017:27017 imongo
 
 #docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
-
-docker run -d --name sgahome -p 5001:5001 isgahome
+if [[ $(docker ps -a -f name=sgahome -q) ]]; then
+	echo "Removing the existing sgahome docker container."
+	docker stop sgahome || true
+	docker rm -f sgahome || true
+else	
+	echo "Starting new docker container sgahome."
+	docker run -d --name sgahome -p 5001:5001 isgahome
+fi
 
 #docker run -d --name sgagateway -p 8080:8080 isgagateway
 
