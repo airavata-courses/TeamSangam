@@ -5,10 +5,6 @@ python:
 env:
   - FLASK=0.11.1
 
-services:
-  - mysql
-  - rabbitmq
-
 sudo: true
 
 before_install:
@@ -27,44 +23,44 @@ script:
 
 before_deploy:
   - pwd
-  - tar -cf SGA_Sangam_WeatherApp_loginpage.tar . || true
+  - tar -cf SGA_Sangam_homepage.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
-  - mv SGA_Sangam_WeatherApp_loginpage.tar dpl_cd_upload/SGA_Sangam_WeatherApp_loginpage.tar || true
+  - mv SGA_Sangam_homepage.tar dpl_cd_upload/SGA_Sangam_homepage.tar || true
 
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
-    bucket: sga-sangam-dataingestor
-    region: us-east-1
+    bucket: sga-sangam-testing
+    region: us-west-1
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: loginpage
+      branch: Development
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-sangam-dataingestor
-    key: SGA_Sangam_WeatherApp_loginpage.tar
+    bucket: sga-sangam-testing
+    key: SGA_Sangam_homepage.tar
     bundle_type: tar
-    application: SGA-Sangam-stormClustering
-    deployment_group: SGA-Sangam-stormClustering
-    region: us-east-1
+    application: SGA-TeamSangam-testing
+    deployment_group: SGA-TeamSangam-deptest
+    region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: loginpage
+      branch: Development
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - loginpage
+    - Development
 
 notifications:
   email:
