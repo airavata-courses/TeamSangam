@@ -19,4 +19,4 @@ do
 done < /home/ec2-user/SGA_REST_DataIngest/server.properties
 
 cd /home/ec2-user/SGA_REST_DataIngest
-mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip $serverID 8080"
+mvn -X exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestor -Dexec.args="$systemip $serverID 8080"
