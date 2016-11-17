@@ -13,6 +13,6 @@ do
    fi
 done < ../SGA_REST_DataIngest/server.properties
 
-javac ../SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java
+javac /home/ec2-user/SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java
 
-java ../SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java $systemip dataingestor 8080  
+java /home/ec2-user/SGA_REST_DataIngest/src/main/java/edu/sga/sangam/resources/DataIngestor.java $systemip dataingestor 8080  
