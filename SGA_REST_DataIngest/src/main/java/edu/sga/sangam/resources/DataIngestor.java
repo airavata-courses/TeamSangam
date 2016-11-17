@@ -37,16 +37,16 @@ import edu.sga.sangam.services.DataIngestorService;
 public class DataIngestor {
     static private int portNumber;
 	private static final String endpointURI = "SGA_REST_DataIngest/sga/dataingestor";
-	private static String serviceName =null;
+	private static String serviceName =null, String hostIP=null;
 	public static void main(String[] args) throws Exception {
-		if (args.length != 2) {
+		if (args.length != 3) {
             throw new IllegalArgumentException("Invalid arguments");
         }
-			
-		serviceName = args[0];
-		portNumber = Integer.parseInt(args[1]);
+		hostIP = args[0];
+		serviceName = args[1];
+		portNumber = Integer.parseInt(args[2]);
 		String url =String.format( "http://%s:%d/%s",
-				"localhost",
+				hostIP,
 				portNumber,
 				endpointURI);
 		ZooKeeperService services = new ZooKeeperService();
