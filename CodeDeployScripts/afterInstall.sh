@@ -29,7 +29,8 @@
 #cd /home/ec2-user/SGA_REST_login/
 #docker build -t isgalogin .
 echo "Moving the homepage files to /home/ec2-user"
-mv /home/ec2-user/homepage/SGA_REST_Homepage /home/ec2-user/SGA_REST_Homepage
+rm -rf /home/ec2-user/SGA_REST_Homepage
+mv /home/ec2-user/homepage/SGA_REST_Homepage /home/ec2-user/
 echo "Building Homepage docker image."
 cd /home/ec2-user/SGA_REST_Homepage
 docker build -t isgahome .
