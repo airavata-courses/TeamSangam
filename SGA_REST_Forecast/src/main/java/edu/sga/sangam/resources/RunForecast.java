@@ -25,6 +25,29 @@ import org.json.simple.JSONObject;
 import edu.sga.sangam.services.RunForecastService;
 @Path("runforecast")
 public class RunForecast {
+	
+	 static private int portNumber;
+	    static private String ipaddress;
+		private static final String endpointURI = "SGA_REST_Forecast/sga/runforecast";
+		private static String serviceName =null;
+		public static void main(String[] args) throws Exception {
+			if (args.length != 3) {
+	            throw new IllegalArgumentException("Invalid arguments");
+	        }
+				
+			serviceName = args[0];
+			ipaddress = args[1];
+			portNumber = Integer.parseInt(args[2]);
+			String url =String.format( "http://%s:%d/%s",
+					ipaddress,
+					portNumber,
+					endpointURI);
+			ZooKeeperService services = new ZooKeeperService();
+			services.registerService(serviceName,url);
+			
+		}
+	
+	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Produces(MediaType.APPLICATION_JSON)
