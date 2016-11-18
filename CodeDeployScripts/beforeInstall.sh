@@ -8,6 +8,7 @@ if [ "$?" -ne 0 ]; then
     mvn --version
 fi
 
+echo 'check if docker is installed'
 docker -v
 if [ "$?" -ne 0 ]; then
     echo 'Installing Docker...'
