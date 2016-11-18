@@ -34,7 +34,7 @@ import edu.sga.sangam.services.StormDetectionService;
 
 @Path("stormdetection")
 public class StormDetection {
-	
+	static ZooKeeperService services = new ZooKeeperService();
 	 static private int portNumber;
 	    static private String ipaddress;
 		private static final String endpointURI = "SGA_Rest_StormDetection/sga/stormdetection";
@@ -51,7 +51,7 @@ public class StormDetection {
 					ipaddress,
 					portNumber,
 					endpointURI);
-			ZooKeeperService services = new ZooKeeperService();
+			
 			services.registerService(serviceName,url);
 			
 		}
@@ -108,7 +108,8 @@ public class StormDetection {
 	public void registry(JSONObject stormdetection) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://54.209.48.186:8085/SGA_REST_Registry/sga/resgitry/sdlogdata");
+		String registryURL = services.discoverServiceURI("registry");
+		PostMethod post = new PostMethod(registryURL+"/sdlogdata");
 		StringRequestEntity entity = new StringRequestEntity(stormdetection.toJSONString(),"application/json","UTF-8");
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");
