@@ -35,11 +35,12 @@ import edu.sga.sangam.services.DataIngestorService;
 @Path("/dataingestor")
 @Produces(MediaType.APPLICATION_JSON)
 public class DataIngestor {
+	static ZooKeeperService services = new ZooKeeperService();
     static private int portNumber;
 	static private String ipaddress;
 	private static final String endpointURI = "SGA_REST_DataIngest/sga/dataingestor";
 	private static String serviceName =null;
-	private static String hostIP =null;
+	//private static String hostIP =null;
 	public static void main(String[] args) throws Exception {
 		if (args.length != 3) {
             throw new IllegalArgumentException("Invalid arguments");
@@ -51,7 +52,7 @@ public class DataIngestor {
 				ipaddress,
 				portNumber,
 				endpointURI);
-		ZooKeeperService services = new ZooKeeperService();
+		//ZooKeeperService services = new ZooKeeperService();
 		services.registerService(serviceName,url);
 		
 	}
@@ -101,7 +102,8 @@ public class DataIngestor {
 	public void registry(JSONObject requestDataIngestor) throws IOException 
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://54.209.48.186:8085/SGA_REST_Registry/sga/resgitry/dilogdata");
+		String registryURL = services.discoverServiceURI("registry");
+		PostMethod post = new PostMethod(registryURL+"/dilogdata");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(),"application/json","UTF-8");

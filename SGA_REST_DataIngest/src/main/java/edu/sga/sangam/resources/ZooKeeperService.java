@@ -78,6 +78,23 @@ public class ZooKeeperService  {
         }
     }
 
-   
+    public String discoverServiceURI(String name) {
+        try {
+            String znode = "/services/" + name ;
+
+            List<String> uris = curatorFramework.getChildren().forPath(znode);
+            
+            for (String uri:uris)
+            {
+            	System.out.println(uri);
+            }
+            Random r = new Random();
+            int n = r.nextInt(uris.size());
+            System.out.println(new String(curatorFramework.getData().forPath(ZKPaths.makePath(znode, uris.get(n)))));
+            return new String(curatorFramework.getData().forPath(ZKPaths.makePath(znode, uris.get(n))));
+        } catch (Exception ex) {
+            throw new RuntimeException("Service \"" + name + "\" not found: " + ex.getLocalizedMessage());
+        }
+    }
 
 }
