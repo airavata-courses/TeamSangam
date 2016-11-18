@@ -36,6 +36,7 @@ import edu.sga.sangam.services.DataIngestorService;
 @Produces(MediaType.APPLICATION_JSON)
 public class DataIngestor {
     static private int portNumber;
+	static private String ipaddress;
 	private static final String endpointURI = "SGA_REST_DataIngest/sga/dataingestor";
 	private static String serviceName =null;
 	private static String hostIP =null;
@@ -43,11 +44,11 @@ public class DataIngestor {
 		if (args.length != 3) {
             throw new IllegalArgumentException("Invalid arguments");
         }
-		hostIP = args[0];
-		serviceName = args[1];
+		serviceName = args[0];
+		ipaddress = args[1];
 		portNumber = Integer.parseInt(args[2]);
 		String url =String.format( "http://%s:%d/%s",
-				hostIP,
+				ipaddress,
 				portNumber,
 				endpointURI);
 		ZooKeeperService services = new ZooKeeperService();
