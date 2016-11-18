@@ -1,6 +1,10 @@
-echo "Moving the homepage files to /home/ec2-user"
+echo "Moving the Forecast files to /home/ec2-user"
 rm -rf /home/ec2-user/SGA_REST_Forecast
+rm -rf /home/ec2-user/SGA_REST_ForecastDecision
 mv /home/ec2-user/forecast/SGA_REST_Forecast /home/ec2-user/
+
+echo "Moving the ForecastDecision files to /home/ec2-user"
+mv /home/ec2-user/forecast/SGA_REST_ForecastDecision /home/ec2-user/
 
 DIRECTORY=DB_Dockers
 cd /home/ec2-user
