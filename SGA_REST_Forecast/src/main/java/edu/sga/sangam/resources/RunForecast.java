@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 import edu.sga.sangam.services.RunForecastService;
 @Path("runforecast")
 public class RunForecast {
-	
+	static ZooKeeperService services = new ZooKeeperService();
 	 static private int portNumber;
 	    static private String ipaddress;
 		private static final String endpointURI = "SGA_REST_Forecast/sga/runforecast";
@@ -42,7 +42,7 @@ public class RunForecast {
 					ipaddress,
 					portNumber,
 					endpointURI);
-			ZooKeeperService services = new ZooKeeperService();
+			//ZooKeeperService services = new ZooKeeperService();
 			services.registerService(serviceName,url);
 			
 		}
@@ -92,7 +92,8 @@ public class RunForecast {
 	public void registry(JSONObject runforecast) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://54.209.48.186:8085/SGA_REST_Registry/sga/resgitry/runforecastlogdata");
+		String registryURL = services.discoverServiceURI("registry");
+		PostMethod post = new PostMethod(registryURL+"/runforecastlogdata");
 		StringRequestEntity entity = new StringRequestEntity(runforecast.toJSONString(),"application/json","UTF-8");
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");

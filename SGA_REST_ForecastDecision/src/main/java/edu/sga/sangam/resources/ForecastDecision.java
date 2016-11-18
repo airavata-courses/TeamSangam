@@ -19,6 +19,7 @@ import org.json.simple.JSONObject;
 
 @Path("forecastdecision")
 public class ForecastDecision {
+	static ZooKeeperService services = new ZooKeeperService();
 	 static private int portNumber;
 	    static private String ipaddress;
 		private static final String endpointURI = "SGA_REST_ForecastDecision/sga/forecastdecision";
@@ -35,7 +36,7 @@ public class ForecastDecision {
 					ipaddress,
 					portNumber,
 					endpointURI);
-			ZooKeeperService services = new ZooKeeperService();
+			
 			services.registerService(serviceName,url);
 			
 		}
@@ -76,7 +77,8 @@ public class ForecastDecision {
 	public void registry(JSONObject forecastdecision) throws Exception
 	{
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://54.209.48.186:8085/SGA_REST_Registry/sga/resgitry/decisionlogdata");
+		String registryURL = services.discoverServiceURI("registry");
+		PostMethod post = new PostMethod(registryURL+"/decisionlogdata");
 		StringRequestEntity entity = new StringRequestEntity(forecastdecision.toJSONString(),"application/json","UTF-8");
 		post.setRequestEntity(entity);
 		post.addRequestHeader("Content-Type", "application/json");
