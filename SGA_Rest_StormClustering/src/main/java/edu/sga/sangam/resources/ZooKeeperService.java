@@ -1,5 +1,7 @@
 package edu.sga.sangam.resources;
 
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Inject;
@@ -7,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.RetryNTimes;
+import org.apache.curator.utils.ZKPaths;
 import org.apache.zookeeper.CreateMode;
 
 public class ZooKeeperService  {
@@ -69,6 +72,23 @@ public class ZooKeeperService  {
                     + "\", with URI \"" + uri + "\": " + ex.getLocalizedMessage());
         }
     }
+    public String discoverServiceURI(String name) {
+        try {
+            String znode = "/services/" + name ;
 
+            List<String> uris = curatorFramework.getChildren().forPath(znode);
+            
+            for (String uri:uris)
+            {
+            	System.out.println(uri);
+            }
+            Random r = new Random();
+            int n = r.nextInt(uris.size());
+            System.out.println(new String(curatorFramework.getData().forPath(ZKPaths.makePath(znode, uris.get(n)))));
+            return new String(curatorFramework.getData().forPath(ZKPaths.makePath(znode, uris.get(n))));
+        } catch (Exception ex) {
+            throw new RuntimeException("Service \"" + name + "\" not found: " + ex.getLocalizedMessage());
+        }
+    }
 
 }
