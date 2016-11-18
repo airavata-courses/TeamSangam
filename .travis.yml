@@ -1,20 +1,13 @@
-language: python
-python:
-  - "3.4"
+language: java
 
-env:
-  - FLASK=0.11.1
+jdk:
+  - oraclejdk7
 
 services:
   - mysql
   - mongodb
-  - rabbitmq
 
 sudo: true
-
-before_install:
-  - pip install flask==$FLASK coverage
-  - pip install -r requirements.txt
 
 install: true
 
@@ -28,8 +21,6 @@ script:
 
 before_deploy:
   - cd ..
-  - pwd
-  - ls
   - tar -cf SGA_Sangam_Registry.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
@@ -40,8 +31,8 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     local_dir: dpl_cd_upload
-    bucket: sga-sangam-dataingestor
-    region: us-east-1
+    bucket: sga-sangam-testing
+    region: us-west-1
     skip_cleanup: true
     acl: public_read
     detect_encoding: true
@@ -52,12 +43,12 @@ deploy:
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
-    bucket: sga-sangam-dataingestor
+    bucket: sga-sangam-testing
     key: SGA_Sangam_Registry.tar
     bundle_type: tar
-    application: SGA-Sangam-stormClustering
-    deployment_group: SGA-Sangam-stormClustering
-    region: us-east-1
+    application: SGA-TeamSangam-testing
+    deployment_group: SGA-TeamSangam-deptest
+    region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
       branch: registry
