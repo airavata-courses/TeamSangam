@@ -1,6 +1,6 @@
 echo "Moving the storm clustering files to /home/ec2-user"
 rm -rf /home/ec2-user/SGA_Rest_StormClustering
-mv /home/ec2-user/forecast/SGA_Rest_StormClustering /home/ec2-user/
+mv /home/ec2-user/stormclustering/SGA_Rest_StormClustering /home/ec2-user/
 
 DIRECTORY=DB_Dockers
 cd /home/ec2-user
