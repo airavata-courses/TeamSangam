@@ -35,4 +35,4 @@ cd /home/ec2-user/SGA_REST_ForecastDecision
 
 mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.ForecastDecision -Dexec.args="$serverID $systemIP 8084"
 
-docker rmi $(docker images -f "dangling=true" -q)
+docker rmi $(docker images -f "dangling=true" -q) || true
