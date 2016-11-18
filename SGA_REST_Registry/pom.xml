@@ -18,6 +18,16 @@
             <artifactId>jersey-media-moxy</artifactId>
             <version>2.23</version>
         </dependency>
+        <dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-x-discovery</artifactId>
+    <version>2.10.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.curator</groupId>
+    <artifactId>curator-framework</artifactId>
+    <version>2.10.0</version>
+</dependency>
         <!-- https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson -->
 <dependency>
     <groupId>org.glassfish.jersey.media</groupId>
