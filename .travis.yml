@@ -1,0 +1,67 @@
+language: java
+
+jdk:
+  - oraclejdk7
+
+services:
+  - mongodb
+  - rabbitmq
+
+sudo: true
+
+install: true
+
+before_script:
+  - cd env_scripts
+  - source props.sh
+  - cd ..
+
+script: 
+  - cd SGA_REST_DataIngest && mvn -e clean install -Dmaven.test.skip=true
+
+before_deploy:
+  - cd ..
+  - tar -cf SGA_Sangam_WeatherApp_dataingest.tar . || true
+  - mkdir -p "dpl_cd_upload"
+  - ls
+  - mv SGA_Sangam_WeatherApp_dataingest.tar dpl_cd_upload/SGA_Sangam_WeatherApp_dataingest.tar || true
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    local_dir: dpl_cd_upload
+    bucket: sga-sangam-testing
+    region: us-west-1
+    skip_cleanup: true
+    acl: public_read
+    detect_encoding: true
+    on:
+      repo: airavata-courses/TeamSangam
+      branch: dataingest
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-sangam-testing
+    key: SGA_Sangam_WeatherApp_dataingest.tar
+    bundle_type: tar
+    application: SGA-TeamSangam-testing
+    deployment_group: SGA-TeamSangam-DItesting
+    region: us-west-1
+    on:
+      repo: airavata-courses/TeamSangam
+      branch: dataingest
+
+after_deploy:
+  - echo "Deploy steps completed successfully."
+
+branches:
+  only:
+    - dataingest
+
+notifications:
+  email:
+    - vikas1590@gmail.com
+    - rajasimha1991@gmail.com
+    - raghava1990@gmail.com
