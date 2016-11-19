@@ -1,8 +1,9 @@
 language: python
+
 python:
   - "3.4"
 
-services:
+services: 
   - mongodb
 
 sudo: true
