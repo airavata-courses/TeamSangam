@@ -10,8 +10,12 @@
 	#mv /home/ec2-user/dataingest/DB_Dockers /home/ec2-user/
 #fi
 	
+echo "Moving the mongo db files to /home/ec2-user"
+rm -rf /home/ec2-user/mongoDocker
+mv /home/ec2-user/mongodb/mongoDocker /home/ec2-user/
+
 echo "Building MongoDB docker image"
-cd /home/ec2-user/DB_Dockers/registry_MongoDB/
+cd /home/ec2-user/mongoDocker/
 
 if [[ $(docker images | grep -w "imongo") ]]; then
         echo "MongoDB Docker image already present"

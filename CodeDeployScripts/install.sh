@@ -1,7 +1,10 @@
 set -e
 
-cd /home/ec2-user/mongodocker
-sh replication.sh
+cd /home/ec2-user/mongoDocker
+# This is a temporary step. Need to remove this if the replication.sh step is uncommented.
+# nothing....
+#chmod +x replication.sh
+#./replication.sh
 
 
 #if [[ $(docker ps -a -f name=mongo -q) ]]; then

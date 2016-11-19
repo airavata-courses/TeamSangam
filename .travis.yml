@@ -5,7 +5,6 @@ jdk:
 
 services:
   - mongodb
-  - rabbitmq
 
 sudo: true
 
@@ -16,15 +15,12 @@ before_script:
   - source props.sh
   - cd ..
 
-script: 
-  - cd SGA_REST_DataIngest && mvn -e clean install -Dmaven.test.skip=true
-
 before_deploy:
   - cd ..
-  - tar -cf SGA_Sangam_WeatherApp_dataingest.tar . || true
+  - tar -cf SGA_Sangam_WeatherApp_mongodb.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
-  - mv SGA_Sangam_WeatherApp_dataingest.tar dpl_cd_upload/SGA_Sangam_WeatherApp_dataingest.tar || true
+  - mv SGA_Sangam_WeatherApp_mongodb.tar dpl_cd_upload/SGA_Sangam_WeatherApp_mongodb.tar || true
 
 deploy:
   - provider: s3
@@ -38,27 +34,27 @@ deploy:
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: dataingest
+      branch: mongo-replication
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
     secret_access_key: $AWS_SECRET_KEY
     bucket: sga-sangam-testing
-    key: SGA_Sangam_WeatherApp_dataingest.tar
+    key: SGA_Sangam_WeatherApp_mongodb.tar
     bundle_type: tar
-    application: SGA-TeamSangam-testing
-    deployment_group: SGA-TeamSangam-DItesting
+    application: SGA-TeamSangam-M3
+    deployment_group: SGA-TeamSangam-Mongodb
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: dataingest
+      branch: mongo-replication
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - dataingest
+    - mongo-replication
 
 notifications:
   email:
