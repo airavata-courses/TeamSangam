@@ -19,7 +19,6 @@ script:
   - echo "No script needed."
 
 before_deploy:
-  - cd ..
   - tar -cf SGA_Sangam_WeatherApp_mongodb.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
