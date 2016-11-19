@@ -15,6 +15,9 @@ before_script:
   - source props.sh
   - cd ..
 
+script:
+  - echo "No script needed."
+
 before_deploy:
   - cd ..
   - tar -cf SGA_Sangam_WeatherApp_mongodb.tar . || true

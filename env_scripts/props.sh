@@ -10,3 +10,4 @@
 #echo 'SERVER_1:'$PRIVATE_IP1:$PUBLIC_IP1 > ../SGA_REST_DataIngest/system.properties
 #echo 'SERVER_2:'$PRIVATE_IP2:$PUBLIC_IP2 >> ../SGA_REST_DataIngest/system.properties
 #echo 'SERVER_3:'$PRIVATE_IP3:$PUBLIC_IP3 >> ../SGA_REST_DataIngest/system.properties
+echo "Nothing to do here."
