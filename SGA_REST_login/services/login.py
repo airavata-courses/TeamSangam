@@ -18,6 +18,7 @@ REDIRECT_URI = PUBLIC_IP + ":5000/requestToken"
 HOMEPAGE_PUT_SESSION = PUBLIC_IP + ":5001/putSession"
 
 def setupSession(email):
+	print("Putting new session")
 	# Generating a unique session ID
 	sid = str(uuid.uuid1())
 	# The session will expire if any code changes are made, or after the set time.
@@ -35,7 +36,7 @@ def login():
 	email = request.json["email"]
 	password = request.json["password"]
 	result = model.findUser(email=email, password=password)
-	if result == 11:
+	if result == 11 or result == 22:
 		# Login successful, so create a session for the user.
 		setupSession(email)
 	return jsonify(result)
@@ -118,6 +119,7 @@ def signup():
 	result = model.findUser(email=email, password=password)
 	if result:
 		if result == 99:
+			# The email is not already registered
 			if(model.insertUser(firstName=firstName, lastName=lastName, email=email, password=password)):
 				# need to start a session here, coz we are logging the user in.
 				setupSession(email)
@@ -125,6 +127,7 @@ def signup():
 			else:
 				return jsonify(666)
 		else:
+			# The email is already registered.
 			return jsonify(777)
 	else:
 		return jsonify(666)

@@ -30,6 +30,17 @@ def insertUser(firstName, lastName, email, password, role="guest"):
 	else:
 		db.close()
 		return True
+def isAdmin(email):
+	db = mysql.connect(host=host, port=port, user=SQLuser, passwd=SQLpassword, db=database)
+	cursor = db.cursor()
+	checkQuery = "SELECT Role FROM "+database+"."+table+" WHERE Email='"+email+"';"
+	cursor.execute(checkQuery)
+	role = cursor.fetchone()
+	db.close()
+	if role[0]=="admin":
+		return True
+	else:
+		return False
 
 def findUser(email, password=""):
 # check if email is in the table.
@@ -52,7 +63,19 @@ def findUser(email, password=""):
 		else:
 			if sha256_crypt.verify(password, dbPwd[0]):
 				# user exists and correct password
-				return 11
+				# Need to check if the user is an admin or a normal user
+				try:
+					admin = isAdmin(email)
+				except Exception as e:
+					print(e)
+					return False
+				else:
+					if admin:
+						# The user is an admin
+						return 22
+					else:
+						# The user is not an admin
+						return 11
 			else:
 				# user exists, but password does not match
 				return 19

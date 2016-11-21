@@ -4,6 +4,16 @@
     animation-iteration-count: 3;
 }
 
+.fa-input {
+  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+div.googleOAuth *{
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: border-box;
+    box-sizing: content-box;
+}
+
 @keyframes shake {
     0% { left: -5px; }
     100% { right: -5px; }
