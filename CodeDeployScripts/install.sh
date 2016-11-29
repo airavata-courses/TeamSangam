@@ -1,10 +1,10 @@
 set -e
 
-if [[ $(docker ps -a -f name=mongo -q) ]]; then
-        echo "MongoDB Docker already running"
-else
-        docker run -d --name mongo -p 27017:27017 imongo
-fi
+#if [[ $(docker ps -a -f name=mongo -q) ]]; then
+        #echo "MongoDB Docker already running"
+#else
+        #docker run -d --name mongo -p 27017:27017 imongo
+#fi
 
 if [[ $(docker ps -a -f name=sgaregistry -q) ]]; then
         echo "Removing the existing sgaregistry docker container."
@@ -14,7 +14,7 @@ fi
 
 echo "Starting new docker container sgaregistry"
 
-docker run -d --link mongo:mongo --name sgaregistry -p 8085:8080 isgaregistry
+docker run -d --name sgaregistry -p 8085:8080 isgaregistry
 
 localip=$(ip addr show eth0 | awk '/inet /{split($2,a,"/");print a[1]}')
 
