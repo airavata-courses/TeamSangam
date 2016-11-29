@@ -46,8 +46,8 @@ deploy:
     bucket: sga-sangam-testing
     key: SGA_Sangam_Registry.tar
     bundle_type: tar
-    application: SGA-TeamSangam-testing
-    deployment_group: SGA-TeamSangam-deptest
+    application: SGA-TeamSangam-M3
+    deployment_group: SGA-TeamSangam-M3-Workers
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
