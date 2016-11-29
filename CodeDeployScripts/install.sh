@@ -1,10 +1,10 @@
 set -e
 
-if [[ $(docker ps -a -f name=mongo -q) ]]; then
-	echo "MongoDB Docker already running"
-else	
-	docker run -d --name mongo -p 27017:27017 imongo
-fi
+#if [[ $(docker ps -a -f name=mongo -q) ]]; then
+	#echo "MongoDB Docker already running"
+#else	
+	#docker run -d --name mongo -p 27017:27017 imongo
+#fi
 
 if [[ $(docker ps -a -f name=sgadataingest -q) ]]; then
 	echo "Removing the existing sgadataingest docker container."
@@ -13,7 +13,7 @@ if [[ $(docker ps -a -f name=sgadataingest -q) ]]; then
 fi
 
 echo "Starting new docker container sgadataingest"
-docker run -d --link mongo:mongo --name sgadataingest -p 8081:8080 isgadataingest
+docker run -d --name sgadataingest -p 8081:8080 isgadataingest
 
 localip=$(ip addr show eth0 | awk '/inet /{split($2,a,"/");print a[1]}')
 
