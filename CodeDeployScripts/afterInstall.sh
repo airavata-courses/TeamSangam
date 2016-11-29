@@ -1,30 +1,40 @@
-#echo "Moving the dataingest files to /home/ec2-user"
-#rm -rf /home/ec2-user/SGA_REST_DataIngest
-#mv /home/ec2-user/dataingest/SGA_REST_DataIngest /home/ec2-user/
+echo "Moving the MongoDB files to /home/ec2-user"
+#rm -rf /home/ec2-user/SGA_Mongo_Replication
+#mv /home/ec2-user/mongo-replication/ /home/ec2-user/
 
-#DIRECTORY=DB_Dockers
-#cd /home/ec2-user
-#if [ -d "$DIRECTORY" ]; then
-	#echo "Directory already exists"
-#else
-	#mv /home/ec2-user/dataingest/DB_Dockers /home/ec2-user/
-#fi
+
+localip=$(ip addr show eth0 | awk '/inet /{split($2,a,"/");print a[1]}')
+
+while IFS=':' read -r server privateip publicip
+do
+   if [ "$privateip" == "$localip" ]; then
+        systemIP=$publicip
+        serverID=$server
+   fi
+done < /home/ec2-user/mongo-replication/system.properties
+
+gateway='GATEWAY'
+
+if [ "$serverID" == "$gateway" ]; then
+        mongo --eval "rs.initiate()"
+	while [ $(curl -s -o /dev/null --connect-timeout 10 -w "%{http_code}" http://54.183.160.22:27017/) -ne 200 ]
+	do
+		sleep 20
+	done
+		mongo --eval "rs.add("54.183.160.22")"
 	
-echo "Moving the mongo db files to /home/ec2-user"
-rm -rf /home/ec2-user/mongoDocker
-mv /home/ec2-user/mongodb/mongoDocker /home/ec2-user/
+	while [ $(curl -s -o /dev/null --connect-timeout 10 -w "%{http_code}" http://54.193.102.104:27017/) -ne 200 ]
+        do
+                sleep 20
+        done
+                mongo --eval "rs.add("54.193.102.104")"
 
-echo "Building MongoDB docker image"
-cd /home/ec2-user/mongoDocker/
-
-if [[ $(docker images | grep -w "imongo") ]]; then
-        echo "MongoDB Docker image already present"
 else
-	docker build -t imongo .
+	while [ $(curl -s -o /dev/null --connect-timeout 10 -w "%{http_code}" http://54.183.233.167:27017/) -ne 200 ]
+        do
+                sleep 120
+        done
+	
+	#mongo --eval rs.conf().members.
+	mongo --eval "rs.slaveOk()"	
 fi
-
-#echo "Build maven package for Data Ingest"
-#cd /home/ec2-user/SGA_REST_DataIngest/
-#mvn package
-#echo "Building dataingest docker image"
-#docker build -t isgadataingest .
