@@ -10,14 +10,14 @@ else
 	mv /home/ec2-user/stormdetection/DB_Dockers /home/ec2-user/
 fi
 	
-echo "Building MongoDB docker image"
-cd /home/ec2-user/DB_Dockers/registry_MongoDB/
+#echo "Building MongoDB docker image"
+#cd /home/ec2-user/DB_Dockers/registry_MongoDB/
 
-if [[ $(docker images | grep -w "imongo") ]]; then
-        echo "MongoDB Docker image already present"
-else
-	docker build -t imongo .
-fi
+#if [[ $(docker images | grep -w "imongo") ]]; then
+        #echo "MongoDB Docker image already present"
+#else
+	#docker build -t imongo .
+#fi
 
 echo "Building maven package for storm detection."
 cd /home/ec2-user/SGA_Rest_StormDetection/
