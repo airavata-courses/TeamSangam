@@ -21,13 +21,13 @@ if [ "$serverID" == "$gateway" ]; then
 	do
 		sleep 20
 	done
-		mongo --eval "rs.add("54.183.160.22")"
+		mongo --eval 'rs.add("54.183.160.22")'
 	
 	while [ $(curl -s -o /dev/null --connect-timeout 10 -w "%{http_code}" http://54.193.102.104:27017/) -ne 200 ]
         do
                 sleep 20
         done
-                mongo --eval "rs.add("54.193.102.104")"
+                mongo --eval 'rs.add("54.193.102.104")'
 
 else
 	while [ $(curl -s -o /dev/null --connect-timeout 10 -w "%{http_code}" http://54.183.233.167:27017/) -ne 200 ]
