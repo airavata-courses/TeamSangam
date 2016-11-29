@@ -21,12 +21,17 @@
 echo 'check if mongodb is already installed'
 mongo -version
 if [ "$?" -ne 0 ]; then
-        echo "[mongodb-org-3.2]
+	FILE='/etc/yum.repos.d/mongodb-org-3.2.repo'
+	if [ -f $FILE ]; then       
+		echo 'The  yum install list file already exists'
+	else	 
+		echo "[mongodb-org-3.2]
 name=MongoDB Repository
 baseurl=https://repo.mongodb.org/yum/amazon/2013.03/mongodb-org/3.2/x86_64/
 gpgcheck=1
 enabled=1
 gpgkey=https://www.mongodb.org/static/pgp/server-3.2.asc" >> /etc/yum.repos.d/mongodb-org-3.2.repo
+	fi
 
         sudo yum install -y mongodb-org
 	sudo sed -i 's/bindIp:/#bindIp:/' /etc/mongod.conf
