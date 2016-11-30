@@ -36,7 +36,7 @@ deploy:
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: mongo-replication
+      branch: milestone3-mongo-replication
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
@@ -49,14 +49,14 @@ deploy:
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: mongo-replication
+      branch: milestone3-mongo-replication
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - mongo-replication
+    - milestone3-mongo-replication
 
 notifications:
   email:
