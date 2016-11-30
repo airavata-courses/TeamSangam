@@ -21,7 +21,7 @@ fi
 
 echo "Building maven package for storm detection."
 cd /home/ec2-user/SGA_Rest_StormDetection/
-mvn package
+mvn package -Dmaven.test.skip=true
 
 echo "Building docker image for storm detection."
 cd /home/ec2-user/SGA_Rest_StormDetection/
