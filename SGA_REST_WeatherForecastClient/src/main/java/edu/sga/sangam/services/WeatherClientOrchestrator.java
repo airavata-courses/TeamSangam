@@ -34,7 +34,7 @@ import edu.sga.sangam.bean.ClientOrchestratorBean;
 import edu.sga.sangam.bean.DataIngestorBean;
 import edu.sga.sangam.bean.StormClusterBean;
 import edu.sga.sangam.bean.StormDetectionBean;
-//import edu.sga.sangam.client.ZooKeeperClient;
+import edu.sga.sangam.client.ZooKeeperClient;
 
 public class WeatherClientOrchestrator {
 	ClientOrchestratorBean cob = null;
@@ -42,7 +42,7 @@ public class WeatherClientOrchestrator {
 	StormClusterBean scb=null;
 	StormDetectionBean sdb = null;
 	
-//	ZooKeeperClient zc = new ZooKeeperClient();
+	ZooKeeperClient zc = new ZooKeeperClient();
 	
 	
 	public String clientOrchestrator(String year,String mm,String day,String nexrad,String fileName,String userid,String sessionid,
