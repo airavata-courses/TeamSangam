@@ -2,7 +2,7 @@
 
 // create the module
 var home = angular.module("sga_home",[]);
-var myurl = "http://ec2-54-153-82-22.us-west-1.compute.amazonaws.com:";
+var myurl = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com";
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
 	
@@ -127,7 +127,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 			})
 			.then(function(response){
 				// This is a success callback and will be called for status 200-299
-				if(response.data !== "-1"){
+				if(response.data !== "no"){
 					
 					$scope.showmap = true;
 					$scope.output = response.data;

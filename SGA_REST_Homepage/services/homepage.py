@@ -8,8 +8,8 @@ import base64, json
 
 app = Flask(__name__)
 
-PUBLIC_IP = "http://ec2-54-153-82-22.us-west-1.compute.amazonaws.com"
-CROSS_DOMAIN = "http://ec2-54-153-82-22.us-west-1.compute.amazonaws.com:8080"
+PUBLIC_IP = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com:8080"
 
 filename = "aws_key.properties"
 timestampDict = {}
