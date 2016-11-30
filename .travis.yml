@@ -39,7 +39,7 @@ deploy:
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: forecast
+      branch: milestone3-forecast
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
@@ -52,14 +52,14 @@ deploy:
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: forecast
+      branch: milestone3-forecast
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - forecast
+    - milestone3-forecast
 
 notifications:
   email:
