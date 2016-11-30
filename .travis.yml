@@ -43,7 +43,7 @@ deploy:
     detect_encoding: true
     on:
       repo: airavata-courses/TeamSangam
-      branch: loginpage
+      branch: milestone3-loginpage
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
@@ -56,14 +56,14 @@ deploy:
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
-      branch: loginpage
+      branch: milestone3-loginpage
 
 after_deploy:
   - echo "Deploy steps completed successfully."
 
 branches:
   only:
-    - loginpage
+    - milestone3-loginpage
 
 notifications:
   email:
