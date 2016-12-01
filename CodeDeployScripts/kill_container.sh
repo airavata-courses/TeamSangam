@@ -1,5 +1,7 @@
 set -e
 
+echo "Application is being stopped here"
+
 #docker rm -f mongo || true
 
 #docker rm -f usermysqldb || true
@@ -24,8 +26,8 @@ set -e
 
 #docker rmi iusermysqldb || true
 
-docker stop $(docker ps -a -q) || true
+#docker stop $(docker ps -a -q) || true
 
-docker rm $(docker ps -a -q) || true
+#docker rm $(docker ps -a -q) || true
 
-docker rmi $(docker images -q) 
+#docker rmi $(docker images -q) 

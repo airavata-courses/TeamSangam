@@ -37,7 +37,9 @@ public class ZooKeeperClient {
 		
 		 public String discoverServiceURI(String name) {
 		        try {
+
 		            String znode = "/services/" + name ;
+
 
 		            List<String> uris = curatorFramework.getChildren().forPath(znode);
 		            
