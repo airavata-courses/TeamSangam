@@ -13,8 +13,6 @@ public class StormClusteringService {
 	public File generateKmlFile(String fileName) throws IOException {
 		try
 		{
-		//System.out.println(url);
-		
 		tmpfile = File.createTempFile(fileName, ".kml");
 		Kml kml = new Kml();
 		Random ran = new Random();
@@ -27,7 +25,6 @@ public class StormClusteringService {
 		
 		}
 		kml.marshal(tmpfile);
-		System.out.print(tmpfile.getName());
 		return tmpfile;
 		}catch(Exception e)
 		{
