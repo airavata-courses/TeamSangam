@@ -9,25 +9,20 @@ import org.apache.log4j.Logger;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DuplicateKeyException;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoException;
-import com.mongodb.gridfs.GridFS;
-import com.mongodb.gridfs.GridFSInputFile;
 
 import org.bson.Document;
-import com.mongodb.Block;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.AggregateIterable;
 
-import static com.mongodb.client.model.Filters.*;
-import static com.mongodb.client.model.Sorts.ascending;
 import static java.util.Arrays.asList;
 
 import edu.sga.sangam.resources.DataIngestRequest;
 import edu.sga.sangam.resources.ForecastDecisionBean;
 import edu.sga.sangam.resources.GetStatsBean;
+import edu.sga.sangam.resources.OrchestratorBean;
+import edu.sga.sangam.resources.ResultBean;
 import edu.sga.sangam.resources.RunForecastBean;
 import edu.sga.sangam.resources.StormClusterBean;
 import edu.sga.sangam.resources.StormDetectionBean;
@@ -52,17 +47,12 @@ public class DBOperations {
 		try
 		{
 			mongo = DBConnections.getInstance().getConnection();
-			DB database = mongo.getDB("db_SGA");
-			DBCollection collection = database.getCollection("collection_dataingestregistry");
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
 			BasicDBObject document = new BasicDBObject();
-			document.put("userid", input.getUserid());
-			document.put("sessionid", input.getSessionid());
-			document.put("requestid", input.getRequestid());
-			document.put("request data", input.getRequestData());
-			document.put("request time",input.getRequestTime());
-			document.put("response data", input.getResponseData());
-			document.put("response time", input.getResponseTime());
-			collection.insert(document);
+			document.append("$set", new BasicDBObject().append("dataingestor",input.getDataingestor())
+					.append("dttime", input.getDttime()));
+			collection.update(new BasicDBObject().append("keyid", input.getKey()), document);
 		}
 		catch(MongoException me)
 		{
@@ -80,17 +70,12 @@ public class DBOperations {
 		try
 		{
 			mongo = DBConnections.getInstance().getConnection();
-			DB database = mongo.getDB("db_SGA");
-			DBCollection collection = database.getCollection("collection_stormclusterregistry");
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
 			BasicDBObject document = new BasicDBObject();
-			document.put("userid", input.getUserid());
-			document.put("sessionid", input.getSessionid());
-			document.put("requestid", input.getRequestid());
-			document.put("request data", input.getRequestData());
-			document.put("request time",input.getRequestTime());
-			document.put("response data", input.getResponseData());
-			document.put("response time", input.getResponseTime());
-			collection.insert(document);
+			document.append("$set", new BasicDBObject().append("stormcluster",input.getStormcluster())
+					.append("sctime", input.getSctime()));
+			collection.update(new BasicDBObject().append("keyid", input.getKey()), document);
 		}
 		catch(MongoException me)
 		{
@@ -106,22 +91,17 @@ public class DBOperations {
 	
 	public void stormDetection(StormDetectionBean input) throws Exception
 	{
-		MongoClient mongo = null;
-		try
-		{
-			mongo = DBConnections.getInstance().getConnection();
-			DB database = mongo.getDB("db_SGA");
-			DBCollection collection = database.getCollection("collection_stormdetectionregistry");
-			BasicDBObject document = new BasicDBObject();
-			document.put("userid", input.getUserid());
-			document.put("sessionid", input.getSessionid());
-			document.put("requestid", input.getRequestid());
-			document.put("request data", input.getRequestData());
-			document.put("request time",input.getRequestTime());
-			document.put("response data", input.getResponseData());
-			document.put("response time", input.getResponseTime());
+			MongoClient mongo = null;
+			try
+			{
+				mongo = DBConnections.getInstance().getConnection();
+				DB database = mongo.getDB(DBConstants.DB_Name);
+				DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
+				BasicDBObject document = new BasicDBObject();
+				document.append("$set", new BasicDBObject().append("stormdetection",input.getStormdetection())
+						.append("sdtime", input.getSdtime()));
+				collection.update(new BasicDBObject().append("keyid", input.getKey()), document);
 			
-			collection.insert(document);
 		}
 		catch(MongoException me)
 		{
@@ -132,25 +112,20 @@ public class DBOperations {
 		{
 			
 		}
-	}
-	
+	}	
 	public void forecastDecision(ForecastDecisionBean input) throws Exception
 	{
 		MongoClient mongo = null;
 		try
 		{
 			mongo = DBConnections.getInstance().getConnection();
-			DB database = mongo.getDB("db_SGA");
-			DBCollection collection = database.getCollection("collection_decisionregistry");
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
 			BasicDBObject document = new BasicDBObject();
-			document.put("userid", input.getUserid());
-			document.put("sessionid", input.getSessionid());
-			document.put("requestid", input.getRequestid());
-			document.put("request data", input.getRequestData());
-			document.put("request time",input.getRequestTime());
-			document.put("response data", input.getResponseData());
-			document.put("response time", input.getResponseTime());
-			collection.insert(document);
+			document.append("$set", new BasicDBObject().append("forecast",input.getForecast())
+					.append("fctime", input.getFctime()));
+			collection.update(new BasicDBObject().append("keyid", input.getKey()), document);
+		
 		}
 		catch(MongoException me)
 		{
@@ -169,22 +144,18 @@ public class DBOperations {
 		try
 		{
 			mongo = DBConnections.getInstance().getConnection();
-			DB database = mongo.getDB("db_SGA");
-			DBCollection collection = database.getCollection("collection_runforecastregistry");
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
 			BasicDBObject document = new BasicDBObject();
-			document.put("userid", input.getUserid());
-			document.put("sessionid", input.getSessionid());
-			document.put("requestid", input.getRequestid());
-			document.put("request data", input.getRequestData());
-			document.put("request time",input.getRequestTime());
-			document.put("response data", input.getResponseData());
-			document.put("response time", input.getResponseTime());
-			collection.insert(document);
+			document.append("$set", new BasicDBObject().append("runforecast",input.getRunforecast())
+					.append("rftime", input.getRftime()));
+			collection.update(new BasicDBObject().append("keyid", input.getKey()), document);
+		
 		}
 		catch(MongoException me)
 		{
 			logger.warn(me.getMessage());
-			throw new Exception("issue with Run Forecastregistry");
+			throw new Exception("issue with Run Forecast registry");
 		}
 		finally
 		{
@@ -192,6 +163,66 @@ public class DBOperations {
 		}
 	}
 	
+	public void orchestratorcollection(OrchestratorBean ob) throws Exception{
+		MongoClient mongo = null;
+		try
+		{
+			//System.out.println("mongo connection");
+			mongo = DBConnections.getInstance().getConnection();
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			//System.out.println("mongo connection failed");
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
+			BasicDBObject document = new BasicDBObject();
+			document.put("keyid", ob.getKey());
+			document.put("userid", ob.getUserid());
+			document.put("sessionid", ob.getSessionid());
+			document.put("requestid", ob.getRequestid());
+			document.put("request data", ob.getRequestData());
+			document.put("time",ob.getTime());
+			document.put("orchestrator", ob.getOrchestrator());
+			collection.insert(document);
+		}
+		catch(MongoException me)
+		{
+			logger.warn(me.getMessage());
+			me.printStackTrace();
+			throw new Exception("issue with orchestrator collection");
+		}
+		finally
+		{
+			
+		}	
+	}
+	
+	
+	public void resultcollection(ResultBean ob) throws Exception{
+		MongoClient mongo = null;
+		try
+		{
+			System.out.println("mongo connection");
+			mongo = DBConnections.getInstance().getConnection();
+			
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			//System.out.println("mongo connection failed");
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Result);
+			BasicDBObject document = new BasicDBObject();
+			document.put("keyid", ob.getKeyid());
+			document.put("result", ob.getValue());
+			document.put("time", ob.getResultime());
+			collection.insert(document);
+		}
+		catch(MongoException me)
+		{
+			logger.warn(me.getMessage());
+			me.printStackTrace();
+			throw new Exception("issue with Result Collection");
+		}
+		finally
+		{
+			
+		}
+		
+	}
 	public String getStats() throws Exception
     {
 	    

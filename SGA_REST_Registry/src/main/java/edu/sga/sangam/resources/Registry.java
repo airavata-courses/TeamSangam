@@ -35,14 +35,14 @@ public class Registry {
 		services.registerService(serviceName,url);
 		
 	}
-	@Path("/dilogdata")
+	@Path("/dataingestor")
 	@POST
 	public Response dataIngestorRequest(DataIngestRequest input)
 	{
 		try
 		{
 		DBOperations.getInstance().dataIngestRequest(input);
-		return Response.status(200).entity(input.getUserid()).build();
+		return Response.status(200).entity(input.getKey()).build();
 		}
 		catch(Exception e)
 		{
@@ -50,14 +50,14 @@ public class Registry {
 		}
 		
 	}
-	@Path("/sclogdata")
+	@Path("/stormcluster")
 	@POST
 	public Response StormCluster(StormClusterBean scb)
 	{
 		try
 		{
 		DBOperations.getInstance().stormCluster(scb);
-		return Response.status(200).entity(scb.getUserid()).build();
+		return Response.status(200).entity(scb.getKey()).build();
 		}
 		catch(Exception e)
 		{
@@ -66,14 +66,14 @@ public class Registry {
 		
 	}
 	
-	@Path("/sdlogdata")
+	@Path("/stormdetection")
 	@POST
 	public Response StormDetection(StormDetectionBean sdb)
 	{
 		try
 		{
 		DBOperations.getInstance().stormDetection(sdb);
-		return Response.status(200).entity(sdb.getUserid()).build();
+		return Response.status(200).entity(sdb.getKey()).build();
 		}
 		catch(Exception e)
 		{
@@ -82,14 +82,14 @@ public class Registry {
 		
 	}
 	
-	@Path("/decisionlogdata")
+	@Path("/forecast")
 	@POST
 	public Response ForecastDecision(ForecastDecisionBean fdb)
 	{
 		try
 		{
 		DBOperations.getInstance().forecastDecision(fdb);
-		return Response.status(200).entity(fdb.getUserid()).build();
+		return Response.status(200).entity(fdb.getKey()).build();
 		}
 		catch(Exception e)
 		{
@@ -98,14 +98,47 @@ public class Registry {
 		
 	}
 	
-	@Path("/runforecastlogdata")
+	@Path("/runforecast")
 	@POST
 	public Response RunForecast(RunForecastBean rfb)
 	{
 		try
 		{
 		DBOperations.getInstance().runForecast(rfb);
-		return Response.status(200).entity(rfb.getUserid()).build();
+		return Response.status(200).entity(rfb.getKey()).build();
+		}
+		catch(Exception e)
+		{
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+		
+	}
+	@Path("/orchestrator")
+	@POST
+	
+	public Response orchestrator(OrchestratorBean ob)
+	{
+		try
+		{
+		DBOperations.getInstance().orchestratorcollection(ob);
+		return Response.status(200).entity(ob.getUserid()).build();
+		}
+		catch(Exception e)
+		{
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+		
+	}
+	
+	@Path("/result")
+	@POST
+	
+	public Response result(ResultBean rb)
+	{
+		try
+		{
+		DBOperations.getInstance().resultcollection(rb);
+		return Response.status(200).entity(rb.getKeyid()).build();
 		}
 		catch(Exception e)
 		{
