@@ -1,0 +1,6 @@
+bootstrap.servers=localhost:9092
+group.id=dataingestorgroup
+enable.auto.commit=true
+auto.offset.reset=earliest
+key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+value.deserializer=edu.sga.sangam.resources.DataIngestorDeserializer

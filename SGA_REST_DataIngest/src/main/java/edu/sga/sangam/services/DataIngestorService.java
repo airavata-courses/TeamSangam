@@ -14,7 +14,7 @@ import edu.sga.sangam.db.DBOperations;
 
 public class DataIngestorService {
 
-	private static Logger logger = Logger.getLogger(DBOperations.class);
+	
 
 	public DataIngestorStatusBean generateURL(String year, String month,String day,String nexrad,String fileName,String userid,String sessionid,String requestid) throws Exception 
 	{
@@ -22,6 +22,7 @@ public class DataIngestorService {
 		DataIngestorBean dataIngestorBean = new DataIngestorBean(year, month,day,nexrad,userid,sessionid,requestid);
 		fileName = fileName+".gz";
 		String urllink = "http://noaa-nexrad-level2.s3.amazonaws.com/"+ dataIngestorBean.getYear()+"/"+dataIngestorBean.getMonth()+"/"+dataIngestorBean.getDay()+"/"+dataIngestorBean.getNexrad() +"/"+fileName;
+	
 		//String urllink = "https://aws.amazon.com/noaa-big-data/"+ dataIngestorBean.getYear()+"/"+dataIngestorBean.getMonth()+"/"+dataIngestorBean.getDay()+"/"+dataIngestorBean.getNexrad() +"/"+fileName;
 		//String urllink ="http://noaa-nexrad-level2.s3.amazonaws.com/2015/03/03/KABX/KABX20150303_001050_V06.gz"	;
 		System.out.println(urllink);
@@ -52,7 +53,7 @@ public class DataIngestorService {
 				{
 					
 					boolean fileStatus =DBOperations.getInstance().insertFile(tmpfile,completeFileName);
-					logger.info("file inserted status: "+fileStatus);
+					//logger.info("file inserted status: "+fileStatus);
 					tmpfile.deleteOnExit();
 					return  new DataIngestorStatusBean(fileExists,urllink);
 
