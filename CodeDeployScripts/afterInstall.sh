@@ -2,22 +2,22 @@ echo "Moving the gateway files to /home/ec2-user"
 rm -rf /home/ec2-user/SGA_REST_WeatherForecastClient
 mv /home/ec2-user/gateway/SGA_REST_WeatherForecastClient /home/ec2-user/
 
-DIRECTORY=DB_Dockers
-cd /home/ec2-user
-if [ -d "$DIRECTORY" ]; then
-        echo "Directory already exists"
-else
-        mv /home/ec2-user/gateway/DB_Dockers /home/ec2-user/
-fi
+#DIRECTORY=DB_Dockers
+#cd /home/ec2-user
+#if [ -d "$DIRECTORY" ]; then
+#        echo "Directory already exists"
+#else
+#        mv /home/ec2-user/gateway/DB_Dockers /home/ec2-user/
+#fi
 
-echo "Building MySQLdb docker image if not existing"
-cd /home/ec2-user/DB_Dockers/userMySQLDB/
+#echo "Building MySQLdb docker image if not existing"
+#cd /home/ec2-user/DB_Dockers/userMySQLDB/
 
-if [[ $(docker images | grep -w "iusermysqldb") ]]; then
-        echo "MySQLDB Docker image already present"
-else
-        docker build -t iusermysqldb .
-fi
+#if [[ $(docker images | grep -w "iusermysqldb") ]]; then
+#        echo "MySQLDB Docker image already present"
+#else
+#        docker build -t iusermysqldb .
+#fi
 
 #echo "Building login docker image"
 #cd /home/ec2-user/SGA_REST_login/
