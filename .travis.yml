@@ -1,0 +1,65 @@
+language: python
+
+python:
+  - "3.4"
+
+services: 
+  - mongodb
+
+sudo: true
+
+install: true
+
+before_script:
+  - cd env_scripts
+  - source props.sh
+  - cd ..
+
+script:
+  - echo "No script needed."
+
+before_deploy:
+  - tar -cf SGA_Sangam_Framework.tar . || true
+  - mkdir -p "dpl_cd_upload"
+  - ls
+  - mv SGA_Sangam_Framework.tar dpl_cd_upload/SGA_Sangam_Framework.tar || true
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    local_dir: dpl_cd_upload
+    bucket: sga-sangam-testing
+    region: us-west-1
+    skip_cleanup: true
+    acl: public_read
+    detect_encoding: true
+    on:
+      repo: airavata-courses/TeamSangam
+      branch: zookeeper+kafka
+
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # declared in Travis repo settings
+    secret_access_key: $AWS_SECRET_KEY
+    bucket: sga-sangam-testing
+    key: SGA_Sangam_Framework.tar
+    bundle_type: tar
+    application: SGA-TeamSangam-testing
+    deployment_group: SGA-TeamSangam-kafka
+    region: us-west-1
+    on:
+      repo: airavata-courses/TeamSangam
+      branch: zookeeper+kafka
+
+after_deploy:
+  - echo "Deploy steps completed successfully."
+
+branches:
+  only:
+    - zookeeper+kafka
+
+notifications:
+  email:
+    - vikas1590@gmail.com
+    - rajasimha1991@gmail.com
+    - raghava1990@gmail.com

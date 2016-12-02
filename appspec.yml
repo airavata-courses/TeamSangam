@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/zookeeper+kafka
+
+hooks:
+  BeforeInstall:
+    - location: CodeDeployScripts/beforeInstall.sh
+      runas: root
+  AfterInstall:
+    - location: CodeDeployScripts/afterInstall.sh
+      timeout: 600
+      runas: root
