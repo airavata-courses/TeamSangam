@@ -65,6 +65,7 @@ if [ -d "$DIRECTORY" ]; then
 	echo "Copied the html and javascript files to TOMCAT"
 fi
 
+cd SGA_REST_WeatherForecastClient
 mvn package
 echo "Building gateway docker image"
 docker build -t isgagateway .
