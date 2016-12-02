@@ -45,7 +45,7 @@ deploy:
     key: SGA_Sangam_Gateway.tar
     bundle_type: tar
     application: SGA-TeamSangam-testing
-    deployment_group: SGA-TeamSangam-kafka
+    deployment_group: SGA-TeamSangam-gateway
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
