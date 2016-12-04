@@ -14,7 +14,11 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoException;
 
 import org.bson.Document;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.FindIterable;
 
 import static java.util.Arrays.asList;
 
@@ -223,48 +227,79 @@ public class DBOperations {
 		}
 		
 	}
+	
+	
 	public String getStats() throws Exception
     {
-	    
-	    MongoClient mongoClient = new MongoClient();
-	    MongoDatabase db = mongoClient.getDatabase("db_SGA");
-	    System.out.println("Connected to database successfully");
-	    
-	    //FindIterable<Document> iterable = db.getCollection("collection_dataingestregistry").find(new Document("userid", input.getUserid()));
-	    
-	    StringBuffer queryResult = new StringBuffer();
-	    List<String> result = new ArrayList<>();
-	    
-	    AggregateIterable<Document> iterable1 = db.getCollection("collection_dataingestregistry").aggregate(asList(
-	            new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
-	    
-	    System.out.println("User statistics from dataingestregistry:");
-	    for(Document row: iterable1){
-	        queryResult.append(row.toJson());
-	    }
-	    
-	    AggregateIterable<Document> iterable2 = db.getCollection("collection_stormclusterregistry").aggregate(asList(
-                new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
-	    System.out.println("User statistics from stormclusterregistry:");
-	    for(Document row: iterable2){
-            queryResult.append(row.toJson());
+        MongoClient mongoClient = null;
+        try
+        {
+            mongoClient = DBConnections.getInstance().getConnection();;
+            MongoDatabase db = mongoClient.getDatabase("db_SGA");
+            System.out.println("Connected to database successfully");
+            
+            //FindIterable<Document> iterable = db.getCollection("collection_dataingestregistry").find(new Document("userid", input.getUserid()));
+            
+            JSONObject result = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            
+            AggregateIterable<Document> iterable1 = db.getCollection(DBConstants.DB_Collection_Log).aggregate(asList(
+                    new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
+            
+            System.out.println("Total user statistics from the database are:");
+            for(Document row: iterable1){
+                jsonArray.add(row);
+            }
+            result.put("users", jsonArray);
+            
+            return result.toJSONString();
         }
-	    
-	    AggregateIterable<Document> iterable3 = db.getCollection("collection_decisionregistry").aggregate(asList(
-                new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
-	    System.out.println("User statistics from decisionregistry:");
-	    for(Document row: iterable3){
-            queryResult.append(row.toJson());
+        catch(MongoException me)
+        {
+            logger.warn(me.getMessage());
+            me.printStackTrace();
+            throw new Exception("issue with getstat method");
         }
-        
-        AggregateIterable<Document> iterable4 = db.getCollection("collection_runforecastregistry").aggregate(asList(
-                new Document("$group", new Document("_id", "$userid").append("count", new Document("$sum", 1)))));
-        System.out.println("User statistics from runforecastregistry:");
-        for(Document row: iterable4){
-            queryResult.append(row.toJson());
+        finally
+        {
+            
         }
         
-        return queryResult.toString();
     }
-	
+
+	public String getuserStats(String input) throws Exception
+    {
+        MongoClient mongoClient = null;
+        try
+        {
+            mongoClient = DBConnections.getInstance().getConnection();;
+            MongoDatabase db = mongoClient.getDatabase("db_SGA");
+            System.out.println("Connected to database successfully");
+            
+            JSONObject result = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            
+            FindIterable<Document> iterable = db.getCollection(DBConstants.DB_Collection_Log).find(new Document("userid", input));
+            
+            System.out.println("User statistics from the database are:");
+            for(Document row: iterable){
+                jsonArray.add(row);
+            }
+            result.put("users", jsonArray);
+            
+            return result.toJSONString();
+        }
+        catch(MongoException me)
+        {
+            logger.warn(me.getMessage());
+            me.printStackTrace();
+            throw new Exception("issue with getuserstat method");
+        }
+        finally
+        {
+            
+        }
+        
+    }
+
 }
