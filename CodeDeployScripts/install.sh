@@ -15,19 +15,12 @@ fi
 echo "Starting new docker container sgastormclustering"
 docker run -d --name sgastormclustering -p 8083:8080 isgastormclustering
 
-localip=$(ip addr show eth0 | awk '/inet /{split($2,a,"/");print a[1]}')
+#localip=$(ip addr show eth0 | awk '/inet /{split($2,a,"/");print a[1]}')
 
-while IFS=':' read -r server privateip publicip
-do
-   if [ "$privateip" == "$localip" ]; then
-        systemIP=$publicip
-        serverID=$server
-   fi
-done < /home/ec2-user/SGA_Rest_StormClustering/system.properties
 
 echo "Changing the directory to SGA_Rest_StormClustering"
 cd /home/ec2-user/SGA_Rest_StormClustering
 
-mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.StormClustering -Dexec.args="$serverID $systemIP 8083"
+mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.StormClusteringMain
 
 docker rmi $(docker images -f "dangling=true" -q) || true
