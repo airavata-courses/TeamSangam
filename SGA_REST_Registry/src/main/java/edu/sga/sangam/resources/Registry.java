@@ -175,9 +175,9 @@ public class Registry {
 	@Path("/getstats")
     @GET
     public Response GetStatistics(){
-	    try
+        try
         {
-	    String result = DBOperations.getInstance().getStats();
+        String result = DBOperations.getInstance().getStats();
         return Response.status(200).entity(result).build();
         }
         catch(Exception e)
@@ -185,6 +185,20 @@ public class Registry {
             return Response.status(500).entity(e.getMessage()).build();
         }
         
+    }
+    
+    @Path("/getuserstats")
+    @GET
+    public Response GetuserStats(String username){
+        try
+        {
+        String result = DBOperations.getInstance().getuserStats(username);
+        return Response.status(200).entity(result).build();
+        }
+        catch(Exception e)
+        {
+            return Response.status(500).entity(e.getMessage()).build();
+        }
     }
 	
 	@Produces(MediaType.TEXT_PLAIN)
