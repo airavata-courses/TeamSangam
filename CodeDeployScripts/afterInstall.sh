@@ -33,8 +33,8 @@ do
    fi
 done < /home/ec2-user/SGA_REST_DataIngest/system.properties
 
-sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_REST_DataIngest/src/main/resources/producer.props
-sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_REST_DataIngest/src/main/resources/consumer.props
+#sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_REST_DataIngest/src/main/resources/producer.props
+#sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_REST_DataIngest/src/main/resources/consumer.props
 
 mvn package
 echo "Building dataingest docker image"
