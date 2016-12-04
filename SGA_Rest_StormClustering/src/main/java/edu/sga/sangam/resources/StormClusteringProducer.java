@@ -94,7 +94,7 @@ public class StormClusteringProducer implements Runnable{
 		requestDataIngestor.put("sctime", df2.format(date));
 		HttpClient client = new HttpClient();
 		logger.info("calling storm cluster registry");
-		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/stormcluster");
+		PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/stormcluster");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");
