@@ -28,6 +28,6 @@ docker run -d --name sgastormdetection -p 8082:8080 isgastormdetection
 echo "Changing the directory to SGA_Rest_StormDetection"
 cd /home/ec2-user/SGA_Rest_StormDetection
 
-nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.StormDetectionMain > /home/ec2-user/maven.out 2>&1 &
+nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.StormDetectionMain > /home/ec2-user/SGA_Rest_StormDetection/stormdetection.out 2>&1 &
 
 docker rmi $(docker images -f "dangling=true" -q) || true

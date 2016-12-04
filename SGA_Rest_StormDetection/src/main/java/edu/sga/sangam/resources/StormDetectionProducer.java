@@ -91,7 +91,7 @@ public class StormDetectionProducer implements Runnable {
 		requestDataIngestor.put("sdtime", df2.format(date));
 		HttpClient client = new HttpClient();
 		logger.info("calling storm detection registry");
-		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/stormdetection");
+		PostMethod post = new PostMethod("http://52.53.192.165:8085/SGA_REST_Registry/sga/registry/stormdetection");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");
