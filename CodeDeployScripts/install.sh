@@ -21,6 +21,6 @@ docker run -d --name sgastormclustering -p 8083:8080 isgastormclustering
 echo "Changing the directory to SGA_Rest_StormClustering"
 cd /home/ec2-user/SGA_Rest_StormClustering
 
-mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.StormClusteringMain
+nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.StormClusteringMain &
 
 docker rmi $(docker images -f "dangling=true" -q) || true
