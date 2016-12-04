@@ -33,8 +33,11 @@ do
 	#serverID=$server
    fi
 done < /home/ec2-user/SGA_Rest_StormClustering/system.properties
-sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_Rest_StormClustering/src/main/resources/producer.props
-sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_Rest_StormClustering/src/main/resources/consumer.props
+echo ${worker[1]}
+echo ${worker[0]}
+echo ${worker[2]}
+#sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_Rest_StormClustering/src/main/resources/producer.props
+#sed -i 's/bootstrap.servers=.*/bootstrap.servers=\'${worker[0]}',\'${worker[1]}',\'${worker[2]}'/' /home/ec2-user/SGA_Rest_StormClustering/src/main/resources/consumer.props
 
 mvn package -Dmaven.test.skip=true
 
