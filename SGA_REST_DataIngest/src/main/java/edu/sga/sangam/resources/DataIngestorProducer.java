@@ -106,7 +106,7 @@ public class DataIngestorProducer implements Runnable {
 		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		requestDataIngestor.put("dttime", df2.format(date));
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://ec2-54-193-9-114.us-west-1.compute.amazonaws.com:8080/SGA_REST_Registry/sga/registry/dataingestor");
+		PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/dataingestor");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");
