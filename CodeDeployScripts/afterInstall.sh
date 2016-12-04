@@ -27,8 +27,9 @@ index=0
 while IFS=':' read -r server privateip publicip
 do
    if [[ "$server" == "SERVER"* ]]; then
-	worker[index]=$publicip
-        index=index+1
+	worker[$index]=$publicip
+        index=$index+1
+	echo "$index"
 	#serverID=$server
    fi
 done < /home/ec2-user/SGA_Rest_StormClustering/system.properties
