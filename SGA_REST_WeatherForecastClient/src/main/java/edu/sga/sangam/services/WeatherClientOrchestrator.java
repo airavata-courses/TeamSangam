@@ -119,7 +119,7 @@ public class WeatherClientOrchestrator {
 		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		request.put("time", df2.format(date));
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://localhost:8085/SGA_REST_Registry/sga/registry/orchestrator");
+		PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");
