@@ -1,4 +1,4 @@
-bootstrap.servers=localhost:9092
+bootstrap.servers=ec2-54-183-132-116.us-west-1.compute.amazonaws.com:9092,ec2-54-193-9-114.us-west-1.compute.amazonaws.com:9092,ec2-52-53-192-165.us-west-1.compute.amazonaws.com:9092
 group.id=dataingestorgroup
 enable.auto.commit=true
 auto.offset.reset=earliest

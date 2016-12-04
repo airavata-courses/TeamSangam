@@ -19,7 +19,8 @@ docker run -d --name sgadataingest -p 8081:8080 isgadataingest
 echo "Changing the directory to SGA_REST_DataIngest"
 cd /home/ec2-user/SGA_REST_DataIngest
 
-mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestorMain
+nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestorMain > /home/ec2-user/dataingestor/dataingestor.out 2>&1 &
+
 
 #mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.DataIngestorMain -Dexec.args="$serverID $systemIP 8081"
 
