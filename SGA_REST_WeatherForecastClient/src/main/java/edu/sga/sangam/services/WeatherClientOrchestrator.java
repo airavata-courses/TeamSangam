@@ -69,7 +69,7 @@ public class WeatherClientOrchestrator {
 		
 		DataIngestorRequest db = new DataIngestorRequest(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
 		KafkaProducer<String, DataIngestorRequest> producer;
-		String topic = "newworld";
+		String topic = "dataingest";
 		/*Properties props = new Properties();
 		props.put("bootstrap.servers", "localhost:9092");
 	    props.put("acks", "all");
