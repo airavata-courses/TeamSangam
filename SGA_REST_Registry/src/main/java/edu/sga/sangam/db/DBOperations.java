@@ -1,14 +1,21 @@
 package edu.sga.sangam.db;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.MongoException;
@@ -86,9 +93,7 @@ public class DBOperations {
 		{
 			
 		}
-	}
-	
-	
+	}	
 	public void stormDetection(StormDetectionBean input) throws Exception
 	{
 			MongoClient mongo = null;
@@ -223,6 +228,67 @@ public class DBOperations {
 		}
 		
 	}
+	
+	public int getCount(String key) throws Exception
+	{
+		int count =0;
+		MongoClient mongo = null;
+		try
+			{
+				System.out.println("mongo connection");
+				mongo = DBConnections.getInstance().getConnection();				
+				DB database = mongo.getDB(DBConstants.DB_Name);
+				//System.out.println("mongo connection failed");
+				DBCollection collection = database.getCollection(DBConstants.DB_Collection_Result);
+				BasicDBObject query = new BasicDBObject();
+				query.put("keyid", key);
+				count = collection.find(query).count();
+				return count;
+			}
+		catch(Exception me)
+		{
+			logger.warn(me.getMessage());
+			me.printStackTrace();
+			throw new Exception("issue with Result Collection");
+		}
+				
+			
+	}
+	public String getResult(String key) throws Exception
+	{
+		MongoClient mongo = null;
+		String result=null;
+		try
+			{
+				System.out.println("mongo connection");
+				mongo = DBConnections.getInstance().getConnection();				
+				DB database = mongo.getDB(DBConstants.DB_Name);
+				//System.out.println("mongo connection failed");
+				DBCollection collection = database.getCollection(DBConstants.DB_Collection_Result);
+				BasicDBObject query = new BasicDBObject();
+				BasicDBObject field = new BasicDBObject();
+				query.put("keyid", key);
+				field.put("result",1);
+				field.put("_id",-1 );
+				
+				DBCursor cursor = collection.find(query,field);
+				while(cursor.hasNext())
+				{	
+					DBObject db = cursor.next();
+					result =(String) db.get("result");
+					System.out.println(result);
+					break;
+				}
+				return result;
+			}catch(Exception me)
+		{
+				logger.warn(me.getMessage());
+				me.printStackTrace();
+				throw new Exception("issue with Result Collection");
+			}
+		
+				
+	}
 	public String getStats() throws Exception
     {
 	    
@@ -267,4 +333,55 @@ public class DBOperations {
         return queryResult.toString();
     }
 	
+	
+	public class ResultThread implements Runnable
+	{
+		private String result;
+		private String key;
+		public ResultThread(String key)
+		{
+			this.key =key;
+		}
+		@Override
+		public void run()
+		{
+			MongoClient mongo = null;
+			try
+			{
+				System.out.println("mongo connection");
+				mongo = DBConnections.getInstance().getConnection();
+				
+				DB database = mongo.getDB(DBConstants.DB_Name);
+				//System.out.println("mongo connection failed");
+				DBCollection collection = database.getCollection(DBConstants.DB_Collection_Result);
+				BasicDBObject query = new BasicDBObject();
+				BasicDBObject field = new BasicDBObject();
+				
+				query.put("keyid", key);
+				field.put("result",1);
+				field.put("_id",-1 );
+				
+				DBCursor cursor = collection.find(query);
+				while(cursor.hasNext())
+				{	
+					DBObject db = cursor.next();
+					result =(String) db.get("result");
+					System.out.println(result);
+					//result =(String) cursor.next().get("result");
+					
+				}
+				cursor.close();
+				Thread.sleep(3000);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+				
+		}
+		
+		public String getValue()
+		{
+			System.out.println("result is "+result);
+			return result;
+		}
+	}
 }
