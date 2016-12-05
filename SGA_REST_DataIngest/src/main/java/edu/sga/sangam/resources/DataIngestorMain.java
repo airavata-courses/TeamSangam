@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class DataIngestorMain {
 	 public static void main(String[] args) throws IOException {
-		    String topic = "dataingest";
+		    String topic = "dataingestor";
 		    // Start group of Data Ingestor Consumer Thread
 		    DataIngestorConsumer consumerThread = new DataIngestorConsumer(topic);
 		    Thread t2 = new Thread(consumerThread);
