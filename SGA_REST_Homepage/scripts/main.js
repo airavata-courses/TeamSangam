@@ -130,8 +130,8 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 				var keyID  = response.data;
 				$http({
 					method : 'GET',
-					url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/resultoutput",
-					params: {"key":keyID}
+					url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
+					params: {"key": keyID}
 				})
 				.then(function(response){
 					// This is a success callback and will be called for status 200-299
