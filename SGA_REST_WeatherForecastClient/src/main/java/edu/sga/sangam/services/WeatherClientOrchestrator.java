@@ -123,11 +123,11 @@ public class WeatherClientOrchestrator {
 		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		request.put("time", df2.format(date));
 		HttpClient client = new HttpClient();
-		ZooKeeperClient service = new ZooKeeperClient();
-		String registryURL = service.discoverServiceURI("registry");
+		//ZooKeeperClient service = new ZooKeeperClient();
+		//String registryURL = service.discoverServiceURI("registry");
 
-		PostMethod post = new PostMethod(registryURL+"/orchestrator");
-		//PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
+		//PostMethod post = new PostMethod(registryURL+"/orchestrator");
+		PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
 
 		StringRequestEntity entity;
 		try {
@@ -162,17 +162,16 @@ public class WeatherClientOrchestrator {
 			HttpClient client = new HttpClient();
 			ZooKeeperClient service = new ZooKeeperClient();
 			String registryURL = service.discoverServiceURI("registry");
-			GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
+			GetMethod getMethod = new GetMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/resultoutput");
+			//GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
 			getMethod.setQueryString(new NameValuePair[] {
 				    new NameValuePair("key", key)
 				});
 			int response = client.executeMethod(getMethod);
 			if(response ==200)
 			{
-				return getMethod.getResponseBodyAsString();
-				
+				return getMethod.getResponseBodyAsString();	
 			}
-			
 			else
 			{
 				String jsonStr = getMethod.getResponseBodyAsString();
