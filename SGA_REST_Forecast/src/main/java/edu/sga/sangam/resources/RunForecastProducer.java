@@ -89,7 +89,9 @@ public class RunForecastProducer implements Runnable {
 		requestDataIngestor.put("rftime", df2.format(date));
 		HttpClient client = new HttpClient();
 		logger.info("logging run forecast details");
-		PostMethod post = new PostMethod("http://52.53.192.165:8085/SGA_REST_Registry/sga/registry/runforecast");
+		ZooKeeperService services =  new ZooKeeperService();
+		String registryURL = services.discoverServiceURI("registry");
+		PostMethod post = new PostMethod(registryURL+"/runforecast");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");
