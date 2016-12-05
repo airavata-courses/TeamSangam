@@ -21,6 +21,8 @@ import org.json.simple.JSONObject;
 
 import com.google.common.io.Resources;
 
+import edu.sga.sangam.client.ZooKeeperClient;
+
 
 public class ResultConsumer implements Runnable {
 	final static Logger logger = Logger.getLogger(ResultConsumer.class);
@@ -80,7 +82,9 @@ public class ResultConsumer implements Runnable {
 			requestDataIngestor.put("resulttime", df2.format(date));
 			HttpClient client = new HttpClient();
 			logger.info("calling result registry");
-			PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/result");
+			ZooKeeperClient service = new ZooKeeperClient();
+			String registryURL = service.discoverServiceURI("registry");
+			PostMethod post = new PostMethod(registryURL+"/result");
 			StringRequestEntity entity;
 			try {
 				entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");

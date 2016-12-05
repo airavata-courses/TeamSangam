@@ -71,7 +71,17 @@ public class WeatherClientOrchestrator {
 		
 		DataIngestorRequest db = new DataIngestorRequest(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
 		KafkaProducer<String, DataIngestorRequest> producer;
-		String topic = "dataingestor";
+		String topic = "dataingest";
+		/*Properties props = new Properties();
+		props.put("bootstrap.servers", "localhost:9092");
+	    props.put("acks", "all");
+	    props.put("retries", 0);
+	    props.put("batch.size", 16384);
+	    props.put("linger.ms", 1);
+	    props.put("buffer.memory", 33554432);
+	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+	    props.put("value.serializer", "edu.sga.sangam.services.WeatherClientSerializer"); */
+
 	    try (InputStream props = Resources.getResource("producer.props").openStream()) {
             Properties properties = new Properties();
             properties.load(props);
@@ -113,7 +123,9 @@ public class WeatherClientOrchestrator {
 		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		request.put("time", df2.format(date));
 		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/orchestrator");
+		ZooKeeperClient service = new ZooKeeperClient();
+		String registryURL = service.discoverServiceURI("registry");
+		PostMethod post = new PostMethod(registryURL+"/orchestrator");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");
@@ -145,7 +157,9 @@ public class WeatherClientOrchestrator {
 		public String getResultFromRegistry(String key) throws IOException
 		{
 			HttpClient client = new HttpClient();
-			GetMethod getMethod = new GetMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/getResult");
+			ZooKeeperClient service = new ZooKeeperClient();
+			String registryURL = service.discoverServiceURI("registry");
+			GetMethod getMethod = new GetMethod(registryURL+"/getResult");
 			getMethod.setQueryString(new NameValuePair[] {
 				    new NameValuePair("key", key)
 				});
