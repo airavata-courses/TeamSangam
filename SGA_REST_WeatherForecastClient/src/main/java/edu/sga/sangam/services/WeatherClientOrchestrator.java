@@ -125,8 +125,10 @@ public class WeatherClientOrchestrator {
 		HttpClient client = new HttpClient();
 		ZooKeeperClient service = new ZooKeeperClient();
 		String registryURL = service.discoverServiceURI("registry");
-		
+
 		PostMethod post = new PostMethod(registryURL+"/orchestrator");
+		//PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
+
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");
