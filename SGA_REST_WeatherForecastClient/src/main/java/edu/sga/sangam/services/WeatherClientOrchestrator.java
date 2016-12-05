@@ -160,8 +160,8 @@ public class WeatherClientOrchestrator {
 		public String getResultFromRegistry(String key) throws IOException
 		{
 			HttpClient client = new HttpClient();
-			ZooKeeperClient service = new ZooKeeperClient();
-			String registryURL = service.discoverServiceURI("registry");
+			//ZooKeeperClient service = new ZooKeeperClient();
+			//String registryURL = service.discoverServiceURI("registry");
 			GetMethod getMethod = new GetMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/resultoutput");
 			//GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
 			getMethod.setQueryString(new NameValuePair[] {
