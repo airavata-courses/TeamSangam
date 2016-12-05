@@ -37,6 +37,7 @@ public class Registry {
 				portNumber,
 				endpointURI);
 		ZooKeeperService services = new ZooKeeperService();
+		//services.discoverServiceURI("registry");
 		services.registerService(serviceName,url);
 		
 	}

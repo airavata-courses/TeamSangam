@@ -176,7 +176,7 @@ public class DBOperations {
 		MongoClient mongo = null;
 		try
 		{
-			//System.out.println("mongo connection");
+			System.out.println("Orchestrator connection");
 			mongo = DBConnections.getInstance().getConnection();
 			DB database = mongo.getDB(DBConstants.DB_Name);
 			//System.out.println("mongo connection failed");
@@ -208,7 +208,7 @@ public class DBOperations {
 		MongoClient mongo = null;
 		try
 		{
-			System.out.println("mongo connection");
+			System.out.println("result connection");
 			mongo = DBConnections.getInstance().getConnection();
 			
 			DB database = mongo.getDB(DBConstants.DB_Name);
@@ -239,7 +239,7 @@ public class DBOperations {
 		MongoClient mongo = null;
 		try
 			{
-				System.out.println("mongo connection");
+				System.out.println("get Count connection");
 				mongo = DBConnections.getInstance().getConnection();				
 				DB database = mongo.getDB(DBConstants.DB_Name);
 				//System.out.println("mongo connection failed");
@@ -264,7 +264,7 @@ public class DBOperations {
 		String result=null;
 		try
 			{
-				System.out.println("mongo connection");
+				System.out.println("Get Result connection");
 				mongo = DBConnections.getInstance().getConnection();				
 				DB database = mongo.getDB(DBConstants.DB_Name);
 				//System.out.println("mongo connection failed");
@@ -383,7 +383,7 @@ public class DBOperations {
 			MongoClient mongo = null;
 			try
 			{
-				System.out.println("mongo connection");
+				System.out.println("Result connection");
 				mongo = DBConnections.getInstance().getConnection();
 				
 				DB database = mongo.getDB(DBConstants.DB_Name);
