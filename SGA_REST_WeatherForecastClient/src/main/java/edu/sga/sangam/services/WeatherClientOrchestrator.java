@@ -35,6 +35,7 @@ import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -49,6 +50,7 @@ import edu.sga.sangam.bean.StormDetectionBean;
 import edu.sga.sangam.client.ZooKeeperClient;
 
 public class WeatherClientOrchestrator {
+	final static Logger logger = Logger.getLogger(WeatherClientOrchestrator.class);
 	ZooKeeperClient zc = new ZooKeeperClient();	
 	public String clientOrchestrator(String year,String mm,String day,String nexrad,String fileName,String userid,String sessionid,
 			String requestid) throws Exception
@@ -69,16 +71,7 @@ public class WeatherClientOrchestrator {
 		
 		DataIngestorRequest db = new DataIngestorRequest(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
 		KafkaProducer<String, DataIngestorRequest> producer;
-		String topic = "newworld";
-		/*Properties props = new Properties();
-		props.put("bootstrap.servers", "localhost:9092");
-	    props.put("acks", "all");
-	    props.put("retries", 0);
-	    props.put("batch.size", 16384);
-	    props.put("linger.ms", 1);
-	    props.put("buffer.memory", 33554432);
-	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-	    props.put("value.serializer", "edu.sga.sangam.services.WeatherClientSerializer"); */
+		String topic = "dataingestor";
 	    try (InputStream props = Resources.getResource("producer.props").openStream()) {
             Properties properties = new Properties();
             properties.load(props);
@@ -93,21 +86,22 @@ public class WeatherClientOrchestrator {
 	    request.put("requestid", db.getRequestid());
 	    request.put("requestData", "requested data for year"+db.getYear()+ "month" + db.getMonth() +"day" +db.getDay()+ "nexrad" +db.getNexrad());
 	    request.put("orchestrator", "request success");
+	    logger.info("requested data for year"+db.getYear()+ "day" +db.getDay() + "month" +db.getMonth());
 	    try
 	    {
 	    	registry(request);
 	    }catch(Exception e)
 	    {
 	    	throw new Exception(e.getMessage());
+	    	
 	    }
-	    System.out.println(key);
 	    producer.send(new ProducerRecord<String, DataIngestorRequest>(topic, key, db) ,new Callback() {
             public void onCompletion(RecordMetadata metadata, Exception e)  {
                 if (e != null) {
                   e.printStackTrace();
                 }
 				
-                System.out.println("Sent:" + key);  
+               logger.info("Orchestrator Sent "+key);
               }
             });
 	    producer.close();
@@ -134,15 +128,40 @@ public class WeatherClientOrchestrator {
 			statusCode = client.executeMethod(post);
 			if(statusCode == 200)
 			{		
-				//System.out.println("success");
+				logger.info("orchestrator registry successful");
 			}
 			else
 			{	
+				logger.error("Exception in orchestrator registry");
 				throw new IOException(post.getResponseBodyAsString());
 			}
 			// log.info("Data Ingestor Resigstry status code is "+statusCode);
 		} catch (IOException e) {
+			logger.error("Exception occured"+e.getMessage());
 			throw new IOException(e.getMessage());
 		}
 	}
-}
+		
+		public String getResultFromRegistry(String key) throws IOException
+		{
+			HttpClient client = new HttpClient();
+			GetMethod getMethod = new GetMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/getResult");
+			getMethod.setQueryString(new NameValuePair[] {
+				    new NameValuePair("key", key)
+				});
+			int response = client.executeMethod(getMethod);
+			if(response ==200)
+			{
+				return getMethod.getResponseBodyAsString();
+				
+			}
+			
+			else
+			{
+				String jsonStr = getMethod.getResponseBodyAsString();
+				throw new IOException("Status code is "+response+"\n ErrorMessage: "+jsonStr);
+			}
+			
+		}
+	}
+
