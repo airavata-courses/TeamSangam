@@ -28,11 +28,11 @@ docker run -d --name sgaforecast -p 8084:8080 isgaforecast
 echo "Changing the directory to SGA_REST_Forecast"
 cd /home/ec2-user/SGA_REST_Forecast
 
-nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.RunForecastMain > /home/ec2-user/maven.out 2>&1 &
+nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.RunForecastMain > /home/ec2-user/SGA_REST_Forecast/forecast.out 2>&1 &
 
 echo "Changing the directory to SGA_REST_ForecastDecision"
 cd /home/ec2-user/SGA_REST_ForecastDecision
 
-nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.ForecastDecisionMain > /home/ec2-user/maven.out 2>&1 &
+nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.ForecastDecisionMain > /home/ec2-user/SGA_REST_ForecastDecision/forecastdecision.out 2>&1 &
 
 docker rmi $(docker images -f "dangling=true" -q) || true
