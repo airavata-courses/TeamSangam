@@ -127,34 +127,49 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 			})
 			.then(function(response){
 				// This is a success callback and will be called for status 200-299
-				if(response.data !== "no"){
+				var keyID  = response.data;
+				$http({
+					method : 'GET',
+					url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/resultoutput",
+					params: {"key":keyID}
+				})
+				.then(function(response){
+					// This is a success callback and will be called for status 200-299
+					if(response.data !== "no"){		
+						$scope.showmap = true;
+						$scope.output = response.data;
+						$scope.message = "Storm has been forecasted and the impacted areas are shown in the below map";
 					
-					$scope.showmap = true;
-					$scope.output = response.data;
-					$scope.message = "Storm has been forecasted and the impacted areas are shown in the below map";
-					
-					var btown = {lat: 39.167107,lng: -86.534359};
-					$scope.map = new google.maps.Map(document.getElementById('map'), {
-						zoom: 4,
-						center: btown,
-						mapTypeId: 'terrain'
-					});
-					
-					var places = $scope.output.kml.Document.Placemark;
-					for(var i=0; i<places.length; i++){
-						var latlong = places[i].Point.coordinates;
-						var l = latlong.split(",");
-						$scope.mark = new google.maps.LatLng(l[0],l[1]);
-						
-						var marker = new google.maps.Marker({
-						position: $scope.mark,
-						map: $scope.map
+						var btown = {lat: 39.167107,lng: -86.534359};
+						$scope.map = new google.maps.Map(document.getElementById('map'), {
+							zoom: 4,
+							center: btown,
+							mapTypeId: 'terrain'
 						});
+					
+						var places = $scope.output.kml.Document.Placemark;
+						for(var i=0; i<places.length; i++){
+							var latlong = places[i].Point.coordinates;
+							var l = latlong.split(",");
+							$scope.mark = new google.maps.LatLng(l[0],l[1]);
+						
+							var marker = new google.maps.Marker({
+							position: $scope.mark,
+							map: $scope.map
+							});
+						}
 					}
-				}
-				else{
-					$scope.messgae = "No storm has been forecasted for the selsected location";
-				}
+					else{
+						$scope.messgae = "No storm has been forecasted for the selsected location";
+					}
+					
+				},
+				function(response){	
+					// this is a failure check
+					$scope.errorMessage = response.data;
+					$scope.message = "error in processing request";
+				});	
+				
 					
 			},
 			function(response){	
