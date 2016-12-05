@@ -123,10 +123,10 @@ public class WeatherClientOrchestrator {
 		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 		request.put("time", df2.format(date));
 		HttpClient client = new HttpClient();
-		//ZooKeeperClient service = new ZooKeeperClient();
-		//String registryURL = service.discoverServiceURI("registry");
+		ZooKeeperClient service = new ZooKeeperClient();
+		String registryURL = service.discoverServiceURI("registry");
 		
-		PostMethod post = new PostMethod("http://54.193.9.14:8085/SGA_REST_Registry/sga/registry/orchestrator");
+		PostMethod post = new PostMethod(registryURL+"/orchestrator");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");
@@ -160,7 +160,7 @@ public class WeatherClientOrchestrator {
 			HttpClient client = new HttpClient();
 			ZooKeeperClient service = new ZooKeeperClient();
 			String registryURL = service.discoverServiceURI("registry");
-			GetMethod getMethod = new GetMethod(registryURL+"/getResult");
+			GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
 			getMethod.setQueryString(new NameValuePair[] {
 				    new NameValuePair("key", key)
 				});
