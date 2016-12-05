@@ -71,7 +71,7 @@ public class WeatherClientOrchestrator {
 		
 		DataIngestorRequest db = new DataIngestorRequest(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
 		KafkaProducer<String, DataIngestorRequest> producer;
-		String topic = "dataingest";
+		String topic = "dataingestor";
 		/*Properties props = new Properties();
 		props.put("bootstrap.servers", "localhost:9092");
 	    props.put("acks", "all");
@@ -125,6 +125,7 @@ public class WeatherClientOrchestrator {
 		HttpClient client = new HttpClient();
 		ZooKeeperClient service = new ZooKeeperClient();
 		String registryURL = service.discoverServiceURI("registry");
+		
 		PostMethod post = new PostMethod(registryURL+"/orchestrator");
 		StringRequestEntity entity;
 		try {
