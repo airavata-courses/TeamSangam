@@ -19,7 +19,7 @@ import edu.sga.sangam.db.DBOperations;
 @Path("/registry")
 
 public class Registry {
-	static int inc =0;
+	// int inc =0;
 	static private int portNumber;
 	static private String ipaddress;
 	private static final String endpointURI = "SGA_REST_Registry/sga/registry";
@@ -217,6 +217,8 @@ public class Registry {
     	String result;
 	    try
         {
+	for(int i=0;i<25;i++){
+	
 	    int count = DBOperations.getInstance().getCount(key);
 	    System.out.println("count value is "+count);
 	    if(count >0)
@@ -224,14 +226,15 @@ public class Registry {
 	    	result = DBOperations.getInstance().getResult(key); 
 	    	return Response.status(200).entity(result).build();
 	    }
-	    else if (inc <15)
+	    else
 	    {
 	    	TimeUnit.SECONDS.sleep(2);
-	    	inc +=1;
-	    	getResultRegistry(key);
+	    	//inc +=1;
+	    	//getResultRegistry(key);
 	    	
 	    }
-	    return Response.status(500).entity("There is an error in processing your request").build();
+	}
+	    return Response.status(500).entity("There is an error in processing your request, record did not get updated in mongodb").build();
         
         }
         catch(Exception e)
