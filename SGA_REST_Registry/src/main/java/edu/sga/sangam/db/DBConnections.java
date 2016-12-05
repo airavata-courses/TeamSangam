@@ -17,10 +17,10 @@ public class DBConnections {
 		try{
 		    Logger mongoLogger = Logger.getLogger( "org.mongodb.driver" );
 			mongoLogger.setLevel(Level.SEVERE); 
-			mongo = new MongoClient(DBConstants.DB_HOST,DBConstants.DB_Port);
-                    /*Arrays.asList(new ServerAddress(DBConstants.gateway,DBConstants.DB_Port),
+			mongo = new MongoClient(
+                    Arrays.asList(new ServerAddress(DBConstants.gateway,DBConstants.DB_Port),
                                   new ServerAddress(DBConstants.worker1,DBConstants.DB_Port),
-                                  new ServerAddress(DBConstants.worker2,DBConstants.DB_Port)));*/
+                                  new ServerAddress(DBConstants.worker2,DBConstants.DB_Port)));
 			
 		}
 		catch(Exception e)

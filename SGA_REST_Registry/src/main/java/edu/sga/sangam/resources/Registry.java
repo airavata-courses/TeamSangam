@@ -41,6 +41,7 @@ public class Registry {
 		services.registerService(serviceName,url);
 		
 	}
+	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Path("/dataingestor")
@@ -238,6 +239,15 @@ public class Registry {
             return Response.status(500).entity(e.getMessage()).build();
         }
         
+    }
+    @Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Path("/getdata")
+    @GET
+    
+    public Response getdatafromregistry()
+    {
+    	return Response.status(200).entity("hello processing your request").build();
     }
 	
 
