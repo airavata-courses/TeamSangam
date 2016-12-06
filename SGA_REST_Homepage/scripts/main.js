@@ -160,7 +160,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 						}
 					}
 					else{
-						$scope.messgae = "No storm has been forecasted for the selsected location";
+						$scope.message = "No storm has been forecasted for the selsected location";
 					}
 					
 				},
