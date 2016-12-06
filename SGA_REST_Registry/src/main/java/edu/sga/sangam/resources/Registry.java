@@ -200,7 +200,7 @@ public class Registry {
 	@Consumes(MediaType.APPLICATION_JSON)
     @Path("/getuserstats")
     @GET
-    public Response GetuserStats(String username){
+    public Response GetuserStats(@QueryParam("email") String username){
         try
         {
         String result = DBOperations.getInstance().getuserStats(username);
