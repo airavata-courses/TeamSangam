@@ -72,9 +72,9 @@ def gAuth():
 # Need to replace * with a single domain from which the requests are expected.
 @cors.crossdomain(origin='*')
 def requestToken():
-	if request.args.get("state", None) != session["state"]:
+	#if request.args.get("state", None) != session["state"]:
 		# Invalid state parameter
-		return redirect(PUBLIC_IP + ':8080/loginError.html')
+	#	return redirect(PUBLIC_IP + ':8080/loginError.html')
 	session.clear()
 	code = request.args.get("code", None)
 	if code:
