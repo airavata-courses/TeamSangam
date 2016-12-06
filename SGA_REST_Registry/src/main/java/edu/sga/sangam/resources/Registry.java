@@ -189,6 +189,9 @@ public class Registry {
         
     }
     
+
+    @Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
     @Path("/getuserstats")
     @GET
     public Response GetuserStats(String username){
