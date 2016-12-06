@@ -10,7 +10,7 @@ var admin = angular .module("sga_admin",[])
 							// An http request to fetch the json object with all user details. For now, hard coding the json data as below.
 							$http({
 									method : 'GET',
-									url : myurl + "8080/SGA_REST_Registry/sga/registry/getstats"
+									url : myurl + "8085/SGA_REST_Registry/sga/registry/getstats"
 							})
 							// var data = {
 							// 		"users":[
