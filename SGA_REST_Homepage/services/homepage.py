@@ -3,7 +3,7 @@ import cors
 import boto
 from flask import session
 import datetime
-import base64, json
+import base64, json, zlib
 
 
 app = Flask(__name__)
@@ -88,10 +88,19 @@ def gettimestamp():
     return jsonify([file.name.strip("/").split("/")[4].strip(".gz") for file in files if file.name.endswith('.gz')])
 
 def decode_base64(data):
+    compressed = False
+    payload = data
+    if payload.startswith('.'):
+        compressed = True
+        payload = payload[1:]
+    data = payload.split('.')[0]
     missing_padding = len(data) % 4
     if missing_padding != 0:
-        data += b'='* (4 - missing_padding)
-    return base64.urlsafe_b64decode(data)
+        data += '='* (4 - missing_padding)
+    data = base64.urlsafe_b64decode(data)
+    if compressed:
+        data = zlib.decompress(data)
+    return data
 
 @app.route("/isActive", methods=["GET", "OPTIONS"])
 @cors.crossdomain(origin= CROSS_DOMAIN)
