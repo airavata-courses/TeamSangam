@@ -87,6 +87,12 @@ def gettimestamp():
     files = list(bucket.list(year + "/" + month + "/" + day + "/" + location + "/", '/'))
     return jsonify([file.name.strip("/").split("/")[4].strip(".gz") for file in files if file.name.endswith('.gz')])
 
+def decode_base64(data):
+    missing_padding = len(data) % 4
+    if missing_padding != 0:
+        data += b'='* (4 - missing_padding)
+    return base64.urlsafe_b64decode(data)
+
 @app.route("/isActive", methods=["GET", "OPTIONS"])
 @cors.crossdomain(origin= CROSS_DOMAIN)
 def isActive():
@@ -95,7 +101,7 @@ def isActive():
     #print("weatherSess: ", weatherSess)
     if weatherSess:
         # decrypt it
-        weatherSess = base64.urlsafe_b64decode(weatherSess + "===")[:49].decode("utf-8")
+        weatherSess = decode_base64(weatherSess).decode("utf-8")
         SGAsid = eval(weatherSess).get("SGAsid", None)
         print("SGAsid: ", SGAsid)
         if SGAsid:
@@ -135,7 +141,7 @@ def logout():
     global timestampDict, emailDict
     weatherSess = request.cookies.get("weatherSess", None)
     if weatherSess:
-        weatherSess = base64.urlsafe_b64decode(weatherSess + "===")[:49].decode("utf-8")
+        weatherSess = decode_base64(weatherSess).decode("utf-8")
         SGAsid = eval(weatherSess).get("SGAsid", None)
         if SGAsid:
             if SGAsid in timestampDict.keys():
