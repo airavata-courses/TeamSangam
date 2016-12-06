@@ -8,6 +8,7 @@ ADD ./templates /usr/local/tomcat/webapps/ROOT/templates
 
 COPY index.html /usr/local/tomcat/webapps/ROOT/
 COPY login.html /usr/local/tomcat/webapps/ROOT/
+COPY admin.html /usr/local/tomcat/webapps/ROOT/
 COPY signup.html /usr/local/tomcat/webapps/ROOT/
 COPY loginError.html /usr/local/tomcat/webapps/ROOT/
 
