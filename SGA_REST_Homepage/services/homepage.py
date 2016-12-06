@@ -128,6 +128,19 @@ def putSession():
     emailDict[request.json["sid"]] = request.json["email"]
     return jsonify("OK")
 
-
+@app.route("/logout", methods=["POST", "OPTIONS"])
+@cors.crossdomain(origin=CROSS_DOMAIN)
+def logout():
+    global timestampDict, emailDict
+    weatherSess = request.cookies.get("weatherSess", None)
+    if weatherSess:
+        weatherSess = base64.urlsafe_b64decode(weatherSess + "===")[:49].decode("utf-8")
+        SGAsid = eval(weatherSess).get("SGAsid", None)
+        if SGAsid:
+            if SGAsid in timestampDict.keys():
+                del timestampDict[SGAsid]
+            if SGAsid in emailDict.keys():
+                del emailDict[SGAsid]
+    return jsonify(1)
 #if __name__ == "__main__":
 #app.run(host='0.0.0.0',port=5001,debug=True)

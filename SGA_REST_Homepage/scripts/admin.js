@@ -1,4 +1,4 @@
-var instanceURL = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com:";
+var instanceURL = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:";
 
 var admin = angular .module("sga_admin",[])
 					.controller("sga_admin_controller", function($scope, $http) {
@@ -29,5 +29,20 @@ var admin = angular .module("sga_admin",[])
 							function(response){
 								$scope.message = "There was an error processing your request. Please try again after sometime.";
 							});
+						};
+						$scope.logout = function(){
+							$scope.message = "Logging you out...";
+							$http({
+								method : "POST",
+								url : myurl + "5001/logout"
+							})
+							.then(function(response){
+								// This is a success callback and will be called for status 200-299
+								$scope.message = "Logged out.";
+								$window.location.href = "login.html";
+							},
+							function(response){
+								$scope.message = "Error while logging out.";
+							});	
 						};
 					});

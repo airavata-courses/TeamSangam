@@ -177,8 +177,23 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 				$scope.errorMessage = response.data;
 				$scope.message = "error in processing request";
 			});	
-	   };	 
+	};
+	$scope.logout = function(){
+		$scope.message = "Logging you out...";
+		$http({
+			method : "POST",
+			url : myurl + "5001/logout"
+		})
+		.then(function(response){
+			// This is a success callback and will be called for status 200-299
+				$scope.message = "Logged out.";
+				$window.location.href = "login.html";
+			},
+			function(response){
+				$scope.message = "Error while logging out.";
+			});	
+	};
 })
 .config(function ($httpProvider) {
 						$httpProvider.defaults.withCredentials = true;
-					});
+});
