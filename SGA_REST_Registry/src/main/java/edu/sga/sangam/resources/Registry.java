@@ -180,11 +180,17 @@ public class Registry {
         try
         {
         String result = DBOperations.getInstance().getStats();
-        return Response.status(200).entity(result).build();
+        return Response.status(200).entity(result)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
         catch(Exception e)
         {
-            return Response.status(500).entity(e.getMessage()).build();
+            return Response.status(500).entity(e.getMessage())
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
         
     }
@@ -198,11 +204,17 @@ public class Registry {
         try
         {
         String result = DBOperations.getInstance().getuserStats(username);
-        return Response.status(200).entity(result).build();
+        return Response.status(200).entity(result)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
         catch(Exception e)
         {
-            return Response.status(500).entity(e.getMessage()).build();
+            return Response.status(500).entity(e.getMessage())
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
     }
 	
