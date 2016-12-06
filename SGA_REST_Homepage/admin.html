@@ -21,24 +21,40 @@
 	    	<div class="row">
 	        	<div class="col-md-4 col-md-offset-4">
 	                    <div class="panel-body">
-	                    	<form name="adminForm" ng-submit="pullAllUserStats()">
-	                    		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Pull all user statistics"><br>
+	                    	<form name="adminForm" ng-submit="pullAllUsers()">
+	                    		<input class="btn btn-lg btn-primary btn-block" type="submit" value="Pull all users"><br>
 	                    	</form>   
 	    				</div>
 	          	</div>
 	       	</div>
 	       	<p class="text-center">{{message}}</p>
-       		<table class="table table-bordered table-hover table-striped" ng-show="showTable">
+       		<table class="table table-bordered table-hover table-striped" ng-show="showUsers">
        			<thead>
 	       			<tr>
 	       				<th>User</th>
 	       				<th>Request count</th>
+						<th>Details</th>
 	       			</tr>
 	       		</thead>
 	       		<tbody>
 	       			<tr ng-repeat="row in stats">
-	       				<td>{{ row.id }}</td>
+	       				<td>{{ row._id }}</td>
 	       				<td>{{ row.count }}</td>
+						<td><button class="btn btn-sm btn-block" ng-click="pullUserStats(row._id)">Details</button></td>
+	       			</tr>
+	       		</tbody>
+       		</table>
+			<table class="table table-bordered table-hover table-striped" ng-show="showUserDetails">
+       			<thead>
+	       			<tr>
+	       				<th>Session</th>
+	       				<th>Details</th>
+	       			</tr>
+	       		</thead>
+	       		<tbody>
+	       			<tr ng-repeat="row in stats">
+	       				<td>{{ row.sessionid }}</td>
+	       				<td>{{ row }}</td>
 	       			</tr>
 	       		</tbody>
        		</table>
