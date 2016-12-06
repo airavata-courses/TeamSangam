@@ -12,6 +12,7 @@ PUBLIC_IP = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com"
 CROSS_DOMAIN = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080"
 
 filename = "aws_key.properties"
+
 timestampDict = {}
 emailDict = {}
 accessKey, secretKey = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
