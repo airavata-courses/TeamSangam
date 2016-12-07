@@ -8,8 +8,8 @@ import base64, json, zlib
 
 app = Flask(__name__)
 
-PUBLIC_IP = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com"
-CROSS_DOMAIN = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com:8080"
+PUBLIC_IP = "http://ec2-54-193-113-156.us-west-1.compute.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-193-113-156.us-west-1.compute.amazonaws.com:8080"
 
 filename = "aws_key.properties"
 
