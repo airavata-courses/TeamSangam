@@ -1,62 +1,29 @@
 package edu.sga.sangam.resources;
 
-import java.sql.Timestamp;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ForecastDecisionBean {
-	String userid;
-	String sessionid;
-	String requestid;
-	String requestData;
-	String requestTime;
-	String responseData;
+	String key;
+	String forecast;
+	String fctime;
+	public String getKey() {
+		return key;
+	}
+	public void setKey(String key) {
+		this.key = key;
+	}
+	public String getForecast() {
+		return forecast;
+	}
+	public void setForecast(String forecast) {
+		this.forecast = forecast;
+	}
+	public String getFctime() {
+		return fctime;
+	}
+	public void setFctime(String fctime) {
+		this.fctime = fctime;
+	}
 	
-	String responseTime;
-	
-	
-	public String getResponseTime() {
-		return responseTime;
-	}
-	public void setResponseTime(String responseTime) {
-		this.responseTime = responseTime;
-	}
-	public String getRequestTime() {
-		return requestTime;
-	}
-	public void setRequestTime(String requestTime) {
-		this.requestTime = requestTime;
-	}
-	
-	public String getUserid() {
-		return userid;
-	}
-	public void setUserid(String userid) {
-		this.userid = userid;
-	}
-	public String getSessionid() {
-		return sessionid;
-	}
-	public void setSessionid(String sessionid) {
-		this.sessionid = sessionid;
-	}
-	public String getRequestid() {
-		return requestid;
-	}
-	public void setRequestid(String requestid) {
-		this.requestid = requestid;
-	}
-	public String getRequestData() {
-		return requestData;
-	}
-	public void setRequestData(String requestData) {
-		this.requestData = requestData;
-	}
-	public String getResponseData() {
-		return responseData;
-	}
-	public void setResponseData(String responseData) {
-		this.responseData = responseData;
-	}
 }
