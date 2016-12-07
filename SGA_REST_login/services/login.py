@@ -11,8 +11,8 @@ discoveryDocument = json.loads(urllib.request.urlopen("https://accounts.google.c
 filename = "googleOAuth.properties"
 CLIENT_ID, CLIENT_SECRET, APPLICATION_NAME = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
 
-PUBLIC_IP = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com"
-CROSS_DOMAIN = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com:8080"
+PUBLIC_IP = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080"
 
 REDIRECT_URI = PUBLIC_IP + ":5000/requestToken"
 HOMEPAGE_PUT_SESSION = PUBLIC_IP + ":5001/putSession"
@@ -72,9 +72,9 @@ def gAuth():
 # Need to replace * with a single domain from which the requests are expected.
 @cors.crossdomain(origin='*')
 def requestToken():
-	if request.args.get("state", None) != session["state"]:
+	#if request.args.get("state", None) != session["state"]:
 		# Invalid state parameter
-		return redirect(PUBLIC_IP + ':8080/loginError.html')
+	#	return redirect(PUBLIC_IP + ':8080/loginError.html')
 	session.clear()
 	code = request.args.get("code", None)
 	if code:
