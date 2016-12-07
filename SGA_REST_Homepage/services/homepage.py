@@ -3,15 +3,16 @@ import cors
 import boto
 from flask import session
 import datetime
-import base64, json
+import base64, json, zlib
 
 
 app = Flask(__name__)
 
-PUBLIC_IP = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com"
-CROSS_DOMAIN = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com:8080"
+PUBLIC_IP = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com"
+CROSS_DOMAIN = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080"
 
 filename = "aws_key.properties"
+
 timestampDict = {}
 emailDict = {}
 accessKey, secretKey = tuple([line.strip().split("=")[1] for line in open(filename, 'r')])
@@ -86,6 +87,21 @@ def gettimestamp():
     files = list(bucket.list(year + "/" + month + "/" + day + "/" + location + "/", '/'))
     return jsonify([file.name.strip("/").split("/")[4].strip(".gz") for file in files if file.name.endswith('.gz')])
 
+def decode_base64(data):
+    compressed = False
+    payload = data
+    if payload.startswith('.'):
+        compressed = True
+        payload = payload[1:]
+    data = payload.split('.')[0]
+    missing_padding = len(data) % 4
+    if missing_padding != 0:
+        data += '='* (4 - missing_padding)
+    data = base64.urlsafe_b64decode(data)
+    if compressed:
+        data = zlib.decompress(data)
+    return data
+
 @app.route("/isActive", methods=["GET", "OPTIONS"])
 @cors.crossdomain(origin= CROSS_DOMAIN)
 def isActive():
@@ -94,7 +110,7 @@ def isActive():
     #print("weatherSess: ", weatherSess)
     if weatherSess:
         # decrypt it
-        weatherSess = base64.urlsafe_b64decode(weatherSess + "===")[:49].decode("utf-8")
+        weatherSess = decode_base64(weatherSess).decode("utf-8")
         SGAsid = eval(weatherSess).get("SGAsid", None)
         print("SGAsid: ", SGAsid)
         if SGAsid:
@@ -128,6 +144,19 @@ def putSession():
     emailDict[request.json["sid"]] = request.json["email"]
     return jsonify("OK")
 
-
+@app.route("/logout", methods=["POST", "OPTIONS"])
+@cors.crossdomain(origin=CROSS_DOMAIN)
+def logout():
+    global timestampDict, emailDict
+    weatherSess = request.cookies.get("weatherSess", None)
+    if weatherSess:
+        weatherSess = decode_base64(weatherSess).decode("utf-8")
+        SGAsid = eval(weatherSess).get("SGAsid", None)
+        if SGAsid:
+            if SGAsid in timestampDict.keys():
+                del timestampDict[SGAsid]
+            if SGAsid in emailDict.keys():
+                del emailDict[SGAsid]
+    return jsonify(1)
 #if __name__ == "__main__":
 #app.run(host='0.0.0.0',port=5001,debug=True)
