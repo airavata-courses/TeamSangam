@@ -1,4 +1,4 @@
-var myurl = "http://ec2-54-183-233-167.us-west-1.compute.amazonaws.com:";
+var myurl = "http://ec2-54-183-166-68.us-west-1.compute.amazonaws.com:";
 
 var admin = angular .module("sga_admin",[])
 					.controller("sga_admin_controller", function($scope, $http) {
