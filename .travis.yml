@@ -52,7 +52,7 @@ deploy:
     key: SGA_Sangam_loginpage.tar
     bundle_type: tar
     application: SGA-TeamSangam-M3
-    deployment_group: SGA-TeamSangam-M3-Workers
+    deployment_group: SGA-TeamSangam-M3-Gateway
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
