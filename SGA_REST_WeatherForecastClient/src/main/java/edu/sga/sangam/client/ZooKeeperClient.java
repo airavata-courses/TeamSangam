@@ -18,8 +18,6 @@ import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 
 import com.google.common.collect.Lists;
 
-
-
 public class ZooKeeperClient {
 	private final CuratorFramework curatorFramework;
 		public ZooKeeperClient()
@@ -39,7 +37,9 @@ public class ZooKeeperClient {
 		
 		 public String discoverServiceURI(String name) {
 		        try {
-		            String znode = "/services/"+name ;
+
+		            String znode = "/services/" + name ;
+
 
 		            List<String> uris = curatorFramework.getChildren().forPath(znode);
 		            

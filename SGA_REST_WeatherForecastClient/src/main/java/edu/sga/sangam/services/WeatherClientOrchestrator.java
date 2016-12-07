@@ -4,8 +4,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+import java.util.UUID;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
@@ -25,255 +31,153 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.apache.kafka.clients.producer.Callback;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
+import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.common.io.Resources;
 
 import edu.sga.sangam.bean.ClientOrchestratorBean;
 import edu.sga.sangam.bean.DataIngestorBean;
+import edu.sga.sangam.bean.DataIngestorRequest;
 import edu.sga.sangam.bean.StormClusterBean;
 import edu.sga.sangam.bean.StormDetectionBean;
 import edu.sga.sangam.client.ZooKeeperClient;
 
 public class WeatherClientOrchestrator {
-	ClientOrchestratorBean cob = null;
-	DataIngestorBean dib = null;
-	StormClusterBean scb=null;
-	StormDetectionBean sdb = null;
-	
-	ZooKeeperClient zc = new ZooKeeperClient();
-	
-	
+	final static Logger logger = Logger.getLogger(WeatherClientOrchestrator.class);
+	ZooKeeperClient zc = new ZooKeeperClient();	
 	public String clientOrchestrator(String year,String mm,String day,String nexrad,String fileName,String userid,String sessionid,
 			String requestid) throws Exception
 	{
-		
-		cob = new ClientOrchestratorBean(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
 		try
 		{
+			String key = callDataIngestor(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
+			return key;	
+		}
+		catch(Exception e)
+		{
+			throw new Exception(e.getMessage());
+		}
+	}
 
-			callDataIngestor(year,mm,day,nexrad,fileName);
-			callStormCluster(dib.getUrl());
-			callStormDetection(scb.getFile(),cob.getNexrad());
-			String decision =callForecastDecision();
-			if(decision.equals("yes"))
+	public String callDataIngestor(String year,String mm,String day,String nexrad,String fileName,String userid,String sessionid,String requestid ) throws Exception
+	{
+		
+		DataIngestorRequest db = new DataIngestorRequest(year,mm,day,nexrad,fileName,userid,sessionid,requestid);
+		KafkaProducer<String, DataIngestorRequest> producer;
+		String topic = "dataingestor";
+		/*Properties props = new Properties();
+		props.put("bootstrap.servers", "localhost:9092");
+	    props.put("acks", "all");
+	    props.put("retries", 0);
+	    props.put("batch.size", 16384);
+	    props.put("linger.ms", 1);
+	    props.put("buffer.memory", 33554432);
+	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+	    props.put("value.serializer", "edu.sga.sangam.services.WeatherClientSerializer"); */
+
+	    try (InputStream props = Resources.getResource("producer.props").openStream()) {
+            Properties properties = new Properties();
+            properties.load(props);
+            producer = new KafkaProducer<>(properties);
+        }
+	    UUID text = UUID.randomUUID();
+	    final String key = userid+"_"+text;
+	    final JSONObject request = new JSONObject();
+	    request.put("key", key);
+	    request.put("userid", db.getUserid());
+	    request.put("sessionid", db.getSessionid());
+	    request.put("requestid", db.getRequestid());
+	    request.put("requestData", "requested data for year"+db.getYear()+ "month" + db.getMonth() +"day" +db.getDay()+ "nexrad" +db.getNexrad());
+	    request.put("orchestrator", "request success");
+	    logger.info("requested data for year"+db.getYear()+ "day" +db.getDay() + "month" +db.getMonth());
+	    try
+	    {
+	    	registry(request);
+	    }catch(Exception e)
+	    {
+	    	throw new Exception(e.getMessage());
+	    	
+	    }
+	    producer.send(new ProducerRecord<String, DataIngestorRequest>(topic, key, db) ,new Callback() {
+            public void onCompletion(RecordMetadata metadata, Exception e)  {
+                if (e != null) {
+                  e.printStackTrace();
+                }
+				
+               logger.info("Orchestrator Sent "+key);
+              }
+            });
+	    producer.close();
+	    return key;
+	}
+
+	public void registry(JSONObject request) throws IOException {
+		Date date = new Date();
+		DateFormat df2 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+		request.put("time", df2.format(date));
+		HttpClient client = new HttpClient();
+		//ZooKeeperClient service = new ZooKeeperClient();
+		//String registryURL = service.discoverServiceURI("registry");
+
+		//PostMethod post = new PostMethod(registryURL+"/orchestrator");
+		PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
+
+		StringRequestEntity entity;
+		try {
+			entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");
+		} catch (UnsupportedEncodingException e1) {
+			throw new UnsupportedEncodingException("Issue with Encoding");
+		}
+		post.setRequestEntity(entity);
+		post.addRequestHeader("Content-Type", "application/json");
+		int statusCode;
+		try {
+			//System.out.println("calling registry");
+			statusCode = client.executeMethod(post);
+			if(statusCode == 200)
+			{		
+				logger.info("orchestrator registry successful");
+			}
+			else
+			{	
+				logger.error("Exception in orchestrator registry");
+				throw new IOException(post.getResponseBodyAsString());
+			}
+			// log.info("Data Ingestor Resigstry status code is "+statusCode);
+		} catch (IOException e) {
+			logger.error("Exception occured"+e.getMessage());
+			throw new IOException(e.getMessage());
+		}
+	}
+		
+		public String getResultFromRegistry(String key) throws IOException
+		{
+			HttpClient client = new HttpClient();
+			//ZooKeeperClient service = new ZooKeeperClient();
+			//String registryURL = service.discoverServiceURI("registry");
+			GetMethod getMethod = new GetMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/resultoutput");
+			//GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
+			getMethod.setQueryString(new NameValuePair[] {
+				    new NameValuePair("key", key)
+				});
+			int response = client.executeMethod(getMethod);
+			if(response ==200)
 			{
-				String finalresult = callrunForecast();
-				return finalresult;
+				return getMethod.getResponseBodyAsString();	
 			}
 			else
 			{
-				return "no";
+				String jsonStr = getMethod.getResponseBodyAsString();
+				throw new IOException("Status code is "+response+"\n ErrorMessage: "+jsonStr);
 			}
 			
 		}
-		catch(Exception e)
-		{
-			throw new Exception(e.getMessage());
-		}
-
 	}
 
-	public void callDataIngestor(String year,String mm,String day,String nexrad,String fileName) throws Exception
-	{
-		
-
-		HttpClient client = new HttpClient();
-		String dataIngestorURL = zc.discoverServiceURI("dataingestor");
-		System.out.println(dataIngestorURL);
-		GetMethod getMethod = new GetMethod(dataIngestorURL);
-		try{
-
-			NameValuePair  yearParam = new NameValuePair("year",URIUtil.encodeQuery(year));
-			NameValuePair monthParam = new NameValuePair("month",URIUtil.encodeQuery(mm));
-			NameValuePair dayParam = new NameValuePair("day",URIUtil.encodeQuery(day));
-			NameValuePair stationParam = new NameValuePair("nexrad",URIUtil.encodeQuery(nexrad));
-			NameValuePair filenameParam = new NameValuePair("filename",URIUtil.encodeQuery(fileName));
-			NameValuePair useridParam = new NameValuePair("userid",URIUtil.encodeQuery(cob.getUserid()));
-			NameValuePair sessionidParam = new NameValuePair("sessionid",URIUtil.encodeQuery(cob.getSessionid()));
-			NameValuePair requestidParam = new NameValuePair("requestid",URIUtil.encodeQuery(cob.getRequestid()));
-			NameValuePair[] params = new NameValuePair[] {yearParam, monthParam,dayParam,stationParam,filenameParam,useridParam,sessionidParam,requestidParam};
-			getMethod.setQueryString(params);
-			int response = client.executeMethod(getMethod);
-			System.out.println("service response is "+response);
-			if(response ==200)
-			{
-				String  jsonStr = getMethod.getResponseBodyAsString();
-				JSONParser parser = new JSONParser();
-				try {
-					Object obj = parser.parse(jsonStr);
-					JSONObject jsonObject = (JSONObject) obj;
-					String url = ((String) jsonObject.get("url"));
-					System.out.println("url link is "+url);
-					boolean fileexists = ((boolean) jsonObject.get("fileExists"));
-					dib = new DataIngestorBean(response,fileexists,url);
-				} catch (ParseException e) {
-					//e.printStackTrace(); 
-					throw new Exception("Error in parsing the response string");
-				}
-			}
-			else
-			{
-				String jsonStr = getMethod.getResponseBodyAsString();
-				System.out.println(jsonStr);
-				JSONParser parser = new JSONParser();
-
-				throw new IOException("Status Code is "+response+"\n ErrorMessage: "+jsonStr);
-
-			}
-		}catch(Exception e)
-		{
-			throw new Exception(e.getMessage());
-		}
-	}
-
-	public void callStormCluster(String url) throws Exception
-	{
-		String stormclusteringURL =zc.discoverServiceURI("stormcluster");
-		HttpClient client = new HttpClient();
-		PostMethod post = new PostMethod(stormclusteringURL);
-		post.addRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		NameValuePair useridParam = new NameValuePair("userid",URIUtil.encodeQuery(cob.getUserid()));
-		NameValuePair sessionidParam = new NameValuePair("sessionid",URIUtil.encodeQuery(cob.getSessionid()));
-		NameValuePair requestidParam = new NameValuePair("requestid",URIUtil.encodeQuery(cob.getRequestid()));
-		NameValuePair[] params = new NameValuePair[] {useridParam,sessionidParam,requestidParam};
-		post.setQueryString(params);
-		post.setParameter("url",url );
-		try{
-			int response = client.executeMethod(post);
-			if(response ==200){
-				InputStream in =post.getResponseBodyAsStream();
-				byte[] bytes = IOUtils.toByteArray(in);
-				/*File targetfile = new File("/Users/ramarvab/Desktop/xyz.kml");
-			targetfile.createNewFile();*/
-				File targetfile = File.createTempFile(cob.getFileName(),".kml");
-				FileOutputStream fos = new FileOutputStream(targetfile);
-				fos.write(bytes);
-				fos.close();
-
-				scb = new StormClusterBean(response,targetfile);			
-			}
-			else
-			{
-				String jsonStr = post.getResponseBodyAsString();
-				throw new IOException("Status code is "+response+"\n ErrorMessage: "+jsonStr);
-			}
-		}catch(Exception e)
-		{
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
-	public void callStormDetection(File file,String station) throws Exception
-	{
-		String stormDetectionURL =zc.discoverServiceURI("stormdetection");
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpEntity entity = MultipartEntityBuilder.create().addTextBody("station", station)
-				.addBinaryBody("file",file,ContentType.create("application/octet-stream"),cob.getFileName())
-				.addTextBody("userid", cob.getUserid())
-				.addTextBody("sessionid", cob.getSessionid())
-				.addTextBody("requestid",cob.getRequestid())
-				.build();
-		
-		List<NameValuePair> postParameters= new ArrayList<NameValuePair>();
-		
-		HttpPost httpPost = new HttpPost(stormDetectionURL);
-		httpPost.setEntity(entity);
-		
-		try
-		{
-			HttpResponse response = httpclient.execute(httpPost);
-			int status =response.getStatusLine().getStatusCode();
-			if(status ==200)
-			{
-				InputStream is = response.getEntity().getContent();
-				byte[] bytes = IOUtils.toByteArray(is);
-				/*File targetfile = new File("/Users/ramarvab/Desktop/pqr.kml");
-			targetfile.createNewFile();*/
-				File targetfile = File.createTempFile(cob.getFileName(),".Kml");
-				FileOutputStream fos = new FileOutputStream(targetfile);
-				fos.write(bytes);
-				fos.close();
-				sdb = new StormDetectionBean(status,targetfile);
-
-			}
-			else
-			{
-				String jsonStr = EntityUtils.toString(response.getEntity());
-				throw new IOException("Status code is "+response+"\n ErrorMessage: "+jsonStr);
-			}
-		}
-		catch(Exception e)
-		{
-			throw new Exception("Something went wrong with Stormcluster Service");
-		}
-
-	}
-
-	public String callForecastDecision() throws Exception
-	{
-		HttpClient client = new HttpClient();
-		String dataIngestorURL = zc.discoverServiceURI("forecastdecision");
-		GetMethod getMethod = new GetMethod(dataIngestorURL);
-		NameValuePair useridParam = new NameValuePair("userid",URIUtil.encodeQuery(cob.getUserid()));
-		NameValuePair sessionidParam = new NameValuePair("sessionid",URIUtil.encodeQuery(cob.getSessionid()));
-		NameValuePair requestidParam = new NameValuePair("requestid",URIUtil.encodeQuery(cob.getRequestid()));
-		NameValuePair[] params = new NameValuePair[] {useridParam,sessionidParam,requestidParam};
-		getMethod.setQueryString(params);
-		try{
-			int response = client.executeMethod(getMethod);
-			if(response ==200)
-			{	
-				String  decision = getMethod.getResponseBodyAsString();
-				return decision;
-			}
-			else
-			{
-				//String jsonStr = response.getEntity().toString();
-				String jsonStr = getMethod.getResponseBodyAsString();
-				throw new IOException("Status code is "+response+"\n ErrorMessage: "+jsonStr);
-			}
-		}catch(Exception e)
-		{
-			throw new Exception("Something went wrong with ForecastDecision  Service");
-		}
-
-	}
-
-	public String callrunForecast() throws Exception
-	{
-		String runForecasturl =zc.discoverServiceURI("runforecast");
-		CloseableHttpClient httpclient = HttpClients.createDefault();
-		HttpEntity entity = MultipartEntityBuilder.create()
-				.addBinaryBody("file",sdb.getFile(),ContentType.create("application/octet-stream"),cob.getFileName())
-				.addTextBody("userid", cob.getUserid())
-				.addTextBody("sessionid", cob.getSessionid())
-				.addTextBody("requestid",cob.getRequestid())
-				.build();
-		HttpPost httpPost = new HttpPost(runForecasturl);
-		httpPost.setEntity(entity);
-		try
-		{
-			HttpResponse response = httpclient.execute(httpPost);
-			int status =response.getStatusLine().getStatusCode();
-			if(status ==200)
-			{
-				String json = EntityUtils.toString(response.getEntity());
-				return json;
-			}
-			else
-			{
-				String jsonStr = EntityUtils.toString(response.getEntity());
-				throw new IOException("Status code is "+response+"\n ErrorMessage: "+jsonStr);
-			}
-		}
-		catch(Exception e)
-		{
-			throw new Exception(e.getMessage());
-		}
-
-	}
-
-}
