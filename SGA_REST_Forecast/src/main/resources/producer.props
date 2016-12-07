@@ -1,0 +1,10 @@
+bootstrap.servers=ec2-54-183-132-116.us-west-1.compute.amazonaws.com:9092,ec2-54-193-9-114.us-west-1.compute.amazonaws.com:9092,ec2-52-53-192-165.us-west-1.compute.amazonaws.com:9092
+acks=all
+retries=0
+buffer.memory=33554432
+batch.size=16384
+auto.commit.interval.ms=1000
+linger.ms=1
+key.serializer=org.apache.kafka.common.serialization.StringSerializer
+value.serializer=org.apache.kafka.common.serialization.StringSerializer
+block.on.buffer.full=true
