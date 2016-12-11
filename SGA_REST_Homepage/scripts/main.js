@@ -5,6 +5,9 @@ var home = angular.module("sga_home",[]);
 var myurl = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:";
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
+
+	// This is the initial page to load.
+	$scope.showTemplate = "homeTemplates/createNew.html";
 	
 	$http({
 			method : "GET",
@@ -41,7 +44,47 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		function(response){
 		$scope.data = response;
 		});
-		
+	$scope.createNew = function(){
+		// load the create new template using ng-include
+		console.log("in create new");
+		$scope.showTemplate = "homeTemplates/createNew.html";
+		$scope.message = "";
+	};
+
+	$scope.checkPrevious = function(){
+		console.log("in check previous");
+		$scope.showTemplate = "homeTemplates/previousJobs.html";
+		// First get all the jobs the user has ever submitted
+		// Create them all into a table format with clickable links
+		// For now, hardcoding the values
+		$scope.jobs = [
+			{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
+			{"id":"2", "year":"1990", "month":"01", "day":"09", "location":"CFDH", "timestamp":"KMPH20031103jaskfs"},
+			{"id":"3", "year":"2004", "month":"10", "day":"23", "location":"KGGG", "timestamp":"KMPH20031103jaskfs"},
+			{"id":"4", "year":"2006", "month":"03", "day":"23", "location":"KSHF", "timestamp":"KMPH20031103jaskfs"},
+			{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
+			{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
+		];
+		if($scope.jobs){
+			$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
+		} else {
+			$scope.message = "You haven't submitted any jobs yet. Please create a new job.";
+		}
+	};
+
+	$scope.resubmit = function(year, month, day, location, timestamp){
+		// Load the createNew template with all the fields filled in.
+		console.log("in resubmit"+year);
+		$scope.showTemplate = "homeTemplates/createNew.html";
+		$scope.message = "";
+		// Need to fill the values here
+		$scope.year = year;
+		$scope.month = month;
+		$scope.day = day;
+		$scope.location = location;
+		$scope.time = timestamp;
+	};
+
 	$scope.fetchMonths = function(){
 		if($scope.year !== "None"){
 			$http({

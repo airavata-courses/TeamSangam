@@ -1,0 +1,25 @@
+<p class="text-center">{{message}}</p>
+<table class="table table-bordered table-hover table-striped">
+	<thead>
+		<tr>
+			<th>Id</th>
+			<th>Year</th>
+			<th>Month</th>
+			<th>Day</th>
+			<th>Location</th>
+			<th>Timestamp</th>
+			<th>Resubmit</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="job in jobs">
+			<td>{{ job.id }}</td>
+			<td>{{ job.year }}</td>
+			<td>{{ job.month }}</td>
+			<td>{{ job.day }}</td>
+			<td>{{ job.location }}</td>
+			<td>{{ job.timestamp }}</td>
+			<td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Resubmit</button></td>
+		</tr>
+	</tbody>
+</table>
