@@ -5,6 +5,12 @@
       #map {
         height: 400px;
         width: 50%;
+        display: inline-block;
+      }
+      #image{
+        height: 400px;
+        width: 50%;
+        display: inline-block;
       }
 </style>
 		
@@ -76,7 +82,10 @@
      </div>
      <br/>
 
-     <div id="map" ng-show = "showmap" class="container"></div>
+     <div id="map" ng-show = "showmap"></div>
+     <div id = "image" ng-show = "showImage">
+         <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
+     </div>
      
      
      <footer class="page-footer">

@@ -158,9 +158,15 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 							map: $scope.map
 							});
 						}
+						// Need to check if there is an image in the received response. If there is one, then render it.
+						// Else, the showImage will be undefined and the image will not be shown.
+						if(response.data.image){
+							$scope.precip = response.data.image;
+							$scope.showImage = true;
+						}
 					}
 					else{
-						$scope.message = "No storm has been forecasted for the selsected location";
+						$scope.message = "No storm has been forecasted for the selected location";
 					}
 					
 				},
