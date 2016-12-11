@@ -81,11 +81,12 @@ public class WeatherClientOrchestrator {
 	    props.put("buffer.memory", 33554432);
 	    props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 	    props.put("value.serializer", "edu.sga.sangam.services.WeatherClientSerializer"); */
-
+		//InputStream props;
 	    try (InputStream props = Resources.getResource("producer.props").openStream()) {
             Properties properties = new Properties();
             properties.load(props);
             producer = new KafkaProducer<>(properties);
+            props.close();
         }
 	    UUID text = UUID.randomUUID();
 	    final String key = userid+"_"+text;
