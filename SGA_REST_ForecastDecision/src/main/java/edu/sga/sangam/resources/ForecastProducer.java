@@ -47,31 +47,19 @@ public class ForecastProducer implements Runnable {
 	}
 	
 public void run() {
-		
-		try {
+	
+	try{
 			JSONObject forecast = new JSONObject();
-			if(decision.equals("no"))
-			{
-			producer.send(new ProducerRecord<String, String>(topic, key, decision), new Callback() {
+			producer.send(new ProducerRecord<String, String>(topic, key, fileDetails), new Callback() {
 				public void onCompletion(RecordMetadata metadata, Exception e) {
-					if (e != null) {
-						e.printStackTrace();
-					}
-					logger.info("Sent:" + key +"decision is :"+decision);	
-				}
-			});
-			}
-			else
-			{
-				producer.send(new ProducerRecord<String, String>(topic, key, fileDetails), new Callback() {
-					public void onCompletion(RecordMetadata metadata, Exception e) {
 						if (e != null) {
 							e.printStackTrace();
 						}
 						logger.info("Sent:" + key +"decision is :"+decision);
 					}
 				});
-			}
+				//closes producer
+				producer.close();
 			try
 			{
 				forecast.put("key", key);
@@ -89,8 +77,7 @@ public void run() {
 				System.out.println(e.getMessage());
 			}
 			
-		//closes producer
-		producer.close();
+		
 	}
 
 	public void registry(JSONObject requestDataIngestor) throws IOException {

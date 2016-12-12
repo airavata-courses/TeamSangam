@@ -35,7 +35,7 @@ public class RunForecastConsumer implements Runnable {
 	   while (true) {
 	     ConsumerRecords<String, String> records = consumer.poll(100);
 	     for (final ConsumerRecord<String, String> record : records) {
-	         logger.info("run forecast key :"+record.key().toString() +" value is :"+record.value().toString());
+	         logger.info("run forecast key :"+record.key().toString());
 	    	 RunForecastProducer producerThread;
 			try {
 				producerThread = new RunForecastProducer("result",record.key().toString(),record.value().toString());

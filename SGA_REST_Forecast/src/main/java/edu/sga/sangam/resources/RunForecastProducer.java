@@ -21,11 +21,12 @@ import org.json.simple.JSONObject;
 
 import com.google.common.io.Resources;
 
+import edu.sga.sangam.auroraclient.sample.AuroraJobSubmit;
 import edu.sga.sangam.services.RunForecastService;
 
 public class RunForecastProducer implements Runnable {
 	final static Logger logger = Logger.getLogger(RunForecastProducer.class);
-	private final KafkaProducer<String, String> producer;
+	private final KafkaProducer<String, RunForecastBean> producer;
 	private final String topic;
 	private String key;
 	private String clusterDetails;
@@ -33,7 +34,7 @@ public class RunForecastProducer implements Runnable {
 	public RunForecastProducer(String topic, String key, String clusterDetails) throws IOException
 	{
 		Properties prop = createProducerConfig();
-		this.producer = new KafkaProducer<String, String>(prop);
+		this.producer = new KafkaProducer<String, RunForecastBean>(prop);
 		this.key = key;
 		this.topic = topic;
 		this.clusterDetails = clusterDetails;
@@ -50,14 +51,20 @@ public class RunForecastProducer implements Runnable {
 	public void run() {
 		try
 		{
+		//AuroraJobSubmit auroraJobSubmit = new AuroraJobSubmit();
+			
+		String jobid = AuroraJobSubmit.runJob();
+		logger.info("jobid returned is "+jobid);
 		byte[] bytes = IOUtils.toByteArray(clusterDetails);
 		RunForecastService rfs = new RunForecastService();
 		final String jsonString = rfs.getForecastDetails("USA", bytes);
-				
+		
+		RunForecastBean rfb = new RunForecastBean(jobid,jsonString);
+		
 		JSONObject stormcluster = new JSONObject();
 			try
 			{
-				producer.send(new ProducerRecord<String, String>(topic, key, jsonString), new Callback() {
+				producer.send(new ProducerRecord<String, RunForecastBean>(topic, key, rfb), new Callback() {
 					public void onCompletion(RecordMetadata metadata, Exception e) {
 						if (e != null) {
 							e.printStackTrace();
@@ -66,7 +73,7 @@ public class RunForecastProducer implements Runnable {
 					}
 				});
 				stormcluster.put("key", key);
-				stormcluster.put("runforecast", "Response returned is a jsonString ");
+				stormcluster.put("runforecast", "Response returned is a jobid " +jobid);
 				registry(stormcluster);
 				
 			} catch (Exception e) {

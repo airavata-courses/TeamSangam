@@ -38,26 +38,10 @@ public class ForecastConsumer implements Runnable {
 	     for (final ConsumerRecord<String, String> record : records) {
 	    	 //System.out.println(record.key().toString());
 	    	 logger.info("Received key is : "+record.key().toString());
-	    	 Random r = new Random();
-	    	 int random = r.nextInt();
-	    	 if(random<0.25){
-	    		 ForecastProducer producerThread;
-				try {
-					producerThread = new ForecastProducer(DecisionConstants.NO_TOPIC,DecisionConstants.DECISION_NO,record.key().toString(),record.value().toString());
-					Thread t1 = new Thread(producerThread);
-			    	 t1.start();
-
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		    	 
-	    	 }
-	    	 else
-	    	 {
-	    	 ForecastProducer producerThread;
+	  
+	    
 			try {
-				producerThread = new ForecastProducer(DecisionConstants.YES_TOPIC,DecisionConstants.DECISION_YES,record.key().toString(),record.value().toString());
+				 ForecastProducer producerThread = new ForecastProducer(DecisionConstants.YES_TOPIC,DecisionConstants.DECISION_YES,record.key().toString(),record.value().toString());
 				Thread t1 = new Thread(producerThread);
 		    	 t1.start();
 			} catch (IOException e) {
@@ -71,4 +55,4 @@ public class ForecastConsumer implements Runnable {
 
 	 }
 
-}
+
