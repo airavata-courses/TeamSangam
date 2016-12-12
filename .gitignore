@@ -2,6 +2,7 @@
 SGA_REST_Homepage/services/sga-app
 SGA_REST_Homepage/services/__pycache__
 SGA_REST_Homepage/services/.idea
+SGA_REST_Homepage/tests/*
 
 SGA_REST_login/services/__pycache__
 SGA_REST_login/services/.idea
@@ -13,7 +14,6 @@ SGA_REST_login/services/googleOAuth.properties
 SGA_REST_login/services/aws_key.properties
 SGA_REST_login/scripts/main.js
 SGA_REST_login/index.html
-
 
 # Created by https://www.gitignore.io/api/pycharm
 

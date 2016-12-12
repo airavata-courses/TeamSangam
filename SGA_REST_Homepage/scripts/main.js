@@ -20,16 +20,16 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 			$window.location.href = "login.html";
 		}
 		else{
-			$scope.sessionId = response.data[0];
-			$scope.emailId = response.data[1];
+				$scope.sessionId = response.data[0];
+				$scope.emailId = response.data[1];
 		}
-		},
+	},
 		//based on the response, we will either show an error message or redirect the user to the login page
-		function(response){
-			$scope.errorMessage = response.data;
-		});
+	function(response){
+		$scope.errorMessage = response.data;
+	});
 		
-		$scope.requestId = 0;
+	$scope.requestId = 0;
 		
 	// Function for getting the values for years dropdown
 	function fetchYears(){
@@ -69,27 +69,27 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		// From each job, get the "dataingestor" field. It has a NEXRAD url for the file.
 		// The path to the file can be used to extract the year and stuff.
 		// From this info, an array has to be built like $scope.jobs.
-		// $http({
-		// 		method : 'GET',
-		// 		url : myurl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
-		// 		data : {"email" : email}
-		// })
-		// .then(function(response){
-		// 	var data = response.data;
-		// },
-		// // if the request was not successful
-		// function(response){
-		// 	$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
-		// });
+		$http({
+				method : 'GET',
+				url : myurl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
+				data : {"email" : email}
+		})
+		.then(function(response){
+			var data = response.data;
+		},
+		// if the request was not successful
+		function(response){
+			$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
+		});
 		// For now, hardcoding the values
-		$scope.jobs = [
-			{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
-			{"id":"2", "year":"1990", "month":"01", "day":"09", "location":"CFDH", "timestamp":"KMPH20031103jaskfs"},
-			{"id":"3", "year":"2004", "month":"10", "day":"23", "location":"KGGG", "timestamp":"KMPH20031103jaskfs"},
-			{"id":"4", "year":"2006", "month":"03", "day":"23", "location":"KSHF", "timestamp":"KMPH20031103jaskfs"},
-			{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
-			{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
-		];
+		// $scope.jobs = [
+		// 	{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"2", "year":"1990", "month":"01", "day":"09", "location":"CFDH", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"3", "year":"2004", "month":"10", "day":"23", "location":"KGGG", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"4", "year":"2006", "month":"03", "day":"23", "location":"KSHF", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
+		// ];
 		if($scope.jobs){
 			$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
 		} else {
@@ -104,20 +104,15 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		$scope.message = "";
 		// Need to fill the values for dropdown here
 		fetchYears();
-		//$scope.years = [year];
 		$scope.year = year;
 		// Need to call fetchMonths using the year above.
-		// $scope.months = [month];
 		$scope.fetchMonths();
 		$scope.month = month;
 		// Need to call fetchDays using the month above.
-		// $scope.days = [day];
 		$scope.fetchDays();
 		$scope.day = day;
-		// $scope.locations = [location];
 		$scope.fetchLocations();
 		$scope.location = location;
-		// $scope.files = [timestamp];
 		$scope.fetchFiles();
 		$scope.time = timestamp;
 	};
@@ -215,9 +210,27 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 				})
 				.then(function(response){
 					// This is a success callback and will be called for status 200-299
-					if(response.data !== "no"){		
+					var jobid = response.data.jobid;
+					var result = response.data.result;
+
+					// Check for the status of the Mesos job by reaching the endpoint.
+					$http({
+						method : "GET",
+						url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
+						params: {"jobid":jobid}
+					})
+					.then(function(response){
+					// This is a success callback and will be called for status 200-299
+						$scope.message = "Stage of your Mesos job: "+response.data;
+					},
+					function(response){
+						$scope.message = "Mesos job status could not be retrieved.";
+					});
+
+					// Render the map.
+					if(result !== "no"){		
 						$scope.showmap = true;
-						$scope.output = response.data;
+						$scope.output = result;
 						$scope.message = "Storm has been forecasted and the impacted areas are shown in the below map";
 					
 						var btown = {lat: 39.167107,lng: -86.534359};
@@ -226,13 +239,12 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 							center: btown,
 							mapTypeId: 'terrain'
 						});
-					
+
 						var places = $scope.output.kml.Document.Placemark;
 						for(var i=0; i<places.length; i++){
 							var latlong = places[i].Point.coordinates;
 							var l = latlong.split(",");
 							$scope.mark = new google.maps.LatLng(l[0],l[1]);
-						
 							var marker = new google.maps.Marker({
 							position: $scope.mark,
 							map: $scope.map
@@ -240,6 +252,8 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 						}
 						// Need to check if there is an image in the received response. If there is one, then render it.
 						// Else, the showImage will be undefined and the image will not be shown.
+						// If we get a finished state, then we can send a request for the gif image.
+						// THE BELOW CODE HAS TO BE CHANGED.
 						if(response.data.image){
 							$scope.precip = response.data.image;
 							$scope.showImage = true;
@@ -248,14 +262,13 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 					else{
 						$scope.message = "No storm has been forecasted for the selected location";
 					}
-					
+
 				},
 				function(response){	
 					// this is a failure check
 					$scope.errorMessage = response.data;
 					$scope.message = "error in processing request";
 				});	
-				
 					
 			},
 			function(response){	
@@ -281,5 +294,5 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 	};
 })
 .config(function ($httpProvider) {
-						$httpProvider.defaults.withCredentials = true;
+	$httpProvider.defaults.withCredentials = true;
 });
