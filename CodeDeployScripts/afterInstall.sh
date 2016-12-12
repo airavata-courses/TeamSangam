@@ -59,10 +59,12 @@ if [ -d "$DIRECTORY" ]; then
         echo "Created stylesheets directory"
         sudo mkdir -p templates
         echo "Created templates directory"
+	sudo mkdir -p homeTemplates
+	echo "Created homeTemplates directory"
 	sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
 	sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
 	sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
-	sudo cp /home/ec2-user/SGA_REST_Homepage/homeTemplates/* ./homeTemplates 
+	sudo cp /home/ec2-user/SGA_REST_Homepage/homeTemplates/* ./homeTemplates
 	echo "Copied the html and javascript files to TOMCAT"
 fi
 
