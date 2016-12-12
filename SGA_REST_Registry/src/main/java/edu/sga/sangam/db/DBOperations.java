@@ -217,6 +217,7 @@ public class DBOperations {
 			BasicDBObject document = new BasicDBObject();
 			document.put("keyid", ob.getKeyid());
 			document.put("result", ob.getValue());
+			document.put("jobid", ob.getJobid());
 			document.put("time", ob.getResultime());
 			collection.insert(document);
 		}

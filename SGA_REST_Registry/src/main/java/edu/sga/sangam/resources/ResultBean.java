@@ -7,6 +7,7 @@ public class ResultBean {
 	
 	public String keyid;
 	public String value;
+	public String jobid;
 	public String resulttime;
 	public String getKeyid() {
 		return keyid;
@@ -26,6 +27,13 @@ public class ResultBean {
 	public void setResultime(String resultime) {
 		this.resulttime = resultime;
 	}
-	
+	public void setJobid(String jobid)
+	{
+		this.jobid = jobid;
+	}
+	public String getJobid()
+	{
+		return jobid;
+	}
 
 }

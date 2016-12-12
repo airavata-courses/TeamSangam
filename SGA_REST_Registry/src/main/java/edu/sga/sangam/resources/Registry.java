@@ -215,6 +215,7 @@ public class Registry {
 	}
     public Response getResultRegistry(String key){
     	String result;
+    	System.out.println(key);
 	    try
         {
 	    int count = DBOperations.getInstance().getCount(key);
