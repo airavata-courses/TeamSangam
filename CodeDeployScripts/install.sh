@@ -1,9 +1,10 @@
 set -e
 
 #docker run -d --name mongo -p 27017:27017 imongo
-if [[ $(docker ps -f name=usermysqldb -q) ]]; then
+if [[ $(docker ps -a -f name=usermysqldb -q) ]]; then
 	echo "MySQL docker container is already running."
 else	
+	#docker rm -f usermysqldb || true
 	echo "Starting new docker container usermysqldb."
 	docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
 fi
