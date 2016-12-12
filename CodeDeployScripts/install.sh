@@ -11,6 +11,7 @@ else
 	else
 		echo "Starting new docker container usermysqldb."
 		docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
+	fi
 fi
 
 #docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
