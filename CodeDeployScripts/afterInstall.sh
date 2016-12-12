@@ -62,6 +62,7 @@ if [ -d "$DIRECTORY" ]; then
 	sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
 	sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
 	sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
+	sudo cp /home/ec2-user/SGA_REST_Homepage/homeTemplates/* ./homeTemplates 
 	echo "Copied the html and javascript files to TOMCAT"
 fi
 
