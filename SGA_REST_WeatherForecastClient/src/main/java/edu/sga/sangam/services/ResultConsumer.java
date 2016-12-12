@@ -21,12 +21,13 @@ import org.json.simple.JSONObject;
 
 import com.google.common.io.Resources;
 
+import edu.sga.sangam.bean.ResultResponseBean;
 import edu.sga.sangam.client.ZooKeeperClient;
 
 
 public class ResultConsumer implements Runnable {
 	final static Logger logger = Logger.getLogger(ResultConsumer.class);
-	 private final KafkaConsumer<String,String> consumer;
+	 private final KafkaConsumer<String,ResultResponseBean> consumer;
 	 private final String topic;
 	public ResultConsumer(String topic) throws IOException
 	{	Properties prop = createConsumerConfig();
@@ -46,17 +47,21 @@ public class ResultConsumer implements Runnable {
 	 public void run() {
 	try{
 	   while (true) {
-	     ConsumerRecords<String, String> records = consumer.poll(100);
-	     for (final ConsumerRecord<String, String> record : records) {
+	     ConsumerRecords<String, ResultResponseBean> records = consumer.poll(100);
+	     for (final ConsumerRecord<String, ResultResponseBean> record : records) {
 	    	
 	    	 logger.info("recieved key from result" +record.key().toString());
 	         //System.out.println("Receive: " + record.value().toString());
+	    	 String [] params = record.value().toString().split("#");
 	    	 
 	         JSONObject finaloutput= new JSONObject();
 	         finaloutput.put("keyid", record.key().toString());
-	         finaloutput.put("value", record.value().toString());
+	         finaloutput.put("jobid", params[0]);
+	         finaloutput.put("value", params[1]);
+	         //finaloutput.put("value", record.value().toString());
 	         try {
 				String statuscode = registry(finaloutput);
+				//logger.info("result status code is :"+statuscode);
 				
 				
 			} catch (IOException e) {
@@ -82,9 +87,9 @@ public class ResultConsumer implements Runnable {
 			requestDataIngestor.put("resulttime", df2.format(date));
 			HttpClient client = new HttpClient();
 			logger.info("calling result registry");
-			ZooKeeperClient service = new ZooKeeperClient();
-			String registryURL = service.discoverServiceURI("registry");
-			PostMethod post = new PostMethod(registryURL+"/result");
+			//ZooKeeperClient service = new ZooKeeperClient();
+			//String registryURL = service.discoverServiceURI("registry");
+			PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/result");
 			StringRequestEntity entity;
 			try {
 				entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");

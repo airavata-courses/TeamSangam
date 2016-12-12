@@ -1,5 +1,8 @@
 package edu.sga.sangam.client;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.ejb.Asynchronous;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,6 +11,14 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.Response;
 
+import edu.sga.sangam.auroraclient.ThriftClient;
+import edu.sga.sangam.auroraclient.bean.JobDetailsResponseBean;
+import edu.sga.sangam.auroraclient.sdk.JobKey;
+import edu.sga.sangam.auroraclient.sdk.ScheduledTask;
+import edu.sga.sangam.auroraclient.sdk.TaskQuery;
+import edu.sga.sangam.auroraclient.util.AuroraThriftClientUtil;
+import edu.sga.sangam.auroraclient.util.Constants;
+import edu.sga.sangam.auroraclient.util.ResponseResultType;
 import edu.sga.sangam.services.WeatherClientOrchestrator;
 
 
@@ -59,4 +70,56 @@ public class WeatherClient {
 	}
 	
 
+	@GET
+	@Path("jobstatus")
+	@Asynchronous
+	public void asyncjobstatusrest(@Suspended final AsyncResponse asyncResponse,@QueryParam("jobid") String jobid)
+	{
+		System.out.println("inside async call");
+		Response result = getJobStatus(jobid);
+		asyncResponse.resume(result);	
+	}
+	public Response getJobStatus(String jobid)
+	{
+		JobResponseStatus jrs = new JobResponseStatus();
+		try
+		{
+
+			ThriftClient client = ThriftClient.getAuroraThriftClient(Constants.AURORA_SCHEDULER_PROP_FILE);
+			JobKey jobKey  = new JobKey( "team-sangam", "devel",jobid);
+			Set<JobKey> jobKeySet = new HashSet<JobKey>();
+			jobKeySet.add(jobKey);
+			TaskQuery query = new TaskQuery();
+			query.setJobKeys(jobKeySet);
+			edu.sga.sangam.auroraclient.sdk.Response jobDetailsResponse =client.getReadOnlySchedulerClient().getTasksStatus(query);
+			JobDetailsResponseBean detailsReponse =(JobDetailsResponseBean) AuroraThriftClientUtil.getResponseBean(jobDetailsResponse, ResponseResultType.GET_JOB_DETAILS);
+			String host="";
+			for(ScheduledTask s : detailsReponse.getTasks())
+				{
+				host=s.assignedTask.slaveHost;
+					if(host.equals("sga-mesos-slave-1"))
+					{
+						host="52.53.179.0";
+					}
+					else if(host.equals("sga-mesos-slave-2"))
+					{
+						host="54.215.219.32";
+					}
+					jrs.setJobName(s.getAssignedTask().getTaskId());
+					jrs.setHostName(host);
+					jrs.setJobStatus(s.getStatus().toString());
+					System.out.println(s.getAssignedTask().getTaskId());
+					System.out.println("task status"+s.getStatus().toString());
+					System.out.println("host is "+host);
+				} 
+			
+			return Response.status(200).entity(jrs).build();
+		}
+			
+			
+		catch(Exception e)
+		{
+			return Response.status(400).entity(e.getMessage()).build();
+		}
+	}
 }
