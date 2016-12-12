@@ -348,6 +348,7 @@ public class DBOperations {
             
             System.out.println("User statistics from the database are:");
             for(Document row: iterable){
+                row.remove("_id");
                 jsonArray.add(row);
             }
             result.put("users", jsonArray);
