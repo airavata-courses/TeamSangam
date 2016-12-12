@@ -11,6 +11,17 @@ fi
 echo "Starting new docker container sgahome."
 docker run -d --name sgahome -p 5001:5001 isgahome
 
+
+if [[ $(docker ps -a -f name=sgagateway -q) ]]; then
+        echo "Adding the login files to sgagateway docker container"
+        docker cp /home/ec2-user/SGA_REST_Homepage/scripts sgagateway:/usr/local/tomcat/webapps/ROOT/
+        docker cp /home/ec2-user/SGA_REST_Homepage/stylesheets sgagateway:/usr/local/tomcat/webapps/ROOT/
+        docker cp /home/ec2-user/SGA_REST_Homepage/homeTemplates sgagateway:/usr/local/tomcat/webapps/ROOT/
+        docker cp /home/ec2-user/SGA_REST_Homepage/index.html sgagateway:/usr/local/tomcat/webapps/ROOT/
+        docker cp /home/ec2-user/SGA_REST_Homepage/admin.html sgagateway:/usr/local/tomcat/webapps/ROOT/
+fi
+
+
 echo "Removing dangling docker images, if any."
 docker rmi $(docker images -f "dangling=true" -q) || true
 
