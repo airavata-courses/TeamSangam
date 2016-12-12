@@ -48,7 +48,6 @@ if [[ $(docker ps -a -f name=sgagateway -q) ]]; then
 	docker cp /home/ec2-user/SGA_REST_login/login.html sgagateway:/usr/local/tomcat/webapps/ROOT/
 	docker cp /home/ec2-user/SGA_REST_login/signup.html sgagateway:/usr/local/tomcat/webapps/ROOT/
 	docker cp /home/ec2-user/SGA_REST_login/loginError.html sgagateway:/usr/local/tomcat/webapps/ROOT/
-	docker cp /home/ec2-user/SGA_REST_login/index.html sgagateway:/usr/local/tomcat/webapps/ROOT/
 fi
 
 
