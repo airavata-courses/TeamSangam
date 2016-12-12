@@ -29,6 +29,6 @@ done < /home/ec2-user/SGA_REST_Registry/system.properties
 echo "Changing the directory to SGA_REST_Registry"
 cd /home/ec2-user/SGA_REST_Registry
 
-mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.Registry -Dexec.args="$serverID $systemIP 8085"
+#mvn exec:java -Dexec.mainClass=edu.sga.sangam.resources.Registry -Dexec.args="$serverID $systemIP 8085"
 
 docker rmi $(docker images -f "dangling=true" -q) || true

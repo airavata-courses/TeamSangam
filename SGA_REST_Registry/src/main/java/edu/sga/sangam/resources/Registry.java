@@ -19,7 +19,7 @@ import edu.sga.sangam.db.DBOperations;
 @Path("/registry")
 
 public class Registry {
-	static int inc =0;
+	// int inc =0;
 	static private int portNumber;
 	static private String ipaddress;
 	private static final String endpointURI = "SGA_REST_Registry/sga/registry";
@@ -180,26 +180,41 @@ public class Registry {
         try
         {
         String result = DBOperations.getInstance().getStats();
-        return Response.status(200).entity(result).build();
+        return Response.status(200).entity(result)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
         catch(Exception e)
         {
-            return Response.status(500).entity(e.getMessage()).build();
+            return Response.status(500).entity(e.getMessage())
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
         
     }
     
+
+    @Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
     @Path("/getuserstats")
     @GET
-    public Response GetuserStats(String username){
+    public Response GetuserStats(@QueryParam("email") String username){
         try
         {
         String result = DBOperations.getInstance().getuserStats(username);
-        return Response.status(200).entity(result).build();
+        return Response.status(200).entity(result)
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
         catch(Exception e)
         {
-            return Response.status(500).entity(e.getMessage()).build();
+            return Response.status(500).entity(e.getMessage())
+					.header("Access-Control-Allow-Origin", "*")
+					.header("Access-Control-Allow-Methods", "GET")
+					.build();
         }
     }
 	
@@ -218,6 +233,8 @@ public class Registry {
     	System.out.println(key);
 	    try
         {
+	for(int i=0;i<25;i++){
+	
 	    int count = DBOperations.getInstance().getCount(key);
 	    System.out.println("count value is "+count);
 	    if(count >0)
@@ -225,14 +242,15 @@ public class Registry {
 	    	result = DBOperations.getInstance().getResult(key); 
 	    	return Response.status(200).entity(result).build();
 	    }
-	    else if (inc <15)
+	    else
 	    {
 	    	TimeUnit.SECONDS.sleep(2);
-	    	inc +=1;
-	    	getResultRegistry(key);
+	    	//inc +=1;
+	    	//getResultRegistry(key);
 	    	
 	    }
-	    return Response.status(500).entity("There is an error in processing your request").build();
+	}
+	    return Response.status(500).entity("There is an error in processing your request, record did not get updated in mongodb").build();
         
         }
         catch(Exception e)
