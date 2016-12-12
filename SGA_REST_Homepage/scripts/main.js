@@ -47,7 +47,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		});
 	}
 
-	// Getting the values for years dropdown
+	/* // Getting the values for years dropdown
 	fetchYears();
 
 	// Load the template when create new button is clicked.
@@ -120,7 +120,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		// $scope.files = [timestamp];
 		$scope.fetchFiles();
 		$scope.time = timestamp;
-	};
+	}; */
 
 	$scope.fetchMonths = function(){
 		if($scope.year !== "None"){
