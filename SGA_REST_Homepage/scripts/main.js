@@ -32,7 +32,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		$scope.requestId = 0;
 		
 	// Function for getting the values for years dropdown
-	function getYears(){
+	function fetchYears(){
 		$http({
 				method : "GET",
 				url : myurl + "5001/getyears"
@@ -48,7 +48,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 	}
 
 	// Getting the values for years dropdown
-	getYears();
+	fetchYears();
 
 	// Load the template when create new button is clicked.
 	$scope.createNew = function(){
@@ -103,16 +103,22 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		$scope.showTemplate = "homeTemplates/createNew.html";
 		$scope.message = "";
 		// Need to fill the values for dropdown here
-		getYears();
+		fetchYears();
 		//$scope.years = [year];
 		$scope.year = year;
-		$scope.months = [month];
+		// Need to call fetchMonths using the year above.
+		// $scope.months = [month];
+		$scope.fetchMonths();
 		$scope.month = month;
-		$scope.days = [day];
+		// Need to call fetchDays using the month above.
+		// $scope.days = [day];
+		$scope.fetchDays();
 		$scope.day = day;
-		$scope.locations = [location];
+		// $scope.locations = [location];
+		$scope.fetchLocations();
 		$scope.location = location;
-		$scope.files = [timestamp];
+		// $scope.files = [timestamp];
+		$scope.fetchFiles();
 		$scope.time = timestamp;
 	};
 
