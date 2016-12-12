@@ -1,5 +1,16 @@
 set -e
 
+cd /opt
+
+DIRECTORY=mysql
+if [ -d "$DIRECTORY" ]; then
+	echo "MySQL database volume exists already"
+else
+	echo "Creating MySQL database volume"
+	mkdir mysql
+	chown -R ec2-user:ec2-user mysql
+fi
+
 #docker run -d --name mongo -p 27017:27017 imongo
 if [[ $(docker ps -f name=usermysqldb -q) ]]; then
 	echo "MySQL docker container is already running."
@@ -7,10 +18,10 @@ else
 	if [[ $(docker ps -a -f name=usermysqldb -q) ]]; then
 		docker rm -f usermysqldb || true
 		echo "Starting new docker container usermysqldb."
-		docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
+		docker run -d --name usermysqldb -v /opt/mysql:/var/lib/mysql -p 3306:3306 iusermysqldb
 	else
 		echo "Starting new docker container usermysqldb."
-		docker run -d --name usermysqldb -p 3306:3306 iusermysqldb
+		docker run -d --name usermysqldb -v /opt/mysql:/var/lib/mysql -p 3306:3306 iusermysqldb
 	fi
 fi
 
