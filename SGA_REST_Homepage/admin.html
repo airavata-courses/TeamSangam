@@ -47,14 +47,30 @@
 			<table class="table table-bordered table-hover table-striped" ng-show="showUserDetails">
        			<thead>
 	       			<tr>
-	       				<th>Session</th>
-	       				<th>Details</th>
+	       				<th>KeyID</th>
+						<th>Session</th>
+						<th>RequestID</th>
+						<!-- <th>Requested data</th> -->
+						<th>Orchestrator output</th>
+						<th>Dataingestor output</th>
+						<th>Stormclustering output</th>
+						<th>Storm Detection output</th>
+						<th>Forecast service output</th>
+						<th>Run Forecast output</th>
 	       			</tr>
 	       		</thead>
 	       		<tbody>
 	       			<tr ng-repeat="row in stats">
-	       				<td>{{ row.sessionid }}</td>
-	       				<td>{{ row }}</td>
+	       				<td>{{ row.keyid }}</td>
+						<td>{{ row.sessionid }}</td>
+						<td>{{ row.requestid }}</td>
+						<!-- <td>{{ row.request data }}</td> -->
+						<td>{{ row.orchestrator }}</td>
+						<td>{{ row.dataingestor }}</td>
+						<td>{{ row.stormcluster }}</td>
+						<td>{{ row.stormdetection }}</td>
+						<td>{{ row.forecast }}</td>
+						<td>{{ row.runforecast }}</td>
 	       			</tr>
 	       		</tbody>
        		</table>

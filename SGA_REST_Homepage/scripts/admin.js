@@ -48,7 +48,7 @@ var admin = angular .module("sga_admin",[])
 							$http({
 									method : 'GET',
 									url : myurl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
-									data : {"email" : email}
+									params : {"email" : email}
 							})
 							.then(function(response){
 								var data = response.data;
