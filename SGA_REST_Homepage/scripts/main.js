@@ -263,11 +263,11 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 				$scope.jobs.push(job);
 			}
 		},
-		console.log($scope,jobs);
 		// if the request was not successful
 		function(response){
 			$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
 		});
+		console.log($scope.jobs);
 		// For now, hardcoding the values
 		// $scope.jobs = [
 		// 	{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
