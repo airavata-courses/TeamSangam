@@ -2,12 +2,15 @@
 
 // create the module
 var home = angular.module("sga_home",[]);
-var myurl = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:";
+// var myurl = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:";
+var myurl = "http://dev.localhost.com:";
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
 
 	// This is the initial page to load.
-	$scope.showTemplate = "homeTemplates/createNew.html";
+	// $scope.showTemplate = "homeTemplates/createNew.html";
+	$scope.showCreateNew = true;
+	$scope.showPrevious = false;
 	
 	$http({
 			method : "GET",
@@ -49,75 +52,9 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 
 	// Getting the values for years dropdown
 	fetchYears();
-
-	// Load the template when create new button is clicked.
-	$scope.createNew = function(){
-		// load the create new template using ng-include
-		console.log("in create new");
-		$scope.showTemplate = "homeTemplates/createNew.html";
-		$scope.message = "";
-	};
-
-	$scope.checkPrevious = function(){
-		console.log("in check previous");
-		$scope.showTemplate = "homeTemplates/previousJobs.html";
-		$scope.message = "Please wait while we fetch your previous jobs.";
-		// First get all the jobs the user has ever submitted.
-		// Create them all into a table format with details button.
-		// An http request to get an array of all sessions of a user.
-		// From this, all the jobs need to be extracted.
-		// From each job, get the "dataingestor" field. It has a NEXRAD url for the file.
-		// The path to the file can be used to extract the year and stuff.
-		// From this info, an array has to be built like $scope.jobs.
-		$http({
-				method : 'GET',
-				url : myurl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
-				data : {"email" : email}
-		})
-		.then(function(response){
-			var data = response.data;
-		},
-		// if the request was not successful
-		function(response){
-			$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
-		});
-		// For now, hardcoding the values
-		// $scope.jobs = [
-		// 	{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"2", "year":"1990", "month":"01", "day":"09", "location":"CFDH", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"3", "year":"2004", "month":"10", "day":"23", "location":"KGGG", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"4", "year":"2006", "month":"03", "day":"23", "location":"KSHF", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
-		// ];
-		if($scope.jobs){
-			$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
-		} else {
-			$scope.message = "You haven't submitted any jobs yet. Please create a new job.";
-		}
-	};
-
-	$scope.resubmit = function(year, month, day, location, timestamp){
-		// Load the createNew template with all the fields filled in.
-		console.log("in resubmit"+year);
-		$scope.showTemplate = "homeTemplates/createNew.html";
-		$scope.message = "";
-		// Need to fill the values for dropdown here
-		fetchYears();
-		$scope.year = year;
-		// Need to call fetchMonths using the year above.
-		$scope.fetchMonths();
-		$scope.month = month;
-		// Need to call fetchDays using the month above.
-		$scope.fetchDays();
-		$scope.day = day;
-		$scope.fetchLocations();
-		$scope.location = location;
-		$scope.fetchFiles();
-		$scope.time = timestamp;
-	};
-
+	// console.log($scope.year);
 	$scope.fetchMonths = function(){
+		console.log($scope.year);
 		if($scope.year !== "None"){
 			$http({
 				method : "POST",
@@ -277,6 +214,98 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 				$scope.message = "error in processing request";
 			});	
 	};
+
+	// Load the template when create new button is clicked.
+	$scope.createNew = function(){
+		$scope.showCreateNew = true;
+		$scope.showPrevious = false;
+		// load the create new template using ng-include
+		console.log("in create new");
+		// $scope.showTemplate = "homeTemplates/createNew.html";
+		$scope.message = "";
+	};
+
+	$scope.checkPrevious = function(){
+		console.log("in check previous");
+		$scope.showCreateNew = false;
+		$scope.showPrevious = true;
+		// $scope.showTemplate = "homeTemplates/previousJobs.html";
+		$scope.message = "Please wait while we fetch your previous jobs.";
+		// First get all the jobs the user has ever submitted.
+		// Create them all into a table format with details button.
+		// An http request to get an array of all sessions of a user.
+		// From this, all the jobs need to be extracted.
+		// From each job, get the "dataingestor" field. It has a NEXRAD url for the file.
+		// The path to the file can be used to extract the year and stuff.
+		// From this info, an array has to be built like $scope.jobs.
+		// var nexradUrl = "Response returned is http://noaa-nexrad-level2.s3.amazonaws.com/1992/03/13/KMLB/KMLB19920313_005623.gz";
+		// console.log(nexradUrl.split('/');
+		$http({
+				method : 'GET',
+				url : myurl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
+				params : {"email" : $scope.emailId}
+		})
+		.then(function(response){
+			var userJobs = response.data.users;
+			console.log(response.data);
+			$scope.jobs = [];
+			// loop on the users and build an
+			for(var i=0; i < userJobs.length; i++) {
+				var nexradUrl = userJobs[i].dataingestor;
+				var urlParts = nexradUrl.split('/');
+				var job = {};
+				job ["id"] = i+1;
+				job ["year"] = urlParts[3];
+				job ["month"] = urlParts[4];
+				job ["day"] = urlParts[5];
+				job ["location"] = urlParts[6];
+				job ["timestamp"] = urlParts[7].split(".")[0];
+				$scope.jobs.push(job);
+			}
+		},
+		console.log($scope,jobs);
+		// if the request was not successful
+		function(response){
+			$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
+		});
+		// For now, hardcoding the values
+		// $scope.jobs = [
+		// 	{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"2", "year":"1990", "month":"01", "day":"09", "location":"CFDH", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"3", "year":"2004", "month":"10", "day":"23", "location":"KGGG", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"4", "year":"2006", "month":"03", "day":"23", "location":"KSHF", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
+		// 	{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
+		// ];
+		if($scope.jobs){
+			$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
+		} else {
+			$scope.message = "You haven't submitted any jobs yet. Please create a new job.";
+		}
+	};
+
+	$scope.resubmit = function(year, month, day, location, timestamp){
+		// Load the createNew template with all the fields filled in.
+		console.log("in resubmit"+year);
+		// $scope.showTemplate = "homeTemplates/createNew.html";
+		$scope.message = "";
+		// Need to fill the values for dropdown here
+		fetchYears();
+		$scope.year = year;
+		// Need to call fetchMonths using the year above.
+		$scope.fetchMonths();
+		$scope.month = month;
+		// Need to call fetchDays using the month above.
+		$scope.fetchDays();
+		$scope.day = day;
+		$scope.fetchLocations();
+		$scope.location = location;
+		$scope.fetchFiles();
+		$scope.time = timestamp;
+		$scope.showCreateNew = true;
+		$scope.showPrevious = false;
+	};
+
 	$scope.logout = function(){
 		$scope.message = "Logging you out...";
 		$http({
