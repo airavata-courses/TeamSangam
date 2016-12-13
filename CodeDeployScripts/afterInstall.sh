@@ -7,7 +7,8 @@ cd /home/ec2-user
 if [ -d "$DIRECTORY" ]; then
         echo "Directory already exists"
 else
-        mv /home/ec2-user/registry/DB_Dockers /home/ec2-user/
+       echo "Not doing anything here"
+	# mv /home/ec2-user/registry/DB_Dockers /home/ec2-user/
 fi
 
 
