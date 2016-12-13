@@ -23,7 +23,7 @@ fi
 
 echo "Building maven package for Registry"
 cd /home/ec2-user/SGA_REST_Registry/
-mvn package
+mvn package -Dmaven.test.skip=true
 
 echo "Building docker image for Registry"
 docker build -t isgaregistry .
