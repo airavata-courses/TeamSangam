@@ -3,6 +3,7 @@
 // create the module
 var home = angular.module("sga_home",[]);
 var myurl = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:";
+var regUrl = "http://ec2-54-193-9-114.us-west-1.compute.amazonaws.com:";
 //create the controller and register it with the module
 home.controller("sga_controller", function ($scope, $http, $window) {
 
@@ -241,7 +242,7 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 		// console.log(nexradUrl.split('/');
 		$http({
 				method : 'GET',
-				url : myurl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
+				url : regUrl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
 				params : {"email" : $scope.emailId}
 		})
 		.then(function(response){
