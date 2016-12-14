@@ -221,6 +221,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			if(response.data!="no") {
 				$scope.jobid = response.data.jobid;
 				var result = response.data.result;
+				console.log(response.data.jobid);
 				console.log($scope.jobid);
 				console.log(result);
 
