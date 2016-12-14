@@ -45,8 +45,8 @@ deploy:
     bucket: sga-sangam-testing
     key: SGA_Sangam_WeatherApp_dataingest.tar
     bundle_type: tar
-    application: SGA-TeamSangam-testing
-    deployment_group: SGA-TeamSangam-workers
+    application: TeamSangam-M4
+    deployment_group: SGA-TeamSangam-Workers
     region: us-west-1
     on:
       repo: airavata-courses/TeamSangam
