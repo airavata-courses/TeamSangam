@@ -142,7 +142,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				$scope.showCreateNew = false;
 				$scope.showPrevious = false;
 				$scope.showOutput = true;
-				$scope.outputMessage = "Your job has been successfully submitted. Please cick refresh button to refresh the status of the job.";
+				$scope.outputMessage = "Your job has been successfully submitted. Please click the refresh button to refresh the status of the job.";
 				$scope.outputStatus = "SUBMITTING..";
 				$scope.keyid  = response.data;
 				$scope.refreshJobStatus($scope.keyid);
@@ -295,12 +295,12 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 					$scope.outputStatus = "?!?!?!?!";
 				});
 			} else {
-				$scope.outputMessage =  "Below are the details available for job "+id;
+				$scope.outputMessage =  "Below are the details available for job.";
 				$scope.outputStatus = $scope.mesos;
 			}
 		} else {
 			// There is no jobid created yet.
-			$scope.outputMessage =  "The job "+id+" is still being submitted..";
+			$scope.outputMessage =  "The job is still being submitted..";
 			$scope.outputStatus = "SUBMITTING..";
 		}
 	};
