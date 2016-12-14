@@ -17,6 +17,7 @@
   		
   <meta charset="utf-8">
   <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/sga.css">
 
   <script async defer
           src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhlD415b28s8doNuc2_OKkhJ_dH0438u4">
@@ -25,127 +26,127 @@
 </head>
 
 <body ng-controller="sga_controller">
-    <header class="jumbotron text-center"> 
-    	<h2> Welcome to the Science Gateway Weather Forecasting Portal</h2>
-    </header>
-    <p class="text-center"> <h4>{{message}}</h4></p>
-    <div class="container">
-      	<div class ="row">
-          <div class="col-md-2 col-md-offset-4">
-            <form ng-submit="createNew()">
-              <input class="btn btn-lg btn-primary btn-block" type="submit" value="Create a new job"><br>
-            </form>
+  <header id="header" class="jumbotron text-center"> 
+  	<h2>Welcome to the Science Gateway Weather Forecasting Portal</h2>
+  </header>
+  <p class="text-center"> <h4>{{message}}</h4></p>
+  <div class="container" id="body">
+    	<div class ="row">
+        <div class="col-md-2 col-md-offset-4">
+          <form ng-submit="createNew()">
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Create a new job"><br>
+          </form>
+        </div>
+        
+        <div class="col-md-2">
+          <form ng-submit="checkPrevious()">
+            <input class="btn btn-lg btn-info btn-block" type="submit" value="Submitted jobs"><br>
+          </form>
+        </div>
+    		<div class="col-md-1 pull-right">
+    			<form ng-submit="logout()">
+    				<input class="btn btn-md btn-danger btn-block" type="submit" value="Logout"><br>
+    			</form>
+    		</div>
+    </div>
+  	<div class="row">
+      <!-- Create new job view -->
+      <div class="col-md-6 col-md-offset-3" ng-show="showCreateNew">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <p class="text-center"> <h3> Please enter the details </h3></p>
           </div>
-          
-          <div class="col-md-2">
-            <form ng-submit="checkPrevious()">
-              <input class="btn btn-lg btn-info btn-block" type="submit" value="Submitted jobs"><br>
-            </form>
+          <div class="panel-body">
+              <form name="fileForm" ng-submit="submit()">
+                <label> Select Year: </label><br>
+                <select class="form-control" ng-model="year" ng-options="x for x in years" ng-change="fetchMonths()" required>
+                    <option value="">---Please select year---</option>
+                </select><br> 
+
+                <label> Select Month: </label><br>
+                <select class="form-control" ng-model="month" ng-options="x for x in months" ng-change="fetchDays()" required>
+                    <option value="">---Please select month---</option>
+                </select><br>
+            
+                <label> Select Day: </label><br>
+                <select class="form-control" ng-model="day" ng-options="x for x in days" ng-change="fetchLocations()" required>
+                    <option value="">---Please select day---</option>
+                </select><br>
+                
+                <label> Select Location: </label><br>
+                <select class="form-control" ng-model="location" ng-options="x for x in locations" ng-change="fetchFiles()" required>
+                    <option value="">---Please select location---</option>
+                </select><br>
+                
+                <label> Select Time Stamp: </label><br>
+                <select class="form-control" ng-model="time" ng-options="x for x in files" required>
+                    <option value="">---Please select time stamp---</option>
+                </select><br> <br>    
+
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Submit Request"><br>
+        
+                <pre>You have selected:{{year}}{{month}}{{day}}{{location}}</pre> 
+              </form>
+              <p class="text-center"> <h4>{{createMessage}}</h4> </p>   
           </div>
-      		<div class="col-md-1 pull-right">
-      			<form ng-submit="logout()">
-      				<input class="btn btn-md btn-danger btn-block" type="submit" value="Logout"><br>
-      			</form>
-      		</div>
+        </div>
       </div>
-    	<div class="row">
-        <!-- Create new job view -->
-        <div class="col-md-6 col-md-offset-3" ng-show="showCreateNew">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <p class="text-center"> <h3> Please enter the details </h3></p>
-            </div>
-            <div class="panel-body">
-                <form name="fileForm" ng-submit="submit()">
-                  <label> Select Year: </label><br>
-                  <select class="form-control" ng-model="year" ng-options="x for x in years" ng-change="fetchMonths()" required>
-                      <option value="">---Please select year---</option>
-                  </select><br> 
-
-                  <label> Select Month: </label><br>
-                  <select class="form-control" ng-model="month" ng-options="x for x in months" ng-change="fetchDays()" required>
-                      <option value="">---Please select month---</option>
-                  </select><br>
-              
-                  <label> Select Day: </label><br>
-                  <select class="form-control" ng-model="day" ng-options="x for x in days" ng-change="fetchLocations()" required>
-                      <option value="">---Please select day---</option>
-                  </select><br>
-                  
-                  <label> Select Location: </label><br>
-                  <select class="form-control" ng-model="location" ng-options="x for x in locations" ng-change="fetchFiles()" required>
-                      <option value="">---Please select location---</option>
-                  </select><br>
-                  
-                  <label> Select Time Stamp: </label><br>
-                  <select class="form-control" ng-model="time" ng-options="x for x in files" required>
-                      <option value="">---Please select time stamp---</option>
-                  </select><br> <br>    
-
-                  <input class="btn btn-lg btn-primary btn-block" type="submit" value="Submit Request"><br>
-          
-                  <pre>You have selected:{{year}}{{month}}{{day}}{{location}}</pre> 
-                </form>
-                <p class="text-center"> <h4>{{createMessage}}</h4> </p>   
-            </div>
-          </div>
+      <!-- Table view -->
+      <div class="col-md-6 col-md-offset-3" ng-show="showPrevious">
+        <p class="text-center">{{tableMessage}}</p>
+        <table class="table table-bordered table-hover table-striped">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Year</th>
+              <th>Month</th>
+              <th>Day</th>
+              <th>Location</th>
+              <th>Timestamp</th>
+              <th>Details</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="job in jobs">
+              <td>{{ job.id }}</td>
+              <td>{{ job.year }}</td>
+              <td>{{ job.month }}</td>
+              <td>{{ job.day }}</td>
+              <td>{{ job.location }}</td>
+              <td>{{ job.timestamp }}</td>
+              <td><button class="btn btn-sm btn-block" ng-click="getJobDetails(keyid, job.id)">Details</button></td>
+              <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Edit</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Job view -->
+      <div class="col-md-6 col-md-offset-3" ng-show="showOutput">
+        <p class="text-center">{{outputMessage}}</p>
+        <br>
+        <!-- <p class="text-center">You can come back to this screen by clicking on a job from the submitted jobs tab anytime.</p> -->
+        <br>
+        <button type="submit" class="pull-right" ng-click="refreshJobStatus(keyid)"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+        <p class="text-center">Status of the job {{ jobid }}: {{outputStatus}}</p>
+        <!-- outputs below this -->
+        <br>
+        <p class="text-center">{{mapMessage}}</p>
+        <div id="map" ng-show = "showmap"></div>
+        <br>
+        <p class="text-center">{{imageMessage}}</p>
+        <div id = "image" ng-show = "showImage">
+           <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
         </div>
-        <!-- Table view -->
-        <div class="col-md-6 col-md-offset-3" ng-show="showPrevious">
-          <p class="text-center">{{tableMessage}}</p>
-          <table class="table table-bordered table-hover table-striped">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>Year</th>
-                <th>Month</th>
-                <th>Day</th>
-                <th>Location</th>
-                <th>Timestamp</th>
-                <th>Details</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="job in jobs">
-                <td>{{ job.id }}</td>
-                <td>{{ job.year }}</td>
-                <td>{{ job.month }}</td>
-                <td>{{ job.day }}</td>
-                <td>{{ job.location }}</td>
-                <td>{{ job.timestamp }}</td>
-                <td><button class="btn btn-sm btn-block" ng-click="getJobDetails(keyid, job.id)">Details</button></td>
-                <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Edit</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <!-- Job view -->
-        <div class="col-md-6 col-md-offset-3" ng-show="showOutput">
-          <p class="text-center">{{outputMessage}}</p>
-          <br>
-          <!-- <p class="text-center">You can come back to this screen by clicking on a job from the submitted jobs tab anytime.</p> -->
-          <br>
-          <button type="submit" class="pull-right" ng-click="refreshJobStatus(keyid)"><i class="fa fa-refresh" aria-hidden="true"></i></button>
-          <p class="text-center">Status of the job {{ jobid }}: {{outputStatus}}</p>
-          <!-- outputs below this -->
-          <br>
-          <p class="text-center">{{mapMessage}}</p>
-          <div id="map" ng-show = "showmap"></div>
-          <br>
-          <p class="text-center">{{imageMessage}}</p>
-          <div id = "image" ng-show = "showImage">
-             <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
-          </div>
-        </div>
+      </div>
 
-     </div>
-   </div>
-     <br/>     
+    </div>
+ </div>
+  <br/>     
      
-     <footer class="page-footer">
+  <footer id="footer" class="page-footer">
 			<p class="text-center">copyright 2016. Team Sangam.</p>
-	 </footer>
+	</footer>
 
 </body>
 </html>

@@ -219,7 +219,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			console.log(response.data);
 			if(response.data!="no") {
 				$scope.jobid = response.data.jobid;
-				$scope.result = response.data.result;
+				var result = response.data.result;
 
 				// Render the map.
 				if(result !== "no"){		
