@@ -208,6 +208,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	};
 
 	var getJobid = function(keyid){
+		console.log(keyid);
 		$http({
 			method : 'GET',
 			url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
