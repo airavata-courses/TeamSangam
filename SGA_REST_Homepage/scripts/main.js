@@ -284,9 +284,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	$scope.refreshJobStatus = function(keyid) {
 
 		$scope.jobid = undefined;
-		var jobIdSet = getJobid(keyid);
-		console.log($scope.jobid);
-		jobIdSet.then(function(){
+		getJobid(keyid).then(function(){
 			if($scope.jobid!=undefined){
 				// There is a job id created.
 				if (!$scope.mesos){
