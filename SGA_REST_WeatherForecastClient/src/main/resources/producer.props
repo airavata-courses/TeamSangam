@@ -1,4 +1,4 @@
-bootstrap.servers= ec2-54-183-132-116.us-west-1.compute.amazonaws.com:9092,ec2-54-193-9-114.us-west-1.compute.amazonaws.com:9092,ec2-52-53-192-165.us-west-1.compute.amazonaws.com:9092
+bootstrap.servers=ec2-54-193-116-150.us-west-1.compute.amazonaws.com:9092,ec2-54-67-29-184.us-west-1.compute.amazonaws.com:9092,ec2-54-215-209-204.us-west-1.compute.amazonaws.com:9092
 acks=all
 retries=0
 buffer.memory=33554432
