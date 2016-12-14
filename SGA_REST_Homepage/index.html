@@ -1,26 +1,27 @@
 <!doctype html>
 <html ng-app = "sga_home">
 <head>
-<style>
-      #map {
-        height: 400px;
-        width: 50%;
-        display: inline-block;
-      }
-      #image{
-        height: 400px;
-        width: 50%;
-        display: inline-block;
-      }
-</style>
-		
-<meta charset="utf-8">
-<link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
+  <script src="https://use.fontawesome.com/575410f21f.js"></script>
+  <style>
+        #map {
+          height: 400px;
+          width: 50%;
+          display: inline-block;
+        }
+        #image{
+          height: 400px;
+          width: 50%;
+          display: inline-block;
+        }
+  </style>
+  		
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="stylesheets/bootstrap.min.css">
 
-<script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhlD415b28s8doNuc2_OKkhJ_dH0438u4">
-</script>
-<title>Science Gateway</title>
+  <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhlD415b28s8doNuc2_OKkhJ_dH0438u4">
+  </script>
+  <title>Science Gateway</title>
 </head>
 
 <body ng-controller="sga_controller">
@@ -113,7 +114,7 @@
                 <td>{{ job.day }}</td>
                 <td>{{ job.location }}</td>
                 <td>{{ job.timestamp }}</td>
-                <td><button class="btn btn-sm btn-block" ng-click="refreshJobStatus($scope.keyid)">Details</button></td>
+                <td><button class="btn btn-sm btn-block" ng-click="getJobDetails(keyid, job.id)">Details</button></td>
                 <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Edit</button></td>
               </tr>
             </tbody>
@@ -123,9 +124,9 @@
         <div class="col-md-6 col-md-offset-3" ng-show="showOutput">
           <p class="text-center">{{outputMessage}}</p>
           <br>
-          <p class="text-center">You can come back to this screen by clicking on a job from the submitted jobs tab anytime.</p>
+          <!-- <p class="text-center">You can come back to this screen by clicking on a job from the submitted jobs tab anytime.</p> -->
           <br>
-          <button type="submit" class="pull-right" ng-click="refreshJobStatus()"><i class="icon-refresh"></i></button>
+          <button type="submit" class="pull-right" ng-click="refreshJobStatus(keyid)"><i class="icon-refresh"></i></button>
           <p class="text-center">Status of the job {{ jobid }}: {{outputStatus}}</p>
           <!-- outputs below this -->
           <br>
@@ -148,5 +149,6 @@
 
 </body>
 </html>
+
 <script src="scripts/angular.min.js"></script>
 <script src="scripts/main.js "></script>

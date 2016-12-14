@@ -143,7 +143,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				$scope.showPrevious = false;
 				$scope.showOutput = true;
 				$scope.outputMessage = "Your job has been successfully submitted. Please cick refresh button to refresh the status of the job.";
-				$scope.outputStatus = "SUBMITTING";
+				$scope.outputStatus = "SUBMITTING..";
 				$scope.keyid  = response.data;
 				$scope.refreshJobStatus($scope.keyid);
 			},
@@ -262,24 +262,41 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		});
 	};
 
+	$scope.getJobDetails = function(keyid, id){
+		$scope.showCreateNew = false;
+		$scope.showPrevious = false;
+		$scope.showOutput = true;
+		$scope.outputMessage =  "Please wait while we fetch the details of job "+id;
+		$scope.outputStatus = "....";
+		$scope.refreshJobStatus(keyid);
+	};
+
 	$scope.refreshJobStatus = function(keyid) {
+		$scope.jobid = undefined;
 		getJobid(keyid);
-		if (!$scope.mesos){
-			$http({
-				method : "GET",
-				url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
-				params: {"jobid":$scope.jobid}
-			})
-			.then(function(response){
-				// This is a success callback and will be called for status 200-299
-				console.log(response.data);
-				$scope.outputStatus = response.data;
-			},
-			function(response){
-				$scope.outputStatus = "?!?!?!?!";
-			});
+		if($scope.jobid){
+			// There is a job id created.
+			if (!$scope.mesos){
+				$http({
+					method : "GET",
+					url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
+					params: {"keyid":keyid, "jobid":$scope.jobid}
+				})
+				.then(function(response){
+					// This is a success callback and will be called for status 200-299
+					console.log(response.data);
+					$scope.outputMessage =  "Below are the requested details";
+					$scope.outputStatus = response.data;
+				},
+				function(response){
+					$scope.outputStatus = "?!?!?!?!";
+				});
+			} else {
+				$scope.outputStatus = $scope.mesos;
+			}
 		} else {
-			$scope.outputStatus = $scope.mesos;
+			// There is no jobid created yet.
+			$scope.outputStatus = "SUBMITTING..";
 		}
 	};
 	
