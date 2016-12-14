@@ -263,8 +263,10 @@ public class Registry {
 	    	result = DBOperations.getInstance().getResult(key); 
 	    	return Response.status(200).entity(result).build();
 	    }
-	  
-	    return Response.status(500).entity("There is an error in processing your request, record did not get updated in mongodb").build();
+	    else
+	    {
+	    return Response.status(200).entity("no").build();
+	    }
         
         }
         catch(Exception e)
