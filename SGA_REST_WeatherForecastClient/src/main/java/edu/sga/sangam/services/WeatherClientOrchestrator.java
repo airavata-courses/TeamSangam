@@ -96,8 +96,13 @@ public class WeatherClientOrchestrator {
 	    request.put("userid", db.getUserid());
 	    request.put("sessionid", db.getSessionid());
 	    request.put("requestid", db.getRequestid());
-	    request.put("requestData", "requested data for year"+db.getYear()+ "month" + db.getMonth() +"day" +db.getDay()+ "nexrad" +db.getNexrad());
+	    request.put("year", db.getYear());
+	    request.put("month", db.getMonth());
+            request.put("day", db.getDay());
+	    request.put("location", db.getNexrad());
+	    request.put("timestamp", db.getFileName());
 	    request.put("orchestrator", "request success");
+		
 	    logger.info("requested data for year"+db.getYear()+ "day" +db.getDay() + "month" +db.getMonth());
 	    try
 	    {
