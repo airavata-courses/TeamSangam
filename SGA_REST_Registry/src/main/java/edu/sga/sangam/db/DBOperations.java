@@ -172,6 +172,32 @@ public class DBOperations {
 		}
 	}
 	
+	public void mesosstatus(edu.sga.sangam.resources.MesosStatus ms) throws Exception {
+		MongoClient mongo = null;
+		try
+		{
+			mongo = DBConnections.getInstance().getConnection();
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
+			BasicDBObject document = new BasicDBObject();
+			document.append("$set", new BasicDBObject().append("mesos",ms.getStatus())
+					.append("mesosstatus", ms.getStatustime()));
+			collection.update(new BasicDBObject().append("keyid", ms.getKeyid()), document);
+		
+		}
+		catch(MongoException me)
+		{
+			logger.warn(me.getMessage());
+			throw new Exception("issue with Run Forecast registry");
+		}
+		finally
+		{
+			
+		}
+		
+	}
+
+	
 	public void orchestratorcollection(OrchestratorBean ob) throws Exception{
 		MongoClient mongo = null;
 		try
@@ -370,56 +396,7 @@ public class DBOperations {
     }
 
 	
-	
-	public class ResultThread implements Runnable
-	{
-		private String result;
-		private String key;
-		public ResultThread(String key)
-		{
-			this.key =key;
-		}
-		@Override
-		public void run()
-		{
-			MongoClient mongo = null;
-			try
-			{
-				System.out.println("Result connection");
-				mongo = DBConnections.getInstance().getConnection();
-				
-				DB database = mongo.getDB(DBConstants.DB_Name);
-				//System.out.println("mongo connection failed");
-				DBCollection collection = database.getCollection(DBConstants.DB_Collection_Result);
-				BasicDBObject query = new BasicDBObject();
-				BasicDBObject field = new BasicDBObject();
-				
-				query.put("keyid", key);
-				field.put("result",1);
-				field.put("_id",-1 );
-				
-				DBCursor cursor = collection.find(query);
-				while(cursor.hasNext())
-				{	
-					DBObject db = cursor.next();
-					result =(String) db.get("result");
-					System.out.println(result);
-					//result =(String) cursor.next().get("result");
-					
-				}
-				cursor.close();
-				Thread.sleep(3000);
-			}catch (Exception e) {
-				e.printStackTrace();
-			}
-				
-		}
-		
-		public String getValue()
-		{
-			System.out.println("result is "+result);
-			return result;
-		}
-	}
+
+
 
 }

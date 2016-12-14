@@ -115,6 +115,24 @@ public class Registry {
 	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
+	@Path("/mesosstatus")
+	@POST
+	public Response MesosStatus(MesosStatus ms)
+	{
+		try
+		{
+		DBOperations.getInstance().mesosstatus(ms);
+		return Response.status(200).entity(ms.getKeyid()).build();
+		}
+		catch(Exception e)
+		{
+			return Response.status(500).entity(e.getMessage()).build();
+		}
+		
+	}
+	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	
 	@Path("/runforecast")
 	@POST
@@ -233,7 +251,6 @@ public class Registry {
     	System.out.println(key);
 	    try
         {
-	for(int i=0;i<25;i++){
 	
 	    int count = DBOperations.getInstance().getCount(key);
 	    System.out.println("count value is "+count);
@@ -242,14 +259,7 @@ public class Registry {
 	    	result = DBOperations.getInstance().getResult(key); 
 	    	return Response.status(200).entity(result).build();
 	    }
-	    else
-	    {
-	    	TimeUnit.SECONDS.sleep(2);
-	    	//inc +=1;
-	    	//getResultRegistry(key);
-	    	
-	    }
-	}
+	  
 	    return Response.status(500).entity("There is an error in processing your request, record did not get updated in mongodb").build();
         
         }
