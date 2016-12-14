@@ -276,6 +276,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		$scope.outputMessage =  "Please wait while we fetch the details of job "+id;
 		$scope.outputStatus = "....";
 		$scope.refreshJobStatus(keyid);
+		$scope.keyid = keyid;
 	};
 
 	$scope.refreshJobStatus = function(keyid) {
