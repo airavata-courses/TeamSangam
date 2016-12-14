@@ -73,7 +73,7 @@ public class WeatherClientOrchestrator {
 		KafkaProducer<String, DataIngestorRequest> producer;
 		String topic = "dataingestor";
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "54.193.9.114:9092,54.183.132.116:9092");
+		props.put("bootstrap.servers", "54.193.116.150:9092,54.67.29.184:9092,54.215.209.204:9092");
 	    props.put("acks", "all");
 	    props.put("retries", 0);
 	    props.put("batch.size", 16384);
@@ -134,7 +134,7 @@ public class WeatherClientOrchestrator {
 		//String registryURL = service.discoverServiceURI("registry");
 
 		//PostMethod post = new PostMethod(registryURL+"/orchestrator");
-		PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
+		PostMethod post = new PostMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/orchestrator");
 		//PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/orchestrator");
 
 		StringRequestEntity entity;
@@ -170,7 +170,7 @@ public class WeatherClientOrchestrator {
 			HttpClient client = new HttpClient();
 			//ZooKeeperClient service = new ZooKeeperClient();
 			//String registryURL = service.discoverServiceURI("registry");
-			GetMethod getMethod = new GetMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/resultoutput");
+			GetMethod getMethod = new GetMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/resultoutput");
 			//GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
 			getMethod.setQueryString(new NameValuePair[] {
 				    new NameValuePair("key", key)
