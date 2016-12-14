@@ -221,11 +221,13 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			if(response.data!="no") {
 				$scope.jobid = response.data.jobid;
 				var result = response.data.result;
+				console.log(result);
 
 				// Render the map.
 				if(result !== "no"){		
 					$scope.showmap = true;
 					$scope.output = result;
+					console.log($scope.output);
 					$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
 				
 					var btown = {lat: 39.167107,lng: -86.534359};
@@ -276,6 +278,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	};
 
 	$scope.refreshJobStatus = function(keyid) {
+
 		$scope.jobid = undefined;
 		getJobid(keyid);
 		if($scope.jobid){
