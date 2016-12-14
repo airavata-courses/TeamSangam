@@ -73,7 +73,7 @@ public class WeatherClientOrchestrator {
 		KafkaProducer<String, DataIngestorRequest> producer;
 		String topic = "dataingestor";
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "localhost:9092");
+		props.put("bootstrap.servers", "54.193.9.114:9092,54.183.132.116:9092");
 	    props.put("acks", "all");
 	    props.put("retries", 0);
 	    props.put("batch.size", 16384);
