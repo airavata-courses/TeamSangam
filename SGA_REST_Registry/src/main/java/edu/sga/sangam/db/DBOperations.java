@@ -292,7 +292,7 @@ public class DBOperations {
 	public String getResult(String key) throws Exception
 	{
 		MongoClient mongo = null;
-		String result=null;
+		//String result=null;
 		try
 			{
 				System.out.println("Get Result connection");
@@ -304,17 +304,21 @@ public class DBOperations {
 				BasicDBObject field = new BasicDBObject();
 				query.put("keyid", key);
 				field.put("result",1);
+				field.put("jobid",1);
 				field.put("_id",-1 );
+				JSONObject result = new JSONObject();
 				
 				DBCursor cursor = collection.find(query,field);
 				while(cursor.hasNext())
 				{	
 					DBObject db = cursor.next();
-					result =(String) db.get("result");
+					result.put("result", (String)db.get("result"));
+					result.put("jobid", (String)db.get("jobid"));
+					//result =(String) db.get("result");
 					System.out.println(result);
 					break;
 				}
-				return result;
+				return result.toJSONString();
 			}catch(Exception me)
 		{
 				logger.warn(me.getMessage());
