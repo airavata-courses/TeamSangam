@@ -289,16 +289,18 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 					// This is a success callback and will be called for status 200-299
 					console.log(response.data);
 					$scope.outputMessage =  "Below are the requested details";
-					$scope.outputStatus = response.data;
+					$scope.outputStatus = response.data.jobStatus;
 				},
 				function(response){
 					$scope.outputStatus = "?!?!?!?!";
 				});
 			} else {
+				$scope.outputMessage =  "Below are the details available for job "+id;
 				$scope.outputStatus = $scope.mesos;
 			}
 		} else {
 			// There is no jobid created yet.
+			$scope.outputMessage =  "The job "+id+" is still being submitted..";
 			$scope.outputStatus = "SUBMITTING..";
 		}
 	};
