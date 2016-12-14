@@ -284,34 +284,39 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	$scope.refreshJobStatus = function(keyid) {
 
 		$scope.jobid = undefined;
-		getJobid(keyid);
+		var jobIdSet = getJobid(keyid);
 		console.log($scope.jobid);
-		if($scope.jobid!=undefined){
-			// There is a job id created.
-			if (!$scope.mesos){
-				$http({
-					method : "GET",
-					url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
-					params: {"keyid":keyid, "jobid":$scope.jobid}
-				})
-				.then(function(response){
-					// This is a success callback and will be called for status 200-299
-					console.log(response.data);
-					$scope.outputMessage =  "Below are the requested details";
-					$scope.outputStatus = response.data.jobStatus;
-				},
-				function(response){
-					$scope.outputStatus = "?!?!?!?!";
-				});
+		jobIdSet.then(function(){
+			if($scope.jobid!=undefined){
+				// There is a job id created.
+				if (!$scope.mesos){
+					$http({
+						method : "GET",
+						url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
+						params: {"keyid":keyid, "jobid":$scope.jobid}
+					})
+					.then(function(response){
+						// This is a success callback and will be called for status 200-299
+						console.log(response.data);
+						$scope.outputMessage =  "Below are the requested details";
+						$scope.outputStatus = response.data.jobStatus;
+					},
+					function(response){
+						$scope.outputStatus = "?!?!?!?!";
+					});
+				} else {
+					$scope.outputMessage =  "Below are the details available for job.";
+					$scope.outputStatus = $scope.mesos;
+				}
 			} else {
-				$scope.outputMessage =  "Below are the details available for job.";
-				$scope.outputStatus = $scope.mesos;
+				// There is no jobid created yet.
+				$scope.outputMessage =  "The job is still being submitted..";
+				$scope.outputStatus = "SUBMITTING..";
 			}
-		} else {
-			// There is no jobid created yet.
-			$scope.outputMessage =  "The job is still being submitted..";
-			$scope.outputStatus = "SUBMITTING..";
-		}
+		},
+		function(){
+			$scope.outputMessage = "Error. Could not fetch the jobId.";
+		});
 	};
 	
 	$scope.resubmit = function(year, month, day, location, timestamp){
