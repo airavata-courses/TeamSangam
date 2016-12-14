@@ -183,6 +183,7 @@ public class Registry {
         return Response.status(200).entity(result)
 					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
+					.header("Access-Control-Allow-Credentials", "true")
 					.build();
         }
         catch(Exception e)
@@ -190,6 +191,7 @@ public class Registry {
             return Response.status(500).entity(e.getMessage())
 					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
+					.header("Access-Control-Allow-Credentials", "true")
 					.build();
         }
         
@@ -207,6 +209,7 @@ public class Registry {
         return Response.status(200).entity(result)
 					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
+					.header("Access-Control-Allow-Credentials", "true")
 					.build();
         }
         catch(Exception e)
@@ -214,6 +217,7 @@ public class Registry {
             return Response.status(500).entity(e.getMessage())
 					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
+					.header("Access-Control-Allow-Credentials", "true")
 					.build();
         }
     }
