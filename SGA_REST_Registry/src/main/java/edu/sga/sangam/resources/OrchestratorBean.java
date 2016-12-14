@@ -9,7 +9,11 @@ public class OrchestratorBean {
 	String userid;
 	String sessionid;
 	String requestid;
-	String requestData;
+	String year;
+	String month;
+	String day;
+	String nexrad;
+	String fileName;
 	String orchestrator;
 	String time;
 	public String getKey() {
@@ -36,11 +40,35 @@ public class OrchestratorBean {
 	public void setRequestid(String requestid) {
 		this.requestid = requestid;
 	}
-	public String getRequestData() {
-		return requestData;
+	public String getYear() {
+		return year;
 	}
-	public void setRequestData(String requestData) {
-		this.requestData = requestData;
+	public void setYear(String year) {
+		this.year = year;
+	}
+	public String getMonth() {
+		return month;
+	}
+	public void setMonth(String month) {
+		this.month = month;
+	}
+	public String getDay() {
+		return day;
+	}
+	public void setDay(String day) {
+		this.day = day;
+	}
+	public String getNexrad() {
+		return nexrad;
+	}
+	public void setNexrad(String nexrad) {
+		this.nexrad = nexrad;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 	public String getOrchestrator() {
 		return orchestrator;

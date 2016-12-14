@@ -7,7 +7,8 @@ cd /home/ec2-user
 if [ -d "$DIRECTORY" ]; then
         echo "Directory already exists"
 else
-        mv /home/ec2-user/registry/DB_Dockers /home/ec2-user/
+       echo "Not doing anything here"
+	# mv /home/ec2-user/registry/DB_Dockers /home/ec2-user/
 fi
 
 
@@ -23,7 +24,7 @@ fi
 
 echo "Building maven package for Registry"
 cd /home/ec2-user/SGA_REST_Registry/
-mvn package
+mvn package -Dmaven.test.skip=true
 
 echo "Building docker image for Registry"
 docker build -t isgaregistry .

@@ -212,7 +212,11 @@ public class DBOperations {
 			document.put("userid", ob.getUserid());
 			document.put("sessionid", ob.getSessionid());
 			document.put("requestid", ob.getRequestid());
-			document.put("request data", ob.getRequestData());
+			document.put("year", ob.getYear());
+			document.put("month", ob.getMonth());
+			document.put("day", ob.getDay());
+			document.put("location", ob.getNexrad());
+			document.put("timestamp", ob.getFileName());
 			document.put("time",ob.getTime());
 			document.put("orchestrator", ob.getOrchestrator());
 			collection.insert(document);
