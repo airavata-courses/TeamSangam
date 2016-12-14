@@ -21,7 +21,8 @@ import org.json.simple.JSONObject;
 
 import com.google.common.io.Resources;
 
-import edu.sga.sangam.auroraclient.sample.AuroraJobSubmit;
+
+import edu.sga.sangam.auroraclient.sample.AuroraSubmit;
 import edu.sga.sangam.services.RunForecastService;
 
 public class RunForecastProducer implements Runnable {
@@ -52,8 +53,8 @@ public class RunForecastProducer implements Runnable {
 		try
 		{
 		//AuroraJobSubmit auroraJobSubmit = new AuroraJobSubmit();
-			
-		String jobid = AuroraJobSubmit.runJob();
+		AuroraSubmit as = new AuroraSubmit();
+		String jobid = as.startJob();
 		logger.info("jobid returned is "+jobid);
 		byte[] bytes = IOUtils.toByteArray(clusterDetails);
 		RunForecastService rfs = new RunForecastService();
@@ -96,9 +97,9 @@ public class RunForecastProducer implements Runnable {
 		requestDataIngestor.put("rftime", df2.format(date));
 		HttpClient client = new HttpClient();
 		logger.info("logging run forecast details");
-		ZooKeeperService services =  new ZooKeeperService();
-		String registryURL = services.discoverServiceURI("registry");
-		PostMethod post = new PostMethod(registryURL+"/runforecast");
+		//ZooKeeperService services =  new ZooKeeperService();
+		//String registryURL = services.discoverServiceURI("registry");
+		PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/runforecast");
 		StringRequestEntity entity;
 		try {
 			entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");

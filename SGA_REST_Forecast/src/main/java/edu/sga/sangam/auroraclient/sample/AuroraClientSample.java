@@ -108,8 +108,8 @@ public class AuroraClientSample {
 														+ "--name sangam-postproc-" + "02" 
 														+ " bigwxwrf/ncar-ncl", false);*/
 		
-		ProcessBean proc1 = new ProcessBean("process_11","docker run -i --volumes-from wpsgeog --volumes-from wrfinputsandy -v ~/wrfoutput:/wrfoutput --name sangam-ncarwrfsandy-06 bigwxwrf/ncar-wrf /wrf/run-wrf",false);
-		ProcessBean proc2 = new ProcessBean("process_12", "docker run -i --rm=true -v ~/wrfoutput:/wrfoutput --name sangam-postproc-06 bigwxwrf/ncar-ncl",false);
+		ProcessBean proc1 = new ProcessBean("process_11","docker run -i --volumes-from wpsgeog --volumes-from wrfinputsandy -v ~/wrfoutput:/wrfoutput --name sangam-ncarwrfsandy-07	 bigwxwrf/ncar-wrf /wrf/run-wrf",false);
+		ProcessBean proc2 = new ProcessBean("process_12", "docker run -i --rm=true -v ~/wrfoutput:/wrfoutput --name sangam-postproc-07 bigwxwrf/ncar-ncl",false);
 		//ProcessBean proc1 = new ProcessBean("process_1", "echo 'hello_world_1'", false);
 		//ProcessBean proc2 = new ProcessBean("process_2", "echo 'hello_world_2'", false);
 		Set<ProcessBean> processes = new HashSet<>();
@@ -122,11 +122,11 @@ public class AuroraClientSample {
 		JobConfigBean jobConfig = new JobConfigBean(jobKey, owner, taskConfig, "example");
 		
 		String executorConfigJson = AuroraThriftClientUtil.getExecutorConfigJson(jobConfig);
-		System.out.println(executorConfigJson);
+		System.out.println("execugof"+executorConfigJson);
 		
 		ThriftClient client = ThriftClient.getAuroraThriftClient(Constants.AURORA_SCHEDULER_PROP_FILE);
 		ResponseBean response = client.createJob(jobConfig);
-		System.out.println(response);
+		System.out.println("response above response"+response);
 	}
 	
 	/**
@@ -136,7 +136,7 @@ public class AuroraClientSample {
 	 */
 	public static void main(String[] args) {
 		 try {
-			properties.load(AuroraClientSample.class.getClassLoader().getResourceAsStream(Constants.AURORA_SCHEDULER_PROP_FILE));
+			/*properties.load(AuroraClientSample.class.getClassLoader().getResourceAsStream(Constants.AURORA_SCHEDULER_PROP_FILE));
 			String auroraHost = properties.getProperty(Constants.AURORA_SCHEDULER_HOST);
 			String auroraPort = properties.getProperty(Constants.AURORA_SCHEDULER_PORT);
 			auroraSchedulerClient = AuroraSchedulerClientFactory.createReadOnlySchedulerClient(MessageFormat.format(Constants.AURORA_SCHEDULER_CONNECTION_URL, auroraHost, auroraPort));
@@ -149,22 +149,24 @@ public class AuroraClientSample {
 //			
 			AuroraClientSample.createJob();
 			ThriftClient client = ThriftClient.getAuroraThriftClient(Constants.AURORA_SCHEDULER_PROP_FILE);
-			ResponseBean response = client.getPendingReasonForJob(new JobKeyBean("devel", "team-sangam", "sangam_test_job_1"));
-			System.out.println(response);
 			
 			//ResponseBean response = client.getPendingReasonForJob(new JobKeyBean("devel", "team-sangam", "sangam_test_job_1"));
 			
 			
-			/*JobKeyBean jobKeyBean = new JobKeyBean("devel", "team-sangam", "sangam_test_job_1");
-	         JobDetailsResponseBean response = (JobDetailsResponseBean)client.getJobDetails(jobKeyBean);
-			System.out.println(response);
-			 System.out.println(response.getServerInfo());
+			JobKeyBean jobKeyBean = new JobKeyBean("devel", "team-sangam", "sangam_test_job_1");
+	         JobDetailsResponseBean jrresponse = (JobDetailsResponseBean)client.getJobDetails(jobKeyBean);
+			System.out.println("jrrespone is "+jrresponse);
+			 System.out.println(jrresponse.getServerInfo());
 
-	            for(ScheduledTask task : response.getTasks())
+	            for(ScheduledTask task : jrresponse.getTasks())
 	            {
 	                System.out.println(task.getAssignedTask().getTaskId()+"/"+task.getStatus().toString());
 	                System.out.println(task.getAssignedTask().getSlaveHost());
 	            }*/
+			 
+			 AuroraSubmit as = new AuroraSubmit();
+			 String jobid  = as.startJob();
+			 System.out.println(jobid);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		} 
