@@ -8,7 +8,6 @@ var regUrl = "http://ec2-54-193-9-114.us-west-1.compute.amazonaws.com:";
 home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 
 	// This is the initial page to load.
-	// $scope.showTemplate = "homeTemplates/createNew.html";
 	$scope.showCreateNew = true;
 	$scope.showPrevious = false;
 	
@@ -52,7 +51,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 
 	// Getting the values for years dropdown
 	fetchYears();
-	// console.log($scope.year);
 	$scope.fetchMonths = function(){
 		console.log($scope.year);
 		if($scope.year !== "None"){
@@ -229,7 +227,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		$scope.showPrevious = false;
 		// load the create new template using ng-include
 		console.log("in create new");
-		// $scope.showTemplate = "homeTemplates/createNew.html";
 		$scope.message = "";
 	};
 
@@ -237,17 +234,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		console.log("in check previous");
 		$scope.showCreateNew = false;
 		$scope.showPrevious = true;
-		// $scope.showTemplate = "homeTemplates/previousJobs.html";
 		$scope.message = "Please wait while we fetch your previous jobs.";
-		// First get all the jobs the user has ever submitted.
-		// Create them all into a table format with details button.
-		// An http request to get an array of all sessions of a user.
-		// From this, all the jobs need to be extracted.
-		// From each job, get the "dataingestor" field. It has a NEXRAD url for the file.
-		// The path to the file can be used to extract the year and stuff.
-		// From this info, an array has to be built like $scope.jobs.
-		// var nexradUrl = "Response returned is http://noaa-nexrad-level2.s3.amazonaws.com/1992/03/13/KMLB/KMLB19920313_005623.gz";
-		// console.log(nexradUrl.split('/');
 		$http({
 				method : 'GET',
 				url : regUrl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
@@ -259,8 +246,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			$scope.jobs = [];
 			// loop on the userJobs and build an array of jobs
 			for(var i=0; i < userJobs.length; i++) {
-				// var nexradUrl = userJobs[i].dataingestor;
-				// var urlParts = nexradUrl.split('/');
 				var job = {};
 				job ["id"] = i+1;
 				job ["year"] = userJobs[i]["year"];
@@ -270,6 +255,8 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				job ["timestamp"] = userJobs[i]["timestamp"];
 				$scope.jobs.push(job);
 			}
+			$scope.jobs.reverse();
+
 
 			if($scope.jobs){
 				$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
@@ -283,15 +270,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		});
 
 		console.log($scope.jobs);
-		// For now, hardcoding the values
-		// $scope.jobs = [
-		// 	{"id":"1", "year":"2003", "month":"11", "day":"03", "location":"KMPH", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"2", "year":"1990", "month":"01", "day":"09", "location":"CFDH", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"3", "year":"2004", "month":"10", "day":"23", "location":"KGGG", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"4", "year":"2006", "month":"03", "day":"23", "location":"KSHF", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
-		// 	{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
-		// ];
 	};
 
 	$scope.resubmit = function(year, month, day, location, timestamp){
