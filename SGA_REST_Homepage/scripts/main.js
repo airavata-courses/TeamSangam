@@ -215,45 +215,48 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		})
 		.then(function(response){
 			// This is a success callback and will be called for status 200-299
-			$scope.jobid = response.data.jobid;
 			$scope.mesos = response.data.mesos;
-			$scope.result = response.data.result;
+			console.log(response.data);
+			if(response.data!="no") {
+				$scope.jobid = response.data.jobid;
+				$scope.result = response.data.result;
 
-			// Render the map.
-			if(result !== "no"){		
-				$scope.showmap = true;
-				$scope.output = result;
-				$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
-			
-				var btown = {lat: 39.167107,lng: -86.534359};
-				$scope.map = new google.maps.Map(document.getElementById('map'), {
-					zoom: 4,
-					center: btown,
-					mapTypeId: 'terrain'
-				});
-
-				var places = $scope.output.kml.Document.Placemark;
-				for(var i=0; i<places.length; i++){
-					var latlong = places[i].Point.coordinates;
-					var l = latlong.split(",");
-					$scope.mark = new google.maps.LatLng(l[0],l[1]);
-					var marker = new google.maps.Marker({
-					position: $scope.mark,
-					map: $scope.map
+				// Render the map.
+				if(result !== "no"){		
+					$scope.showmap = true;
+					$scope.output = result;
+					$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
+				
+					var btown = {lat: 39.167107,lng: -86.534359};
+					$scope.map = new google.maps.Map(document.getElementById('map'), {
+						zoom: 4,
+						center: btown,
+						mapTypeId: 'terrain'
 					});
+
+					var places = $scope.output.kml.Document.Placemark;
+					for(var i=0; i<places.length; i++){
+						var latlong = places[i].Point.coordinates;
+						var l = latlong.split(",");
+						$scope.mark = new google.maps.LatLng(l[0],l[1]);
+						var marker = new google.maps.Marker({
+						position: $scope.mark,
+						map: $scope.map
+						});
+					}
+					// Need to check if there is an image in the received response. If there is one, then render it.
+					// Else, the showImage will be undefined and the image will not be shown.
+					// If we get a finished state, then we can send a request for the gif image.
+					// THE BELOW CODE HAS TO BE CHANGED.
+					if(response.data.image){
+						$scope.precip = response.data.image;
+						$scope.showImage = true;
+					}
 				}
-				// Need to check if there is an image in the received response. If there is one, then render it.
-				// Else, the showImage will be undefined and the image will not be shown.
-				// If we get a finished state, then we can send a request for the gif image.
-				// THE BELOW CODE HAS TO BE CHANGED.
-				if(response.data.image){
-					$scope.precip = response.data.image;
-					$scope.showImage = true;
+				else{
+					$scope.mapMessage = "No storm has been forecasted for the selected location";
 				}
-			}
-			else{
-				$scope.mapMessage = "No storm has been forecasted for the selected location";
-			}
+			} 
 		},
 		function(response){	
 			// this is a failure check
