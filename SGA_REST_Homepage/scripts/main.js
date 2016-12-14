@@ -226,7 +226,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				// Render the map.
 				if(result !== "no"){		
 					$scope.showmap = true;
-					$scope.output = result;
+					$scope.output = JSON.parse(result);
 					console.log($scope.output);
 					console.log(result);
 					$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
@@ -238,7 +238,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 						mapTypeId: 'terrain'
 					});
 
-					var places = result.kml.Document.Placemark;
+					var places = $scope.output.kml.Document.Placemark;
 					for(var i=0; i<places.length; i++){
 						var latlong = places[i].Point.coordinates;
 						var l = latlong.split(",");
