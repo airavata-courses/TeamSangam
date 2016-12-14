@@ -212,14 +212,14 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				function(response){	
 					// this is a failure check
 					$scope.errorMessage = response.data;
-					$scope.message = "error in processing request";
+					$scope.message = "Error. Could not fetch the jobId.";
 				});	
 					
 			},
 			function(response){	
 				// this is a failure check
 				$scope.errorMessage = response.data;
-				$scope.message = "error in processing request";
+				$scope.message = "Error processing request";
 			});	
 	};
 
@@ -254,27 +254,34 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				params : {"email" : $scope.emailId}
 		})
 		.then(function(response){
-			var userJobs = response.data.users;
+			var userJobs = response.data.users; // Will be the jobs of the email ID provided in request.
 			console.log(response.data);
 			$scope.jobs = [];
-			// loop on the users and build an
+			// loop on the userJobs and build an array of jobs
 			for(var i=0; i < userJobs.length; i++) {
-				var nexradUrl = userJobs[i].dataingestor;
-				var urlParts = nexradUrl.split('/');
+				// var nexradUrl = userJobs[i].dataingestor;
+				// var urlParts = nexradUrl.split('/');
 				var job = {};
 				job ["id"] = i+1;
-				job ["year"] = urlParts[3];
-				job ["month"] = urlParts[4];
-				job ["day"] = urlParts[5];
-				job ["location"] = urlParts[6];
-				job ["timestamp"] = urlParts[7].split(".")[0];
+				job ["year"] = userJobs[i]["year"];
+				job ["month"] = urlParts["month"];
+				job ["day"] = urlParts["day"];
+				job ["location"] = urlParts["location"];
+				job ["timestamp"] = urlParts["timestamp"];
 				$scope.jobs.push(job);
+			}
+
+			if($scope.jobs){
+				$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
+			} else {
+				$scope.message = "You haven't submitted any jobs yet. Please create a new job.";
 			}
 		},
 		// if the request was not successful
 		function(response){
 			$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
 		});
+
 		console.log($scope.jobs);
 		// For now, hardcoding the values
 		// $scope.jobs = [
@@ -285,11 +292,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		// 	{"id":"5", "year":"1993", "month":"12", "day":"14", "location":"OEFJ", "timestamp":"KMPH20031103jaskfs"},
 		// 	{"id":"6", "year":"1999", "month":"08", "day":"10", "location":"AAFL", "timestamp":"KMPH20031103jaskfs"}
 		// ];
-		if($scope.jobs){
-			$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
-		} else {
-			$scope.message = "You haven't submitted any jobs yet. Please create a new job.";
-		}
 	};
 
 	$scope.resubmit = function(year, month, day, location, timestamp){
