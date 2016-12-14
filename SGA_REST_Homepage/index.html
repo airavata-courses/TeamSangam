@@ -35,9 +35,10 @@
               <input class="btn btn-lg btn-primary btn-block" type="submit" value="Create a new job"><br>
             </form>
           </div>
+          <p class="text-center"> <h4>{{message}}</h4> </p>
           <div class="col-md-2">
             <form ng-submit="checkPrevious()">
-              <input class="btn btn-lg btn-info btn-block" type="submit" value="Previous jobs"><br>
+              <input class="btn btn-lg btn-info btn-block" type="submit" value="Submitted jobs"><br>
             </form>
           </div>
       		<div class="col-md-1 pull-right">
@@ -47,7 +48,7 @@
       		</div>
       </div>
     	<div class="row">
-
+        <!-- Create new job view -->
         <div class="col-md-6 col-md-offset-3" ng-show="showCreateNew">
           <div class="panel panel-default">
             <div class="panel-heading">
@@ -84,13 +85,13 @@
           
                   <pre>You have selected:{{year}}{{month}}{{day}}{{location}}</pre> 
                 </form>
-                <p class="text-center"> <h4>{{message}}</h4> </p>   
+                <p class="text-center"> <h4>{{createMessage}}</h4> </p>   
             </div>
           </div>
         </div>
-
+        <!-- Table view -->
         <div class="col-md-6 col-md-offset-3" ng-show="showPrevious">
-          <p class="text-center">{{message}}</p>
+          <p class="text-center">{{tableMessage}}</p>
           <table class="table table-bordered table-hover table-striped">
             <thead>
               <tr>
@@ -100,6 +101,7 @@
                 <th>Day</th>
                 <th>Location</th>
                 <th>Timestamp</th>
+                <th>Details</th>
                 <th>Resubmit</th>
               </tr>
             </thead>
@@ -111,21 +113,34 @@
                 <td>{{ job.day }}</td>
                 <td>{{ job.location }}</td>
                 <td>{{ job.timestamp }}</td>
-                <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Resubmit</button></td>
+                <td><button class="btn btn-sm btn-block" ng-click="refreshJobStatus($scope.keyid)">Details</button></td>
+                <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Edit</button></td>
               </tr>
             </tbody>
           </table>
         </div>
+        <!-- Job view -->
+        <div class="col-md-6 col-md-offset-3" ng-show="showOutput">
+          <p class="text-center">{{outputMessage}}</p>
+          <br>
+          <p class="text-center">You can come back to this screen by clicking on a job from the submitted jobs tab anytime.</p>
+          <br>
+          <button type="submit" class="pull-right" ng-click="refreshJobStatus()"><i class="icon-refresh"></i></button>
+          <p class="text-center">Status of the job {{ jobid }}: {{outputStatus}}</p>
+          <!-- outputs below this -->
+          <br>
+          <p class="text-center">{{mapMessage}}</p>
+          <div id="map" ng-show = "showmap"></div>
+          <br>
+          <p class="text-center">{{imageMessage}}</p>
+          <div id = "image" ng-show = "showImage">
+             <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
+          </div>
+        </div>
 
      </div>
    </div>
-     <br/>
-
-     <div id="map" ng-show = "showmap"></div>
-     <div id = "image" ng-show = "showImage">
-         <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
-     </div>
-     
+     <br/>     
      
      <footer class="page-footer">
 			<p class="text-center">copyright 2016. Team Sangam.</p>

@@ -10,6 +10,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	// This is the initial page to load.
 	$scope.showCreateNew = true;
 	$scope.showPrevious = false;
+	$scope.showOutput = false;
 	
 	$http({
 			method : "GET",
@@ -28,7 +29,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	},
 		//based on the response, we will either show an error message or redirect the user to the login page
 	function(response){
-		$scope.errorMessage = response.data;
+		$scope.errorMessage = response.data; // not displayed as of now
 	});
 		
 	$scope.requestId = 0;
@@ -127,9 +128,10 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	};
 	
 	$scope.submit = function(){
-		$scope.message = "Please wait as we process your request";
+		$scope.createMessage = "Please wait as we process your request";
 		$scope.requestId += 1; 
 		$scope.showmap = false;
+
 		$http({
 				method : 'GET',
 				url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient",
@@ -137,104 +139,38 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			})
 			.then(function(response){
 				// This is a success callback and will be called for status 200-299
-				var keyID  = response.data;
-				$http({
-					method : 'GET',
-					url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
-					params: {"key": keyID}
-				})
-				.then(function(response){
-					// This is a success callback and will be called for status 200-299
-					var jobid = response.data.jobid;
-					var result = response.data.result;
-
-					// Check for the status of the Mesos job by reaching the endpoint.
-					var getStatus = function(){
-						$http({
-							method : "GET",
-							url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
-							params: {"jobid":jobid}
-						})
-						.then(function(response){
-							// This is a success callback and will be called for status 200-299
-							console.log(response.data);
-							$scope.message = "Stage of your Mesos job: "+response.data;
-							if(response.data == "FINISHED"){
-								$interval.cancel(getPromise);
-							}
-						},
-						function(response){
-							$scope.message = "Mesos job status could not be retrieved.";
-						});
-					};
-
-					var getPromise = $interval(getStatus, 5000);
-
-					// Render the map.
-					if(result !== "no"){		
-						$scope.showmap = true;
-						$scope.output = result;
-						$scope.message = "Storm has been forecasted and the impacted areas are shown in the below map";
-					
-						var btown = {lat: 39.167107,lng: -86.534359};
-						$scope.map = new google.maps.Map(document.getElementById('map'), {
-							zoom: 4,
-							center: btown,
-							mapTypeId: 'terrain'
-						});
-
-						var places = $scope.output.kml.Document.Placemark;
-						for(var i=0; i<places.length; i++){
-							var latlong = places[i].Point.coordinates;
-							var l = latlong.split(",");
-							$scope.mark = new google.maps.LatLng(l[0],l[1]);
-							var marker = new google.maps.Marker({
-							position: $scope.mark,
-							map: $scope.map
-							});
-						}
-						// Need to check if there is an image in the received response. If there is one, then render it.
-						// Else, the showImage will be undefined and the image will not be shown.
-						// If we get a finished state, then we can send a request for the gif image.
-						// THE BELOW CODE HAS TO BE CHANGED.
-						// if(response.data.image){
-						// 	$scope.precip = response.data.image;
-						// 	$scope.showImage = true;
-						// }
-					}
-					else{
-						$scope.message = "No storm has been forecasted for the selected location";
-					}
-
-				},
-				function(response){	
-					// this is a failure check
-					$scope.errorMessage = response.data;
-					$scope.message = "Error. Could not fetch the jobId.";
-				});	
-					
+				$scope.showCreateNew = false;
+				$scope.showPrevious = false;
+				$scope.showOutput = true;
+				$scope.outputMessage = "Your job has been successfully submitted. Please cick refresh button to refresh the status of the job.";
+				$scope.outputStatus = "SUBMITTING";
+				$scope.keyid  = response.data;
+				$scope.refreshJobStatus($scope.keyid);
 			},
 			function(response){	
 				// this is a failure check
 				$scope.errorMessage = response.data;
-				$scope.message = "Error processing request";
+				$scope.createMessage = "Error processing request";
 			});	
 	};
+
 
 	// Load the template when create new button is clicked.
 	$scope.createNew = function(){
 		$scope.showCreateNew = true;
 		$scope.showPrevious = false;
+		$scope.showOutput = false;
 		// load the create new template using ng-include
 		console.log("in create new");
-		$scope.message = "";
+		$scope.createMessage = "";
 	};
 
 	$scope.checkPrevious = function(){
 		console.log("in check previous");
 		$scope.showCreateNew = false;
 		$scope.showPrevious = true;
-		$scope.message = "Please wait while we fetch your previous jobs.";
+		$scope.showOutput = false;
+		$scope.tableMessage = "Please wait while we fetch your previous jobs.";
 		$http({
 				method : 'GET',
 				url : regUrl + "8085/SGA_REST_Registry/sga/registry/getuserstats",
@@ -247,36 +183,111 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			// loop on the userJobs and build an array of jobs
 			for(var i=0; i < userJobs.length; i++) {
 				var job = {};
-				job ["id"] = i+1;
-				job ["year"] = userJobs[i]["year"];
-				job ["month"] = userJobs[i]["month"];
-				job ["day"] = userJobs[i]["day"];
-				job ["location"] = userJobs[i]["location"];
-				job ["timestamp"] = userJobs[i]["timestamp"];
+				job["id"] = i+1;
+				job["year"] = userJobs[i]["year"];
+				job["month"] = userJobs[i]["month"];
+				job["day"] = userJobs[i]["day"];
+				job["location"] = userJobs[i]["location"];
+				job["timestamp"] = userJobs[i]["timestamp"];
+				job["keyid"] = userJobs[i]["keyid"];
 				$scope.jobs.push(job);
 			}
 			$scope.jobs.reverse();
 
-
 			if($scope.jobs){
-				$scope.message = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
+				$scope.tableMessage = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
 			} else {
-				$scope.message = "You haven't submitted any jobs yet. Please create a new job.";
+				$scope.tableMessage = "You haven't submitted any jobs yet. Please create a new job.";
 			}
 		},
 		// if the request was not successful
 		function(response){
-			$scope.message = "Something went wrong. We could not fetch the jobs. Please try again later.";
+			$scope.tableMessage = "Something went wrong. We could not fetch the jobs. Please try again later.";
 		});
-
 		console.log($scope.jobs);
 	};
 
+	var getJobid = function(keyid){
+		$http({
+			method : 'GET',
+			url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
+			params: {"key": keyid}
+		})
+		.then(function(response){
+			// This is a success callback and will be called for status 200-299
+			$scope.jobid = response.data.jobid;
+			$scope.mesos = response.data.mesos;
+			$scope.result = response.data.result;
+
+			// Render the map.
+			if(result !== "no"){		
+				$scope.showmap = true;
+				$scope.output = result;
+				$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
+			
+				var btown = {lat: 39.167107,lng: -86.534359};
+				$scope.map = new google.maps.Map(document.getElementById('map'), {
+					zoom: 4,
+					center: btown,
+					mapTypeId: 'terrain'
+				});
+
+				var places = $scope.output.kml.Document.Placemark;
+				for(var i=0; i<places.length; i++){
+					var latlong = places[i].Point.coordinates;
+					var l = latlong.split(",");
+					$scope.mark = new google.maps.LatLng(l[0],l[1]);
+					var marker = new google.maps.Marker({
+					position: $scope.mark,
+					map: $scope.map
+					});
+				}
+				// Need to check if there is an image in the received response. If there is one, then render it.
+				// Else, the showImage will be undefined and the image will not be shown.
+				// If we get a finished state, then we can send a request for the gif image.
+				// THE BELOW CODE HAS TO BE CHANGED.
+				if(response.data.image){
+					$scope.precip = response.data.image;
+					$scope.showImage = true;
+				}
+			}
+			else{
+				$scope.mapMessage = "No storm has been forecasted for the selected location";
+			}
+		},
+		function(response){	
+			// this is a failure check
+			// $scope.errorMessage = response.data;
+			$scope.outputMessage = "Error. Could not fetch the jobId.";
+		});
+	};
+
+	$scope.refreshJobStatus = function(keyid) {
+		getJobid(keyid);
+		if (!$scope.mesos){
+			$http({
+				method : "GET",
+				url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
+				params: {"jobid":$scope.jobid}
+			})
+			.then(function(response){
+				// This is a success callback and will be called for status 200-299
+				console.log(response.data);
+				$scope.outputStatus = response.data;
+			},
+			function(response){
+				$scope.outputStatus = "?!?!?!?!";
+			});
+		} else {
+			$scope.outputStatus = $scope.mesos;
+		}
+	};
+	
 	$scope.resubmit = function(year, month, day, location, timestamp){
 		// Load the createNew template with all the fields filled in.
 		console.log("in resubmit"+year);
 		// $scope.showTemplate = "homeTemplates/createNew.html";
-		$scope.message = "";
+		$scope.createMessage = "";
 		// Need to fill the values for dropdown here
 		fetchYears();
 		$scope.year = year;
@@ -292,6 +303,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		$scope.time = timestamp;
 		$scope.showCreateNew = true;
 		$scope.showPrevious = false;
+		$scope.showOutput = false;
 	};
 
 	$scope.logout = function(){
