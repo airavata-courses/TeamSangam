@@ -89,7 +89,7 @@ public class ResultConsumer implements Runnable {
 			logger.info("calling result registry");
 			//ZooKeeperClient service = new ZooKeeperClient();
 			//String registryURL = service.discoverServiceURI("registry");
-			PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/result");
+			PostMethod post = new PostMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/result");
 			StringRequestEntity entity;
 			try {
 				entity = new StringRequestEntity(requestDataIngestor.toJSONString(), "application/json", "UTF-8");
