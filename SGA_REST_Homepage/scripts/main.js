@@ -193,7 +193,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				$scope.jobs.push(job);
 			}
 			$scope.jobs.reverse();
-
+			
 			if($scope.jobs){
 				$scope.tableMessage = "Below are all the jobs you have ever submitted. Click on the resubmit to get a job submission form with the corresponding parameters. You can edit the parameters as desired.";
 			} else {

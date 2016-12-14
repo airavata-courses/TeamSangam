@@ -115,7 +115,7 @@
               <td>{{ job.day }}</td>
               <td>{{ job.location }}</td>
               <td>{{ job.timestamp }}</td>
-              <td><button class="btn btn-sm btn-block" ng-click="getJobDetails(keyid, job.id)">Details</button></td>
+              <td><button class="btn btn-sm btn-block" ng-click="getJobDetails(job.keyid, job.id)">Details</button></td>
               <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Edit</button></td>
             </tr>
           </tbody>
