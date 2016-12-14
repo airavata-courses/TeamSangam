@@ -264,10 +264,10 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				var job = {};
 				job ["id"] = i+1;
 				job ["year"] = userJobs[i]["year"];
-				job ["month"] = urlParts["month"];
-				job ["day"] = urlParts["day"];
-				job ["location"] = urlParts["location"];
-				job ["timestamp"] = urlParts["timestamp"];
+				job ["month"] = userJobs[i]["month"];
+				job ["day"] = userJobs[i]["day"];
+				job ["location"] = userJobs[i]["location"];
+				job ["timestamp"] = userJobs[i]["timestamp"];
 				$scope.jobs.push(job);
 			}
 
