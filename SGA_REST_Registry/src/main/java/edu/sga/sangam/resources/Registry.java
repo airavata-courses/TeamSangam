@@ -181,7 +181,7 @@ public class Registry {
         {
         String result = DBOperations.getInstance().getStats();
         return Response.status(200).entity(result)
-					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
+					.header("Access-Control-Allow-Origin", "http://ec2-54-193-116-150.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
 					.header("Access-Control-Allow-Credentials", "true")
 					.build();
@@ -189,7 +189,7 @@ public class Registry {
         catch(Exception e)
         {
             return Response.status(500).entity(e.getMessage())
-					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
+					.header("Access-Control-Allow-Origin", "http://ec2-54-193-116-150.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
 					.header("Access-Control-Allow-Credentials", "true")
 					.build();
@@ -207,7 +207,7 @@ public class Registry {
         {
         String result = DBOperations.getInstance().getuserStats(username);
         return Response.status(200).entity(result)
-					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
+					.header("Access-Control-Allow-Origin", "http://ec2-54-193-116-150.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
 					.header("Access-Control-Allow-Credentials", "true")
 					.build();
@@ -215,7 +215,7 @@ public class Registry {
         catch(Exception e)
         {
             return Response.status(500).entity(e.getMessage())
-					.header("Access-Control-Allow-Origin", "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:8080")
+					.header("Access-Control-Allow-Origin", "http://ec2-54-193-116-150.us-west-1.compute.amazonaws.com:8080")
 					.header("Access-Control-Allow-Methods", "GET")
 					.header("Access-Control-Allow-Credentials", "true")
 					.build();
