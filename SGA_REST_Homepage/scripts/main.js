@@ -5,7 +5,7 @@ var home = angular.module("sga_home",[]);
 var myurl = "http://ec2-54-183-132-116.us-west-1.compute.amazonaws.com:";
 var regUrl = "http://ec2-54-193-9-114.us-west-1.compute.amazonaws.com:";
 //create the controller and register it with the module
-home.controller("sga_controller", function ($scope, $http, $window) {
+home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 
 	// This is the initial page to load.
 	// $scope.showTemplate = "homeTemplates/createNew.html";
@@ -151,18 +151,26 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 					var result = response.data.result;
 
 					// Check for the status of the Mesos job by reaching the endpoint.
-					$http({
-						method : "GET",
-						url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
-						params: {"jobid":jobid}
-					})
-					.then(function(response){
-					// This is a success callback and will be called for status 200-299
-						$scope.message = "Stage of your Mesos job: "+response.data;
-					},
-					function(response){
-						$scope.message = "Mesos job status could not be retrieved.";
-					});
+					var getStatus = function(){
+						$http({
+							method : "GET",
+							url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
+							params: {"jobid":jobid}
+						})
+						.then(function(response){
+							// This is a success callback and will be called for status 200-299
+							console.log(response.data);
+							$scope.message = "Stage of your Mesos job: "+response.data;
+							if(response.data == "FINISHED"){
+								$interval.cancel(getPromise);
+							}
+						},
+						function(response){
+							$scope.message = "Mesos job status could not be retrieved.";
+						});
+					};
+
+					var getPromise = $interval(getStatus, 5000);
 
 					// Render the map.
 					if(result !== "no"){		
@@ -191,10 +199,10 @@ home.controller("sga_controller", function ($scope, $http, $window) {
 						// Else, the showImage will be undefined and the image will not be shown.
 						// If we get a finished state, then we can send a request for the gif image.
 						// THE BELOW CODE HAS TO BE CHANGED.
-						if(response.data.image){
-							$scope.precip = response.data.image;
-							$scope.showImage = true;
-						}
+						// if(response.data.image){
+						// 	$scope.precip = response.data.image;
+						// 	$scope.showImage = true;
+						// }
 					}
 					else{
 						$scope.message = "No storm has been forecasted for the selected location";
