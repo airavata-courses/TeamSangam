@@ -103,7 +103,7 @@
                 <th>Location</th>
                 <th>Timestamp</th>
                 <th>Details</th>
-                <th>Resubmit</th>
+                <th>Edit</th>
               </tr>
             </thead>
             <tbody>
@@ -126,7 +126,7 @@
           <br>
           <!-- <p class="text-center">You can come back to this screen by clicking on a job from the submitted jobs tab anytime.</p> -->
           <br>
-          <button type="submit" class="pull-right" ng-click="refreshJobStatus(keyid)"><i class="icon-refresh"></i></button>
+          <button type="submit" class="pull-right" ng-click="refreshJobStatus(keyid)"><i class="fa fa-refresh" aria-hidden="true"></i></button>
           <p class="text-center">Status of the job {{ jobid }}: {{outputStatus}}</p>
           <!-- outputs below this -->
           <br>
