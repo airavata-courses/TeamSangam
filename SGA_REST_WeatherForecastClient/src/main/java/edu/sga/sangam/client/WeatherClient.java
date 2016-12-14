@@ -73,13 +73,13 @@ public class WeatherClient {
 	@GET
 	@Path("jobstatus")
 	@Asynchronous
-	public void asyncjobstatusrest(@Suspended final AsyncResponse asyncResponse,@QueryParam("jobid") String jobid)
+	public void asyncjobstatusrest(@Suspended final AsyncResponse asyncResponse,@QueryParam("keyid") String keyid,@QueryParam("jobid") String jobid)
 	{
 		System.out.println("inside async call");
-		Response result = getJobStatus(jobid);
+		Response result = getJobStatus(jobid,keyid);
 		asyncResponse.resume(result);	
 	}
-	public Response getJobStatus(String jobid)
+	public Response getJobStatus(String jobid,String keyid)
 	{
 		JobResponseStatus jrs = new JobResponseStatus();
 		try
@@ -108,6 +108,10 @@ public class WeatherClient {
 					jrs.setJobName(s.getAssignedTask().getTaskId());
 					jrs.setHostName(host);
 					jrs.setJobStatus(s.getStatus().toString());
+					if(s.getStatus().toString().toUpperCase().equals("FINISHED")|| s.getStatus().toString().toUpperCase().equals("FAILED"))
+					{
+						wcs.submitMesosStatus(s.getStatus().toString(),keyid);
+					}
 					System.out.println(s.getAssignedTask().getTaskId());
 					System.out.println("task status"+s.getStatus().toString());
 					System.out.println("host is "+host);
