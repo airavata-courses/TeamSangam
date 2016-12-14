@@ -221,6 +221,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 			if(response.data!="no") {
 				$scope.jobid = response.data.jobid;
 				var result = response.data.result;
+				console.log($scope.jobid);
 				console.log(result);
 
 				// Render the map.
@@ -283,7 +284,8 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 
 		$scope.jobid = undefined;
 		getJobid(keyid);
-		if($scope.jobid){
+		console.log($scope.jobid);
+		if($scope.jobid!=undefined){
 			// There is a job id created.
 			if (!$scope.mesos){
 				$http({
