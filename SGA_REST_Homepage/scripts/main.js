@@ -207,12 +207,12 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		console.log($scope.jobs);
 	};
 
-	var getJobid = function(keyid){
-		console.log(keyid);
+	var getJobid = function(resolve, reject){
+		console.log($scope.keyid);
 		$http({
 			method : 'GET',
 			url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
-			params: {"key": keyid}
+			params: {"key": $scope.keyid}
 		})
 		.then(function(response){
 			// This is a success callback and will be called for status 200-299
@@ -286,15 +286,17 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	$scope.refreshJobStatus = function(keyid) {
 
 		$scope.jobid = undefined;
-		var jsonPromise = new Promise(getJobid(keyid));
+		$scope.keyid = keyid;
+		var jsonPromise = new Promise(getJobid(resolve, reject));
 		jsonPromise.then(function(data){
+			console.log($scope.jobid);
 			if($scope.jobid!=undefined){
 				// There is a job id created.
 				if (!$scope.mesos){
 					$http({
 						method : "GET",
 						url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
-						params: {"keyid":keyid, "jobid":$scope.jobid}
+						params: {"keyid":$scope.keyid, "jobid":$scope.jobid}
 					})
 					.then(function(response){
 						// This is a success callback and will be called for status 200-299
