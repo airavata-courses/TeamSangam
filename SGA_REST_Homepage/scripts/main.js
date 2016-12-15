@@ -263,11 +263,13 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 					$scope.mapMessage = "No storm has been forecasted for the selected location";
 				}
 			} 
+			resolve("Worked");
 		},
 		function(response){	
 			// this is a failure check
 			// $scope.errorMessage = response.data;
 			$scope.outputMessage = "Error. Could not fetch the jobId.";
+			reject(Error("Error, Could not fetch the jobId."));
 		});
 	};
 
@@ -284,7 +286,8 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 	$scope.refreshJobStatus = function(keyid) {
 
 		$scope.jobid = undefined;
-		getJobid(keyid).then(function(){
+		var jsonPromise = new Promise(getJobid(keyid));
+		jsonPromise.then(function(data){
 			if($scope.jobid!=undefined){
 				// There is a job id created.
 				if (!$scope.mesos){
@@ -312,7 +315,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 				$scope.outputStatus = "SUBMITTING..";
 			}
 		},
-		function(){
+		function(err){
 			$scope.outputMessage = "Error. Could not fetch the jobId.";
 		});
 	};
