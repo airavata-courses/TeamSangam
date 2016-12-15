@@ -16,6 +16,18 @@
           width: 50%;
           display: inline-block;
         }
+        html, body {
+          height: 100%;
+          margin: 0;
+        }
+        #wrapper {
+          min-height: 100%;
+          margin-bottom: -30px;
+        }
+        #footer,
+        #push {
+          height: 30px;
+        }
   </style>
   		
   <meta charset="utf-8">
@@ -29,6 +41,7 @@
 </head>
 
 <body ng-controller="sga_controller">
+<div id = "wrapper">
   <header id="header" class="jumbotron text-center"> 
   	<h2>Welcome to the Science Gateway Weather Forecasting Portal</h2>
   </header>
@@ -149,10 +162,12 @@
     </div>
  </div>
   <br/>     
-     
+  </div>
+  <div id="push"></div>
   <footer id="footer" class="page-footer">
 			<p class="text-center">copyright 2016. Team Sangam.</p>
 	</footer>
+
 
 </body>
 </html>
