@@ -178,7 +178,7 @@ public class DBOperations {
 		{
 			mongo = DBConnections.getInstance().getConnection();
 			DB database = mongo.getDB(DBConstants.DB_Name);
-			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Result);
 			BasicDBObject document = new BasicDBObject();
 			document.append("$set", new BasicDBObject().append("mesos",ms.getStatus())
 					.append("mesosstatus", ms.getStatustime()));
@@ -305,6 +305,7 @@ public class DBOperations {
 				query.put("keyid", key);
 				field.put("result",1);
 				field.put("jobid",1);
+				field.put("mesos",1);
 				field.put("_id",-1 );
 				JSONObject result = new JSONObject();
 				
@@ -314,6 +315,7 @@ public class DBOperations {
 					DBObject db = cursor.next();
 					result.put("result", (String)db.get("result"));
 					result.put("jobid", (String)db.get("jobid"));
+					result.put("mesos", (String)db.get("mesos"));
 					//result =(String) db.get("result");
 					System.out.println(result);
 					break;
