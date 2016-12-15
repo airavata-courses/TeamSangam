@@ -73,7 +73,7 @@ public class WeatherClientOrchestrator {
 		KafkaProducer<String, DataIngestorRequest> producer;
 		String topic = "dataingestor";
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "54.193.116.150:9092,54.67.29.184:9092,54.215.209.204:9092");
+		props.put("bootstrap.servers", "54.193.116.150:9092,54.67.40.162:9092,52.53.201.39:9092");
 	    props.put("acks", "all");
 	    props.put("retries", 0);
 	    props.put("batch.size", 16384);
@@ -138,7 +138,7 @@ public class WeatherClientOrchestrator {
 		//PostMethod post = new PostMethod("http://54.193.9.114:8085/SGA_REST_Registry/sga/registry/orchestrator");
 		//PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/orchestrator");
 
-		PostMethod post = new PostMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/orchestrator");
+		PostMethod post = new PostMethod("http://54.67.40.162:8085/SGA_REST_Registry/sga/registry/orchestrator");
 		//PostMethod post = new PostMethod("http://localhost:8080/SGA_REST_Registry/sga/registry/orchestrator");
 
 
@@ -176,7 +176,7 @@ public class WeatherClientOrchestrator {
 			//ZooKeeperClient service = new ZooKeeperClient();
 			//String registryURL = service.discoverServiceURI("registry");
 
-			GetMethod getMethod = new GetMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/resultoutput");
+			GetMethod getMethod = new GetMethod("http://54.67.40.162:8085/SGA_REST_Registry/sga/registry/resultoutput");
 			//GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
 			getMethod.setQueryString(new NameValuePair[] {
 				    new NameValuePair("key", key)
@@ -203,7 +203,7 @@ public class WeatherClientOrchestrator {
 			request.put("status",status);
 			request.put("keyid", keyid);
 			request.put("statustime", df2.format(date));
-			PostMethod post = new PostMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/mesosstatus");
+			PostMethod post = new PostMethod("http://54.67.40.162:8085/SGA_REST_Registry/sga/registry/mesosstatus");
 			StringRequestEntity entity;
 			try {
 				entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");

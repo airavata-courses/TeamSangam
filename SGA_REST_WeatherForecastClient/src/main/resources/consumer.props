@@ -1,4 +1,4 @@
-bootstrap.servers=ec2-54-193-116-150.us-west-1.compute.amazonaws.com:9092,ec2-54-67-29-184.us-west-1.compute.amazonaws.com:9092,ec2-54-215-209-204.us-west-1.compute.amazonaws.com:9092
+bootstrap.servers=ec2-54-193-116-150.us-west-1.compute.amazonaws.com:9092,ec2-54-67-40-162.us-west-1.compute.amazonaws.com:9092,ec2-52-53-201-39.us-west-1.compute.amazonaws.com:9092
 group.id=resultgroup
 enable.auto.commit=true
 auto.offset.reset=earliest
