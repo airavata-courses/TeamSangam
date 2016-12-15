@@ -228,36 +228,35 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 
 				// Render the map if job has completed.
 				console.log($scope.mesos);
-				if($scope.mesos=="FINISHED"){
-					if(result !== "no"){		
-						$scope.showmap = true;
-						$scope.output = JSON.parse(result);
-						console.log($scope.output);
-						console.log(result);
-						$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
-					
-						var btown = {lat: 39.167107,lng: -86.534359};
-						$scope.map = new google.maps.Map(document.getElementById('map'), {
-							zoom: 4,
-							center: btown,
-							mapTypeId: 'terrain'
-						});
+				if(result !== "no"){		
+					$scope.showmap = true;
+					$scope.output = JSON.parse(result);
+					console.log($scope.output);
+					console.log(result);
+					$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
+				
+					var btown = {lat: 39.167107,lng: -86.534359};
+					$scope.map = new google.maps.Map(document.getElementById('map'), {
+						zoom: 4,
+						center: btown,
+						mapTypeId: 'terrain'
+					});
 
-						var places = $scope.output.kml.Document.Placemark;
-						for(var i=0; i<places.length; i++){
-							var latlong = places[i].Point.coordinates;
-							var l = latlong.split(",");
-							$scope.mark = new google.maps.LatLng(l[0],l[1]);
-							var marker = new google.maps.Marker({
-							position: $scope.mark,
-							map: $scope.map
-							});
-						}
-					}
-					else{
-						$scope.mapMessage = "No storm has been forecasted for the selected location";
+					var places = $scope.output.kml.Document.Placemark;
+					for(var i=0; i<places.length; i++){
+						var latlong = places[i].Point.coordinates;
+						var l = latlong.split(",");
+						$scope.mark = new google.maps.LatLng(l[0],l[1]);
+						var marker = new google.maps.Marker({
+						position: $scope.mark,
+						map: $scope.map
+						});
 					}
 				}
+				else{
+					$scope.mapMessage = "No storm has been forecasted for the selected location";
+				}
+				
 				if($scope.jobid!=undefined){
 					// There is a job id created.
 					if (!$scope.mesos){
