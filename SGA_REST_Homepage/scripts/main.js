@@ -225,12 +225,9 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 			if(response.data!="no") {
 				$scope.jobid = response.data.jobid;
 				var result = response.data.result;
-				// console.log(response.data.jobid);
-				// console.log($scope.jobid);
-				// console.log(result);
 
 				// Render the map if job has completed.
-				if(!$scope.mesos=="FINISHED"){
+				if(!($scope.mesos=="FINISHED")){
 					if(result !== "no"){		
 						$scope.showmap = true;
 						$scope.output = JSON.parse(result);
@@ -283,7 +280,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 							$scope.outputStatus = response.data.jobStatus;
 						},
 						function(response){
-							$scope.outputStatus = "?!?!?!?!";
+							$scope.outputStatus = "......";
 						});
 					} else {
 						$scope.outputMessage =  "Below are the details available for job.";
@@ -294,6 +291,9 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 					$scope.outputMessage =  "The job is still being submitted..";
 					$scope.outputStatus = "SUBMITTING..";
 				}
+			} else {
+				$scope.outputStatus = "?!?!?!?!";
+				$scope.outputMessage =  "The details for this job are not available.";
 			} 
 		},
 		function(response){	
@@ -301,8 +301,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 			// $scope.errorMessage = response.data;
 			$scope.outputMessage = "Error. Could not fetch the jobId.";
 			// reject(Error("Error, Could not fetch the jobId."));
-			deferred.resolve({});
-			return deferred.promise;
 		});
 	};
 
