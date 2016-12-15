@@ -5,7 +5,7 @@ var home = angular.module("sga_home",[]);
 var myurl = "http://ec2-54-193-116-150.us-west-1.compute.amazonaws.com:";
 var regUrl = "http://ec2-54-67-29-184.us-west-1.compute.amazonaws.com:";
 //create the controller and register it with the module
-home.controller("sga_controller", function ($scope, $http, $window, $interval) {
+home.controller("sga_controller", function ($scope, $http, $window, $interval, $q) {
 
 	// This is the initial page to load.
 	$scope.showCreateNew = true;
@@ -207,8 +207,9 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 		console.log($scope.jobs);
 	};
 
-	var getJobid = function(resolve, reject){
+	var getJobid = function(keyid){
 		console.log($scope.keyid);
+		var deferred = $q.defer();
 		$http({
 			method : 'GET',
 			url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
@@ -263,13 +264,17 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 					$scope.mapMessage = "No storm has been forecasted for the selected location";
 				}
 			} 
-			resolve("Worked");
+			// resolve("Worked");
+			deferred.resolve({});
+			return deferred.promise;
 		},
 		function(response){	
 			// this is a failure check
 			// $scope.errorMessage = response.data;
 			$scope.outputMessage = "Error. Could not fetch the jobId.";
-			reject(Error("Error, Could not fetch the jobId."));
+			// reject(Error("Error, Could not fetch the jobId."));
+			deferred.resolve({});
+			return deferred.promise;
 		});
 	};
 
@@ -287,8 +292,9 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval) {
 
 		$scope.jobid = undefined;
 		$scope.keyid = keyid;
-		var jsonPromise = new Promise(getJobid(resolve, reject));
-		jsonPromise.then(function(data){
+		var promise = getJobid(keyid);
+
+		promise.then(function(data){
 			console.log($scope.jobid);
 			if($scope.jobid!=undefined){
 				// There is a job id created.
