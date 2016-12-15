@@ -189,6 +189,10 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 				job["day"] = userJobs[i]["day"];
 				job["location"] = userJobs[i]["location"];
 				job["timestamp"] = userJobs[i]["timestamp"];
+				job["mesos"] = userJobs[i]["mesos"];
+				if(!job["mesos"]){
+					job["mesos"] = "Not completed yet.";
+				}
 				job["keyid"] = userJobs[i]["keyid"];
 				$scope.jobs.push(job);
 			}
@@ -221,46 +225,48 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 			if(response.data!="no") {
 				$scope.jobid = response.data.jobid;
 				var result = response.data.result;
-				console.log(response.data.jobid);
-				console.log($scope.jobid);
-				console.log(result);
+				// console.log(response.data.jobid);
+				// console.log($scope.jobid);
+				// console.log(result);
 
-				// Render the map.
-				if(result !== "no"){		
-					$scope.showmap = true;
-					$scope.output = JSON.parse(result);
-					console.log($scope.output);
-					console.log(result);
-					$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
-				
-					var btown = {lat: 39.167107,lng: -86.534359};
-					$scope.map = new google.maps.Map(document.getElementById('map'), {
-						zoom: 4,
-						center: btown,
-						mapTypeId: 'terrain'
-					});
-
-					var places = $scope.output.kml.Document.Placemark;
-					for(var i=0; i<places.length; i++){
-						var latlong = places[i].Point.coordinates;
-						var l = latlong.split(",");
-						$scope.mark = new google.maps.LatLng(l[0],l[1]);
-						var marker = new google.maps.Marker({
-						position: $scope.mark,
-						map: $scope.map
+				// Render the map if job has completed.
+				if(!$scope.mesos=="FINISHED"){
+					if(result !== "no"){		
+						$scope.showmap = true;
+						$scope.output = JSON.parse(result);
+						console.log($scope.output);
+						console.log(result);
+						$scope.mapMessage = "Storm has been forecasted and the impacted areas are shown in the below map";
+					
+						var btown = {lat: 39.167107,lng: -86.534359};
+						$scope.map = new google.maps.Map(document.getElementById('map'), {
+							zoom: 4,
+							center: btown,
+							mapTypeId: 'terrain'
 						});
+
+						var places = $scope.output.kml.Document.Placemark;
+						for(var i=0; i<places.length; i++){
+							var latlong = places[i].Point.coordinates;
+							var l = latlong.split(",");
+							$scope.mark = new google.maps.LatLng(l[0],l[1]);
+							var marker = new google.maps.Marker({
+							position: $scope.mark,
+							map: $scope.map
+							});
+						}
+						// Need to check if there is an image in the received response. If there is one, then render it.
+						// Else, the showImage will be undefined and the image will not be shown.
+						// If we get a finished state, then we can send a request for the gif image.
+						// THE BELOW CODE HAS TO BE CHANGED.
+						if(response.data.image){
+							$scope.precip = response.data.image;
+							$scope.showImage = true;
+						}
 					}
-					// Need to check if there is an image in the received response. If there is one, then render it.
-					// Else, the showImage will be undefined and the image will not be shown.
-					// If we get a finished state, then we can send a request for the gif image.
-					// THE BELOW CODE HAS TO BE CHANGED.
-					if(response.data.image){
-						$scope.precip = response.data.image;
-						$scope.showImage = true;
+					else{
+						$scope.mapMessage = "No storm has been forecasted for the selected location";
 					}
-				}
-				else{
-					$scope.mapMessage = "No storm has been forecasted for the selected location";
 				}
 				if($scope.jobid!=undefined){
 					// There is a job id created.

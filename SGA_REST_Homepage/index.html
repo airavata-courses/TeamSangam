@@ -4,12 +4,15 @@
   <script src="https://use.fontawesome.com/575410f21f.js"></script>
   <style>
         #map {
-          height: 400px;
+          width: 50%;
+          display: inline-block;
+        }
+        #mapMessage {
           width: 50%;
           display: inline-block;
         }
         #image{
-          height: 400px;
+          height: 50%;
           width: 50%;
           display: inline-block;
         }
@@ -103,6 +106,7 @@
               <th>Day</th>
               <th>Location</th>
               <th>Timestamp</th>
+              <th>Final Result</th>
               <th>Details</th>
               <th>Edit</th>
             </tr>
@@ -115,6 +119,7 @@
               <td>{{ job.day }}</td>
               <td>{{ job.location }}</td>
               <td>{{ job.timestamp }}</td>
+              <td>{{ job.mesos }}</td>
               <td><button class="btn btn-sm btn-block" ng-click="getJobDetails(job.keyid, job.id)">Details</button></td>
               <td><button class="btn btn-sm btn-block" ng-click="resubmit(job.year,job.month,job.day,job.location,job.timestamp)">Edit</button></td>
             </tr>
@@ -131,12 +136,13 @@
         <p class="text-center">Status of the job: {{outputStatus}}</p>
         <!-- outputs below this -->
         <br>
-        <p class="text-center">{{mapMessage}}</p>
+        <p id = "mapMessage" class="text-center" ng-show = "showmap">{{mapMessage}}</p>
         <div id="map" ng-show = "showmap"></div>
         <br>
-        <p class="text-center">{{imageMessage}}</p>
+        
         <div id = "image" ng-show = "showImage">
-           <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
+          <p class="text-center">{{imageMessage}}</p>
+          <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
         </div>
       </div>
 
