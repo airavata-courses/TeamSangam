@@ -1,4 +1,4 @@
-bootstrap.servers=ec2-54-193-113-156.us-west-1.compute.amazonaws.com:9092,ec2-54-183-166-68.us-west-1.compute.amazonaws.com:9092,ec2-54-183-167-119.us-west-1.compute.amazonaws.com:9092
+bootstrap.servers=ec2-54-193-113-156.us-west-1.compute.amazonaws.com:9092,ec2-54-67-55-68.us-west-1.compute.amazonaws.com:9092,ec2-54-183-167-119.us-west-1.compute.amazonaws.com:9092
 group.id=stormclustergroup
 enable.auto.commit=true
 auto.offset.reset=earliest
