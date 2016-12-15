@@ -203,7 +203,7 @@ public class WeatherClientOrchestrator {
 			request.put("status",status);
 			request.put("keyid", keyid);
 			request.put("statustime", df2.format(date));
-			PostMethod post = new PostMethod("http://l54.67.29.184:8085/SGA_REST_Registry/sga/registry/mesosstatus");
+			PostMethod post = new PostMethod("http://54.67.29.184:8085/SGA_REST_Registry/sga/registry/mesosstatus");
 			StringRequestEntity entity;
 			try {
 				entity = new StringRequestEntity(request.toJSONString(), "application/json", "UTF-8");
