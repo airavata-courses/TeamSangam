@@ -209,7 +209,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 
 	var getJobid = function(keyid){
 		console.log($scope.keyid);
-		var deferred = $q.defer();
 		$http({
 			method : 'GET',
 			url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/result",
@@ -263,10 +262,33 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 				else{
 					$scope.mapMessage = "No storm has been forecasted for the selected location";
 				}
+				if($scope.jobid!=undefined){
+					// There is a job id created.
+					if (!$scope.mesos){
+						$http({
+							method : "GET",
+							url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
+							params: {"keyid":$scope.keyid, "jobid":$scope.jobid}
+						})
+						.then(function(response){
+							// This is a success callback and will be called for status 200-299
+							console.log(response.data);
+							$scope.outputMessage =  "Below are the requested details";
+							$scope.outputStatus = response.data.jobStatus;
+						},
+						function(response){
+							$scope.outputStatus = "?!?!?!?!";
+						});
+					} else {
+						$scope.outputMessage =  "Below are the details available for job.";
+						$scope.outputStatus = $scope.mesos;
+					}
+				} else {
+					// There is no jobid created yet.
+					$scope.outputMessage =  "The job is still being submitted..";
+					$scope.outputStatus = "SUBMITTING..";
+				}
 			} 
-			// resolve("Worked");
-			deferred.resolve({});
-			return deferred.promise;
 		},
 		function(response){	
 			// this is a failure check
@@ -289,43 +311,9 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 	};
 
 	$scope.refreshJobStatus = function(keyid) {
-
 		$scope.jobid = undefined;
 		$scope.keyid = keyid;
-		var promise = getJobid(keyid);
-
-		promise.then(function(data){
-			console.log($scope.jobid);
-			if($scope.jobid!=undefined){
-				// There is a job id created.
-				if (!$scope.mesos){
-					$http({
-						method : "GET",
-						url : myurl + "8080/SGA_REST_WeatherForecastClient/sga/weatherclient/jobstatus",
-						params: {"keyid":$scope.keyid, "jobid":$scope.jobid}
-					})
-					.then(function(response){
-						// This is a success callback and will be called for status 200-299
-						console.log(response.data);
-						$scope.outputMessage =  "Below are the requested details";
-						$scope.outputStatus = response.data.jobStatus;
-					},
-					function(response){
-						$scope.outputStatus = "?!?!?!?!";
-					});
-				} else {
-					$scope.outputMessage =  "Below are the details available for job.";
-					$scope.outputStatus = $scope.mesos;
-				}
-			} else {
-				// There is no jobid created yet.
-				$scope.outputMessage =  "The job is still being submitted..";
-				$scope.outputStatus = "SUBMITTING..";
-			}
-		},
-		function(err){
-			$scope.outputMessage = "Error. Could not fetch the jobId.";
-		});
+		getJobid(keyid);
 	};
 	
 	$scope.resubmit = function(year, month, day, location, timestamp){
