@@ -196,6 +196,32 @@ public class DBOperations {
 		}
 		
 	}
+	
+	
+	public void mesosregstatus(edu.sga.sangam.resources.MesosStatus ms) throws Exception {
+		MongoClient mongo = null;
+		try
+		{
+			mongo = DBConnections.getInstance().getConnection();
+			DB database = mongo.getDB(DBConstants.DB_Name);
+			DBCollection collection = database.getCollection(DBConstants.DB_Collection_Log);
+			BasicDBObject document = new BasicDBObject();
+			document.append("$set", new BasicDBObject().append("mesos",ms.getStatus())
+					.append("mesosstatus", ms.getStatustime()));
+			collection.update(new BasicDBObject().append("keyid", ms.getKeyid()), document);
+		
+		}
+		catch(MongoException me)
+		{
+			logger.warn(me.getMessage());
+			throw new Exception("issue with Run mesosregstatus registry");
+		}
+		finally
+		{
+			
+		}
+		
+	}
 
 	
 	public void orchestratorcollection(OrchestratorBean ob) throws Exception{

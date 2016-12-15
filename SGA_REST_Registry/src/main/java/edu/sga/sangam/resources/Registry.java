@@ -122,6 +122,7 @@ public class Registry {
 		try
 		{
 		DBOperations.getInstance().mesosstatus(ms);
+		DBOperations.getInstance().mesosregstatus(ms);
 		return Response.status(200).entity(ms.getKeyid()).build();
 		}
 		catch(Exception e)
