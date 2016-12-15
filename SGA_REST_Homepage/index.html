@@ -140,8 +140,10 @@
         <p class="text-center">Status of the job: {{outputStatus}}</p>
         <!-- outputs below this -->
         <br>
+        <div ng-show="showmap">
           <p class="text-center">{{mapMessage}}</p>
           <div id="map"></div>
+        </div>
         <br>
         
       </div>
