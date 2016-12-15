@@ -227,7 +227,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 				var result = response.data.result;
 
 				// Render the map if job has completed.
-				if(!($scope.mesos=="FINISHED")){
+				if($scope.mesos=="FINISHED"){
 					if(result !== "no"){		
 						$scope.showmap = true;
 						$scope.output = JSON.parse(result);
@@ -297,10 +297,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 			} 
 		},
 		function(response){	
-			// this is a failure check
-			// $scope.errorMessage = response.data;
 			$scope.outputMessage = "Error. Could not fetch the jobId.";
-			// reject(Error("Error, Could not fetch the jobId."));
 		});
 	};
 
