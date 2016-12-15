@@ -127,7 +127,7 @@ public class WeatherClientOrchestrator {
 		//String registryURL = service.discoverServiceURI("registry");
 
 		//PostMethod post = new PostMethod(registryURL+"/orchestrator");
-		PostMethod post = new PostMethod("http://54.183.166.68:8085/SGA_REST_Registry/sga/registry/orchestrator");
+		PostMethod post = new PostMethod("http://54.67.55.68:8085/SGA_REST_Registry/sga/registry/orchestrator");
 
 		StringRequestEntity entity;
 		try {
@@ -162,7 +162,7 @@ public class WeatherClientOrchestrator {
 			HttpClient client = new HttpClient();
 			//ZooKeeperClient service = new ZooKeeperClient();
 			//String registryURL = service.discoverServiceURI("registry");
-			GetMethod getMethod = new GetMethod("http://54.183.166.68:8085/SGA_REST_Registry/sga/registry/resultoutput");
+			GetMethod getMethod = new GetMethod("http://54.67.55.68:8085/SGA_REST_Registry/sga/registry/resultoutput");
 			//GetMethod getMethod = new GetMethod(registryURL+"/resultoutput");
 			getMethod.setQueryString(new NameValuePair[] {
 				    new NameValuePair("key", key)
