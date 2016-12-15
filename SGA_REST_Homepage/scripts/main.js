@@ -227,6 +227,7 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 				var result = response.data.result;
 
 				// Render the map if job has completed.
+				console.log($scope.mesos);
 				if($scope.mesos=="FINISHED"){
 					if(result !== "no"){		
 						$scope.showmap = true;
@@ -251,14 +252,6 @@ home.controller("sga_controller", function ($scope, $http, $window, $interval, $
 							position: $scope.mark,
 							map: $scope.map
 							});
-						}
-						// Need to check if there is an image in the received response. If there is one, then render it.
-						// Else, the showImage will be undefined and the image will not be shown.
-						// If we get a finished state, then we can send a request for the gif image.
-						// THE BELOW CODE HAS TO BE CHANGED.
-						if(response.data.image){
-							$scope.precip = response.data.image;
-							$scope.showImage = true;
 						}
 					}
 					else{

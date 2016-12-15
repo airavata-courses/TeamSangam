@@ -144,14 +144,12 @@
         <p class="text-center">Status of the job: {{outputStatus}}</p>
         <!-- outputs below this -->
         <br>
-        <p id = "mapMessage" class="text-center" ng-show = "showmap">{{mapMessage}}</p>
-        <div id="map" ng-show = "showmap"></div>
+        <div id="map" ng-show = "showmap">
+          <p class="text-center">{{mapMessage}}</p>
+          <div ng-show = "showmap"></div>
+        </div>
         <br>
         
-        <div id = "image" ng-show = "showImage">
-          <p class="text-center">{{imageMessage}}</p>
-          <img data-ng-src="data:image/gif;base64,{{ precip }}"/>
-        </div>
       </div>
 
     </div>
