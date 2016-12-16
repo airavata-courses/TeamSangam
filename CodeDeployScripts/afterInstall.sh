@@ -27,7 +27,7 @@ mv /home/ec2-user/result/SGA_Result /home/ec2-user/
 #cd /home/ec2-user/SGA_REST_Homepage/
 #docker build -t isgahome .
 
-cd SGA_Result
+cd /home/ec2-user/SGA_Result
 echo "Starting the result consumer thread"
 
 nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.services.ResultMain > /home/ec2-user/SGA_Result/result.out 2>&1 &
