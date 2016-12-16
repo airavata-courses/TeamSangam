@@ -28,6 +28,7 @@ mv /home/ec2-user/result/SGA_REST_WeatherForecastClient /home/ec2-user/
 #docker build -t isgahome .
 
 cd /home/ec2-user/SGA_REST_WeatherForecastClient
+mvn package
 echo "Starting the result consumer thread"
 
 nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.services.ResultMain > /home/ec2-user/SGA_REST_WeatherForecastClient/result.out 2>&1 &
