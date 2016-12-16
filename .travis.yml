@@ -18,7 +18,6 @@ script:
   - true 
 
 before_deploy:
-  - cd ..
   - tar -cf SGA_Sangam_Result.tar . || true
   - mkdir -p "dpl_cd_upload"
   - ls
