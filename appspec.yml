@@ -3,7 +3,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/gateway
+    destination: /home/ec2-user/result
 
 hooks:
   ApplicationStop:
@@ -15,9 +15,5 @@ hooks:
       runas: root
   AfterInstall:
     - location: CodeDeployScripts/afterInstall.sh
-      timeout: 600
-      runas: root
-  ApplicationStart:
-    - location: CodeDeployScripts/install.sh
       timeout: 600
       runas: root

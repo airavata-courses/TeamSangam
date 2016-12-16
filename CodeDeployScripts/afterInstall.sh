@@ -1,6 +1,6 @@
-echo "Moving the gateway files to /home/ec2-user"
-rm -rf /home/ec2-user/SGA_REST_WeatherForecastClient
-mv /home/ec2-user/gateway/SGA_REST_WeatherForecastClient /home/ec2-user/
+echo "Moving the result files to /home/ec2-user"
+rm -rf /home/ec2-user/SGA_Result
+mv /home/ec2-user/result/SGA_Result /home/ec2-user/
 
 #DIRECTORY=DB_Dockers
 #cd /home/ec2-user
@@ -27,48 +27,7 @@ mv /home/ec2-user/gateway/SGA_REST_WeatherForecastClient /home/ec2-user/
 #cd /home/ec2-user/SGA_REST_Homepage/
 #docker build -t isgahome .
 
-echo "Build maven package for WeatherForecastClient"
-cd /home/ec2-user/
-DIRECTORY=SGA_REST_login
+cd SGA_Result
+echo "Starting the result consumer thread"
 
-if [ -d "$DIRECTORY" ]; then
-	echo "Copying the login webpages into Gateway"
-	cd ./SGA_REST_WeatherForecastClient
-	sudo cp /home/ec2-user/SGA_REST_login/*.html .
-	sudo mkdir -p scripts
-	echo "Created scripts directory"
-	sudo mkdir -p stylesheets
-	echo "Created stylesheets directory"
-	sudo mkdir -p templates
-	echo "Created templates directory"
-
-	sudo cp /home/ec2-user/SGA_REST_login/scripts/* ./scripts
-	sudo cp /home/ec2-user/SGA_REST_login/stylesheets/* ./stylesheets
-	sudo cp /home/ec2-user/SGA_REST_login/templates/* ./templates
-fi
-
-DIRECTORY=SGA_REST_Homepage
-cd /home/ec2-user/
-
-if [ -d "$DIRECTORY" ]; then
-        echo "Copying the home webpages into Gateway"
-	cd ./SGA_REST_WeatherForecastClient
-	sudo mkdir -p scripts
-        echo "Created scripts directory"
-        sudo mkdir -p stylesheets
-        echo "Created stylesheets directory"
-        sudo mkdir -p templates
-        echo "Created templates directory"
-	sudo mkdir -p homeTemplates
-	echo "Created homeTemplates directory"
-	sudo cp /home/ec2-user/SGA_REST_Homepage/*.html .
-	sudo cp /home/ec2-user/SGA_REST_Homepage/scripts/* ./scripts
-	sudo cp /home/ec2-user/SGA_REST_Homepage/stylesheets/* ./stylesheets
-	sudo cp /home/ec2-user/SGA_REST_Homepage/homeTemplates/* ./homeTemplates
-	echo "Copied the html and javascript files to TOMCAT"
-fi
-
-cd SGA_REST_WeatherForecastClient
-mvn package
-echo "Building gateway docker image"
-docker build -t isgagateway .
+nohup mvn exec:java -Dexec.mainClass=edu.sga.sangam.services.ResultMain > /home/ec2-user/SGA_Result/result.out 2>&1 &

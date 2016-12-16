@@ -1,0 +1,6 @@
+bootstrap.servers=ec2-54-193-116-150.us-west-1.compute.amazonaws.com:9092,ec2-54-67-40-162.us-west-1.compute.amazonaws.com:9092,ec2-52-53-201-39.us-west-1.compute.amazonaws.com:9092
+group.id=resultgroup
+enable.auto.commit=true
+auto.offset.reset=smallest
+key.deserializer=org.apache.kafka.common.serialization.StringDeserializer
+value.deserializer=edu.sga.sangam.services.ResultDeserializer
